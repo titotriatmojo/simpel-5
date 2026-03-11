@@ -1,44 +1,37 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace App\Http\Controllers\Admin; // 1. Namespace harus ADMIN
 
 use App\Http\Controllers\Controller;
 use App\Models\PendaftaranPkl;
+use App\Models\User;
 use Illuminate\Http\Request;
 
-class PendaftaranPklController extends Controller
+class PendaftaranPklController extends Controller // 2. Nama class harus sesuai NAMA FILE
 {
     /**
-     * Menampilkan daftar pendaftaran dengan fitur pencarian.
+     * Menampilkan SEMUA pendaftaran PKL untuk Admin
      */
     public function index(Request $request)
     {
-        $query = PendaftaranPkl::with(['siswa.user', 'perusahaan']);
+        // Admin bisa melihat semua, bukan cuma milik guru tertentu
+        $query = PendaftaranPkl::with(['siswa', 'perusahaan', 'guru']);
 
         if ($request->filled('search')) {
             $search = $request->search;
-            $query->where(function ($q) use ($search) {
-                $q->whereHas('siswa', function ($sq) use ($search) {
-                    $sq->where('nama', 'like', "%$search%")
-                       ->orWhere('nim', 'like', "%$search%")
-                       ->orWhere('program_studi', 'like', "%$search%")
-                       ->orWhere('kelas', 'like', "%$search%");
-                })
-                ->orWhereHas('perusahaan', function ($pq) use ($search) {
-                    $pq->where('nama', 'like', "%$search%");
-                })
-                ->orWhere('bidang_pkl', 'like', "%$search%")
-                ->orWhere('status', 'like', "%$search%");
+            $query->whereHas('siswa', function ($q) use ($search) {
+                $q->where('nama', 'like', "%$search%")
+                  ->orWhere('nim', 'like', "%$search%");
             });
         }
 
-        $pendaftaran = $query->latest()->paginate(8)->appends($request->only('search'));
+        $pendaftaran = $query->latest()->paginate(10);
 
         return view('admin.pendaftaran.index', compact('pendaftaran'));
     }
 
     /**
-     * Verifikasi status pendaftaran (Terima/Tolak).
+     * Verifikasi Pendaftaran oleh Admin
      */
     public function verifikasi(Request $request, $id)
     {
@@ -47,27 +40,34 @@ class PendaftaranPklController extends Controller
         ]);
 
         $pendaftaran = PendaftaranPkl::findOrFail($id);
+
+        // Update status pendaftaran
         $pendaftaran->update([
             'status' => $request->status
         ]);
 
-        return redirect()->route('admin.pendaftaran.index')
-            ->with('success', "Pendaftaran siswa berhasil di-{$request->status}.");
+        // LOGIC SAKTI: Sinkronkan guru_id ke tabel User (untuk akses Dashboard & SPK)
+        if ($request->status === 'diterima') {
+            // Kita cari User berdasarkan siswa_id yang ada di tabel pendaftaran
+            $userSiswa = User::find($pendaftaran->user_id ?? $pendaftaran->siswa_id);
+            if ($userSiswa) {
+                $userSiswa->update([
+                    'guru_id' => $pendaftaran->guru_id
+                ]);
+            }
+        }
+
+        return redirect()->back()->with('success', "Pendaftaran siswa berhasil di-{$request->status}.");
     }
 
     /**
-     * Menghapus data pendaftaran (Fitur Trash).
+     * Hapus data pendaftaran jika diperlukan
      */
     public function destroy($id)
     {
         $pendaftaran = PendaftaranPkl::findOrFail($id);
-        
-        // Simpan nama siswa buat pesan sukses (opsional biar keren)
-        $namaSiswa = $pendaftaran->siswa->nama;
-        
         $pendaftaran->delete();
 
-        return redirect()->route('admin.pendaftaran.index')
-            ->with('success', "Data pendaftaran dari $namaSiswa berhasil dihapus.");
+        return redirect()->back()->with('success', 'Data pendaftaran berhasil dihapus.');
     }
 }

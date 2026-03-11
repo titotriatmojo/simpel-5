@@ -4,8 +4,14 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Relations\HasOneThrough;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+
+// WAJIB IMPORT MODEL-MODEL RELASINYA DI SINI
+use App\Models\Siswa;
+use App\Models\Guru;
+use App\Models\NilaiPkl;
 
 class User extends Authenticatable
 {
@@ -16,7 +22,10 @@ class User extends Authenticatable
         'email',
         'password',
         'role',
-        'guru_id', 
+        'guru_id',
+        'nilai_akademik', 
+        'nilai_instansi', 
+        'hasil_prediksi', 
     ];
 
     protected $hidden = [
@@ -32,20 +41,16 @@ class User extends Authenticatable
         ];
     }
 
-    /**
-     * FITUR SAKTI: Auto-Create Profile (Self-Healing Version)
-     */
     protected static function booted()
     {
         static::created(function ($user) {
-            // Gunakan updateOrCreate biar gak duplikat kalau user dibuat ulang
             if ($user->role === 'guru') {
                 $user->guru()->updateOrCreate(
                     ['user_id' => $user->id],
                     [
                         'nama' => $user->name, 
                         'nip' => 'PENDING-' . $user->id,
-                        'program_studi' => 'Belum Diatur' // Fix error default value
+                        'program_studi' => 'Belum Diatur'
                     ]
                 );
             } elseif ($user->role === 'siswa') {
@@ -54,9 +59,9 @@ class User extends Authenticatable
                     [
                         'nama' => $user->name, 
                         'nim' => 'PENDING-' . $user->id,
-                        'program_studi' => 'Belum Diatur', // Fix error default value
-                        'kelas' => '-',               // Fix jika kolom ini NOT NULL
-                        'semester' => '1'              // Fix jika kolom ini NOT NULL
+                        'program_studi' => 'Belum Diatur',
+                        'kelas' => '-',
+                        'semester' => '1'
                     ]
                 );
             }
@@ -65,7 +70,7 @@ class User extends Authenticatable
 
     /*
     |--------------------------------------------------------------------------
-    | Relasi Profil
+    | Relasi Utama
     |--------------------------------------------------------------------------
     */
 
@@ -74,20 +79,32 @@ class User extends Authenticatable
         return $this->hasOne(Siswa::class, 'user_id', 'id');
     }
 
+    public function nilaiPkl(): HasOneThrough
+    {
+        return $this->hasOneThrough(
+            \App\Models\NilaiPkl::class, // Pakai backslash di depan
+            \App\Models\Siswa::class,    // Pakai backslash di depan
+            'user_id',
+            'siswa_id',
+            'id',
+            'id'
+        );
+    }
+    
     public function guru(): HasOne
     {
         return $this->hasOne(Guru::class, 'user_id', 'id');
     }
 
-    // Alias agar kodingan lama tetap jalan
-    public function guru_profile(): HasOne { return $this->guru(); }
-    public function siswa_profile(): HasOne { return $this->siswa(); }
 
     /*
     |--------------------------------------------------------------------------
-    | Role Checkers
+    | Alias & Helper
     |--------------------------------------------------------------------------
     */
+    public function guru_profile(): HasOne { return $this->guru(); }
+    public function siswa_profile(): HasOne { return $this->siswa(); }
+
     public function isAdmin(): bool { return $this->role === 'admin'; }
     public function isGuru(): bool { return $this->role === 'guru'; }
     public function isSiswa(): bool { return $this->role === 'siswa'; }

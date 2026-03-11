@@ -15,15 +15,15 @@ class NilaiPkl extends Model
         'nilai',
     ];
 
-    // INI YANG HARUS DIUBAH
-public function siswa(): BelongsTo
-{
-    // Harus merujuk ke User, karena siswa_id berisi ID dari tabel users
-    return $this->belongsTo(User::class, 'siswa_id');
-}
+    // Hubungkan ke Model Siswa (karena siswa_id = 1 di DB lo)
+    public function siswa(): BelongsTo
+    {
+        return $this->belongsTo(Siswa::class, 'siswa_id');
+    }
 
+    // Kalau guru_id di DB itu merujuk ke tabel gurus, arahkan ke Guru::class
     public function guru(): BelongsTo
     {
-        return $this->belongsTo(User::class, 'guru_id');
+        return $this->belongsTo(Guru::class, 'guru_id');
     }
 }

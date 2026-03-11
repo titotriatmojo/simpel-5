@@ -47,23 +47,32 @@ class PerusahaanController extends Controller
     }
 
     public function store(Request $request)
-    {
-        $validated = $request->validate([
-            'nama'         => 'required|string|max:255',
-            'bidang_usaha' => 'required|string|max:255',
-            'alamat'       => 'required|string',
-            'no_hp'        => 'required|string|max:20',
-            'kuota'        => 'required|integer|min:1',
-        ]);
+{
+    // 1. Validasi (Gue buat bidang_usaha dan kuota jadi nullable atau kasih default)
+    $validated = $request->validate([
+        'nama'         => 'required|string|max:255',
+        'bidang_usaha' => 'nullable|string|max:255', // Jadiin nullable dulu kalau di form belum ada
+        'alamat'       => 'required|string',
+        'no_hp'        => 'required|string|max:20',
+        'kuota'        => 'nullable|integer|min:1', // Jadiin nullable dulu
+    ]);
 
-        // Perusahaan yang diinput Admin langsung otomatis 'approved'
+    try {
+        // 2. Set default value kalau di form gak diisi
         $validated['status'] = 'approved';
+        $validated['bidang_usaha'] = $request->bidang_usaha ?? 'Lainnya';
+        $validated['kuota'] = $request->kuota ?? 5; // Default 5 siswa kalau gak diisi
 
         Perusahaan::create($validated);
 
         return redirect()->route('admin.perusahaan.index')
             ->with('success', 'Perusahaan baru berhasil ditambahkan.');
+
+    } catch (\Exception $e) {
+        // Notif kalau gagal insert (misal: ada kolom di DB yang wajib tapi lupa diisi)
+        return back()->withInput()->with('error', 'Gagal simpan data: ' . $e->getMessage());
     }
+}
 
     public function show(Perusahaan $perusahaan)
     {

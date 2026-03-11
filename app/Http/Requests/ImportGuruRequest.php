@@ -23,7 +23,7 @@ class ImportGuruRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'file' => 'required|file|mimes:xlsx,xls|max:51200',
+            'file' => 'required|file|mimes:xlsx,xls|max:5120',
         ];
     }
 }

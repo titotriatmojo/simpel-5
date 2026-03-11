@@ -37,31 +37,27 @@ class PendaftaranController extends Controller
             return redirect()->back()->with('error', 'Anda sudah memiliki pendaftaran yang aktif.');
         }
 
-        PendaftaranPkl::create([
-            'siswa_id'      => $siswaId,
-            'perusahaan_id' => $request->perusahaan_id,
-            'guru_id'       => $request->guru_id,
-            'bidang_pkl'    => $request->bidang_pkl,
-            'periode'       => $request->periode,
-            'status'        => 'menunggu',
-        ]);
+        // Di function store() milik Siswa
+PendaftaranPkl::create([
+    'siswa_id' => Auth::id(),
+    'guru_id'  => $request->guru_id, // Pastikan input name di form-nya adalah 'guru_id'
+    'perusahaan_id' => $request->perusahaan_id,
+    'bidang_pkl' => $request->bidang_pkl,
+    'status' => 'pending',
+]);
 
-        return redirect()->route('siswa.pendaftaran')->with('success', 'Pendaftaran PKL berhasil diajukan!');
+        // FIXED: Arahkan ke pendaftaran.index
+        return redirect()->route('siswa.pendaftaran.index')->with('success', 'Pendaftaran PKL berhasil diajukan!');
     }
 
-    /**
-     * UPDATE: Fungsi untuk mengubah pembimbing/perusahaan/bidang
-     */
     public function update(Request $request, $id)
     {
         $pendaftaran = PendaftaranPkl::findOrFail($id);
 
-        // Keamanan 1: Pastikan ini milik siswa yang login
         if ($pendaftaran->siswa_id !== Auth::user()->siswa->id) {
             abort(403);
         }
 
-        // Keamanan 2: Cuma boleh edit kalau status masih 'menunggu'
         if ($pendaftaran->status !== 'menunggu') {
             return redirect()->back()->with('error', 'Data tidak bisa diubah karena sudah diproses admin.');
         }
@@ -80,7 +76,8 @@ class PendaftaranController extends Controller
             'periode'       => $request->periode,
         ]);
 
-        return redirect()->route('siswa.pendaftaran')->with('success', 'Pendaftaran berhasil diperbarui.');
+        // FIXED: Arahkan ke pendaftaran.index
+        return redirect()->route('siswa.pendaftaran.index')->with('success', 'Pendaftaran berhasil diperbarui.');
     }
 
     public function destroy($id)
@@ -91,12 +88,13 @@ class PendaftaranController extends Controller
             abort(403);
         }
 
-        // Opsional: Larang hapus kalau sudah disetujui
         if ($pendaftaran->status !== 'menunggu') {
             return redirect()->back()->with('error', 'Pendaftaran yang sudah disetujui tidak bisa dihapus.');
         }
 
         $pendaftaran->delete();
-        return redirect()->route('siswa.pendaftaran')->with('success', 'Pendaftaran berhasil dihapus.');
+        
+        // FIXED: Arahkan ke pendaftaran.index
+        return redirect()->route('siswa.pendaftaran.index')->with('success', 'Pendaftaran berhasil dihapus.');
     }
 }

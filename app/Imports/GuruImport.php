@@ -61,16 +61,18 @@ class GuruImport implements OnEachRow, WithHeadingRow
             $this->errors[] = "Baris $rowNum, Kolom D: Email sudah terdaftar (" . $data['email'] . ")";
             return;
         }
+                // 1. Buat User (Ini otomatis memicu User::booted untuk bikin Guru dengan status PENDING)
         $user = User::create([
-            'name' => $data['nama'],
-            'email' => $data['email'],
+            'name'     => $data['nama'],
+            'email'    => $data['email'],
             'password' => Hash::make($data['nip']),
-            'role' => 'guru',
+            'role'     => 'guru',
         ]);
-        Guru::create([
-            'user_id' => $user->id,
-            'nama' => $data['nama'],
-            'nip' => $data['nip'],
+
+        // 2. UPDATE record Guru yang barusan dibuat otomatis tadi
+        $user->guru()->update([
+            'nama'          => $data['nama'],
+            'nip'           => $data['nip'],
             'program_studi' => $data['program_studi'],
         ]);
     }

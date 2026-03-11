@@ -1,7 +1,7 @@
 <x-app-layout>
     {{-- Header --}}
     <div class="mb-8">
-        <a href="{{ route('guru.spk.index') }}" class="inline-flex items-center text-sm text-blue-500 hover:text-blue-600 mb-4 font-medium transition-colors group">
+        <a href="{{ route('guru.spk.index') }}" class="inline-flex items-center text-sm text-primary-n5 hover:text-blue-600 mb-4 font-medium transition-colors group">
             <svg class="w-4 h-4 mr-2 transform group-hover:-translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
             </svg>
@@ -16,7 +16,7 @@
         <div class="lg:col-span-1">
             <div class="bg-white dark:bg-gray-800 border border-gray-200 dark:border-white/10 rounded-2xl p-6 shadow-sm sticky top-8">
                 <h2 class="text-lg font-bold text-gray-900 dark:text-white mb-6 flex items-center">
-                    <span class="w-2 h-6 bg-blue-500 rounded-full mr-3"></span>
+                    <span class="w-2 h-6 bg-primary-n5 rounded-full mr-3"></span>
                     Tambah Data Alumni
                 </h2>
                 
@@ -51,7 +51,7 @@
                         </select>
                     </div>
 
-                    <button type="submit" class="w-full py-3 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl shadow-lg shadow-blue-500/30 transition-all mt-4 flex justify-center items-center group">
+                    <button type="submit" class="w-full py-3 bg-primary-n5 hover:bg-blue-700 text-white font-bold rounded-xl shadow-lg shadow-blue-500/30 transition-all mt-4 flex justify-center items-center group">
                         Simpan Data
                         <svg class="w-4 h-4 ml-2 group-hover:rotate-12 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
                     </button>

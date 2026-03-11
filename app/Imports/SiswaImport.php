@@ -77,6 +77,7 @@ class SiswaImport implements OnEachRow, WithHeadingRow
             return;
         }
 
+                // 1. Buat User-nya dulu (Ini bakal memicu fungsi 'booted' di User.php)
         $user = User::create([
             'name' => $data['nama'],
             'email' => $data['email'],
@@ -84,8 +85,9 @@ class SiswaImport implements OnEachRow, WithHeadingRow
             'role' => 'siswa',
         ]);
 
-        Siswa::create([
-            'user_id' => $user->id,
+        // 2. Karena fungsi 'booted' sudah otomatis bikin record di tabel siswas,
+        // kita tinggal UPDATE record tersebut, bukan create baru.
+        $user->siswa()->update([
             'nama' => $data['nama'],
             'nim' => $data['nim'],
             'program_studi' => $data['program_studi'],

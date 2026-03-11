@@ -16,7 +16,7 @@
             </div>
         </div>
         <div class="mt-4">
-            <div class="w-32 h-1 bg-gradient-to-r from-blue-500 to-cyan-400 rounded-full"></div>
+            <div class="w-32 h-1 bg-gradient-to-r from-primary-n5 to-secondary-n5 rounded-full"></div>
         </div>
     </div>
 
