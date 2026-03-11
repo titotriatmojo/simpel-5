@@ -41,7 +41,7 @@
         <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
             <div>
                 <h1 class="text-3xl font-bold text-gray-900 dark:text-white mb-2 tracking-tight">Analisis Kesiapan Kerja</h1>
-                <p class="text-gray-500 dark:text-gray-400 text-sm">Prediksi kesiapan kerja siswa menggunakan metode <span class="text-primary-n5 font-semibold">K-Nearest Neighbor (KNN)</span>.</p>
+                <p class="text-gray-500 dark:text-gray-400 text-sm">Prediksi kesiapan kerja siswa menggunakan metode <span class="text-primary-n5 dark:text-white font-semibold">K-Nearest Neighbor (KNN)</span>.</p>
             </div>
             <div class="flex items-center gap-3">
                 <a href="{{ route('guru.spk.training') }}" class="flex items-center gap-2 px-4 py-2 bg-gray-100 dark:bg-white/10 hover:bg-gray-200 dark:hover:bg-white/20 text-gray-900 dark:text-white text-sm font-semibold rounded-xl transition-all border border-gray-200 dark:border-white/10">
@@ -95,7 +95,7 @@
                         <td class="px-6 py-4">
                             <div class="flex flex-col">
                                 <span class="font-bold text-gray-900 dark:text-white uppercase tracking-tight">{{ $s->name }}</span>
-                                <span class="text-[10px] font-mono text-gray-500 dark:text-gray-400 tracking-wider">NIM: {{ $s->siswa->nim ?? 'N/A' }}</span>
+                                <span class="text-[10px] font-mono text-gray-500 dark:text-gray-400 tracking-wider">NISN: {{ $s->siswa->nim ?? 'N/A' }}</span>
                             </div>
                         </td>
 

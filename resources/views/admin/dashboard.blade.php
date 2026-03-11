@@ -14,7 +14,7 @@
             </div>
         </div>
         <div class="mt-4">
-            <div class="w-32 h-1 bg-gradient-to-r from-blue-500 to-cyan-400 rounded-full"></div>
+            <div class="w-32 h-1 bg-gradient-to-r from-primary-n5 to-secondary-n5 rounded-full"></div>
         </div>
     </div>
 
@@ -235,31 +235,7 @@
                 </div>
             </div>
 
-            <!-- Section Ringkasan Sistem -->
-            <div
-                class="col-span-2 bg-white dark:bg-white/[0.03] border border-gray-200 dark:border-white/10 rounded-2xl p-6 flex items-center justify-between">
-                <div>
-                    <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-1">Ringkasan Sistem</h3>
-                    <p class="text-gray-700 dark:text-slate-300 text-sm">Sistem SIMPEL-5 berjalan normal dengan
-                        {{ $totalSiswa + $totalGuru }} pengguna aktif
-                    </p>
-                </div>
-                <div class="flex items-center space-x-6">
-                    <div class="text-center">
-                        <div class="text-xl font-bold text-green-600 dark:text-green-400">
-                            {{ number_format(($laporanDiterima / max($totalLaporan, 1)) * 100, 1) }}%
-                        </div>
-                        <div class="text-xs text-gray-500 dark:text-slate-400 uppercase tracking-wide">Approval Rate
-                        </div>
-                    </div>
-                    <div class="h-10 w-px bg-gray-200 dark:bg-white/20"></div>
-                    <div class="text-center">
-                        <div class="text-xl font-bold text-orange-500 dark:text-orange-300">{{ $laporanPending }}</div>
-                        <div class="text-xs text-gray-500 dark:text-slate-400 uppercase tracking-wide">Butuh Review
-                        </div>
-                    </div>
-                </div>
-            </div>
+           
 
         </div>
     </div>

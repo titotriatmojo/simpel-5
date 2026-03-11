@@ -1,6 +1,6 @@
 <x-app-layout>
     {{-- Header Section --}}
-    <div class="mb-8 bg-white dark:bg-slate-800 border-b border-gray-200 dark:border-slate-700 pb-6">
+    <div class="mb-8 bg-white dark:bg-slate-900 border-b border-gray-200 dark:border-slate-700 pb-6">
         <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
             <div>
                 <h1 class="text-2xl font-bold text-gray-900 dark:text-white mb-1">Direktori Perusahaan Mitra PKL</h1>
@@ -9,8 +9,8 @@
                 </p>
             </div>
             <div class="text-right">
-                <span class="text-xs font-medium text-gray-400 dark:text-slate-500 uppercase tracking-widest">Total Data</span>
-                <p class="text-2xl font-black text-blue-600 dark:text-blue-400">{{ $perusahaan->total() }}</p>
+                <span class="text-xs font-medium text-gray-400 dark:text-slate-200 uppercase tracking-widest">Total Data</span>
+                <p class="text-2xl font-black text-primary-n5 dark:text-white">{{ $perusahaan->total() }}</p>
             </div>
         </div>
     </div>
@@ -20,9 +20,9 @@
         <form method="GET" action="{{ route('siswa.perusahaan') }}" class="flex items-center gap-2 w-full md:w-auto">
             <input type="text" name="search" value="{{ request('search') }}" 
                 placeholder="Cari perusahaan atau alamat..."
-                class="h-11 px-4 rounded-lg border-gray-300 dark:border-slate-700 dark:bg-slate-900 dark:text-white text-sm w-full md:w-72 focus:border-blue-500 focus:ring-blue-500">
+                class="h-11 px-4 rounded-lg border-gray-300 dark:border-slate-700 dark:bg-slate-800 dark:text-white text-sm w-full md:w-72 focus:border-blue-500 focus:ring-blue-500">
             
-            <button type="submit" class="h-11 px-5 bg-slate-800 dark:bg-blue-600 hover:bg-slate-900 dark:hover:bg-blue-700 text-white rounded-lg text-sm font-semibold transition-all">
+            <button type="submit" class="h-11 px-5 bg-primary-n5 dark:bg-primary-n5 hover:bg-secondary-n5 dark:hover:bg-secondary-n5 text-white rounded-lg text-sm font-semibold transition-all">
                 Cari
             </button>
         </form>
@@ -44,7 +44,7 @@
                         <h2 class="text-lg font-bold text-gray-900 dark:text-white capitalize">
                             {{ $item->nama }}
                         </h2>
-                        <span class="px-2 py-0.5 bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 text-[10px] font-bold rounded uppercase tracking-tighter">
+                        <span class="px-2 py-0.5 bg-blue-50 dark:primary-n5/30 text-primary-n5 dark:text-primary-n5 text-[10px] font-bold rounded uppercase tracking-tighter">
                             Aktif
                         </span>
                     </div>
@@ -68,7 +68,7 @@
 
                 <div class="flex md:flex-col justify-end gap-2">
                     <a href="{{ route('siswa.perusahaan.show', $item->id) }}" 
-                        class="px-4 py-2 bg-slate-100 dark:bg-slate-700 hover:bg-blue-600 hover:text-white dark:text-slate-200 text-slate-700 text-xs font-bold rounded-lg transition-all text-center">
+                        class="px-4 py-2 bg-slate-100 dark:bg-slate-700 hover:bg-primary-n5 hover:text-white dark:text-slate-200 text-slate-700 text-xs font-bold rounded-lg transition-all text-center">
                         Lihat Detail
                     </a>
                 </div>

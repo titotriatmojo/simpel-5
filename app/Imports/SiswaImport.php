@@ -19,7 +19,7 @@ class SiswaImport implements OnEachRow, WithHeadingRow
     public $errors = [];
     public $fieldLabels = [
         'nama' => 'Nama',
-        'nim' => 'NIM',
+        'nim' => 'NISN',
         'program_studi' => 'Program Studi',
         'kelas' => 'Kelas',
         'semester' => 'Semester',
@@ -65,9 +65,9 @@ class SiswaImport implements OnEachRow, WithHeadingRow
             return;
         }
 
-        // Cek duplikat NIM
+        // Cek duplikat NISN
         if (Siswa::where('nim', $data['nim'])->exists()) {
-            $this->errors[] = "Baris $rowNum, Kolom B: NIM sudah terdaftar (" . $data['nim'] . ")";
+            $this->errors[] = "Baris $rowNum, Kolom B: NISN sudah terdaftar (" . $data['nim'] . ")";
             return;
         }
 

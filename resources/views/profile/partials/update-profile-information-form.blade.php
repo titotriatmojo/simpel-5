@@ -11,10 +11,10 @@
                 </div>
                 <div>
                     <h2
-                        class="text-3xl font-bold bg-gradient-to-r from-gray-900 via-cyan-600 to-blue-500 dark:from-white dark:via-cyan-200 dark:to-blue-300 bg-clip-text text-transparent tracking-tight">
+                        class="text-3xl font-bold bg-gradient-to-r from-primary-n5 to-secondary-n5 dark:from-white dark:via-cyan-200 dark:to-blue-300 bg-clip-text text-transparent tracking-tight">
                         {{ __('Informasi Profil') }}
                     </h2>
-                    <div class="h-1 w-16 bg-gradient-to-r from-cyan-500 to-blue-600 rounded-full mt-2"></div>
+                    <div class="h-1 w-16 bg-gradient-to-r from-primary-n5 to-secondary-n5 rounded-full mt-2"></div>
                 </div>
             </div>
         </div>
@@ -50,7 +50,7 @@
             </div>
 
             <div class="space-y-2">
-                <x-input-label for="no_hp_ortu" :value="__('No. Telepon Orang Tua / Wali')"
+                <x-input-label for="no_hp_ortu" :value="__('No. Telepon')"
                     class="text-gray-900 dark:text-white font-medium text-sm" />
                 <x-text-input id="no_hp_ortu" name="no_hp_ortu" type="text"
                     class="w-full bg-gray-50 dark:bg-white/5 border border-gray-200 dark:border-white/20 rounded-lg px-4 py-3 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-slate-400 focus:border-indigo-400/50 focus:bg-white/10 transition-all duration-200"

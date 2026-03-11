@@ -56,9 +56,9 @@
                             <x-text-input name="kuota" id="kuota" type="number" class="w-full" :value="old('kuota', 1)" min="1" required />
                         </div>
 
-                        {{-- No HP --}}
+                        {{-- No Telepon --}}
                         <div class="col-span-2 md:col-span-1 space-y-2">
-                            <x-input-label for="no_hp" :value="'No. HP / WhatsApp *'" />
+                            <x-input-label for="no_hp" :value="'No. Telepon / WhatsApp *'" />
                             <x-text-input name="no_hp" id="no_hp" type="text" class="w-full" :value="old('no_hp')" required />
                         </div>
 

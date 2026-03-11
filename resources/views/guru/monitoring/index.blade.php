@@ -25,7 +25,7 @@
                     </div>
                 </div>
             </div>
-            <div class="mt-4 w-24 h-1.5 bg-indigo-600 rounded-full"></div>
+            <div class="mt-4 w-24 h-1.5 bg-primary-n5 rounded-full"></div>
         </div>
 
         {{-- Table Container --}}
@@ -49,13 +49,13 @@
                                 {{ $index + 1 }}
                             </td>
 
-                            {{-- Nama & NIM --}}
+                            {{-- Nama & NISN --}}
                             <td class="px-6 py-6">
                                 <div class="flex flex-col">
                                     <span class="text-sm font-bold text-gray-900 dark:text-white group-hover:text-indigo-600 transition-colors">
                                         {{ $item->nama }}
                                     </span>
-                                    <span class="text-[11px] text-gray-500 font-medium">NIM: {{ $item->nim }}</span>
+                                    <span class="text-[11px] text-gray-500 font-medium">NISN: {{ $item->nim }}</span>
                                 </div>
                             </td>
 

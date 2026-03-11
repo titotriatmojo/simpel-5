@@ -72,7 +72,7 @@
 
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                             <div class="space-y-2">
-                                <x-input-label for="no_hp" :value="'No. HP/WhatsApp *'" />
+                                <x-input-label for="no_hp" :value="'No. Telepon/WhatsApp *'" />
                                 <x-text-input name="no_hp" id="no_hp" type="text" class="w-full" placeholder="08..." required />
                             </div>
                             <div class="space-y-2">

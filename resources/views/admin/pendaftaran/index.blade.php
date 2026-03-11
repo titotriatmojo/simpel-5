@@ -8,7 +8,7 @@
             </div>
         </div>
         <div class="mt-4">
-            <div class="w-32 h-1 bg-gradient-to-r from-blue-500 to-cyan-400 rounded-full"></div>
+            <div class="w-32 h-1 bg-gradient-to-r from-primary-n5 to-secondary-n5 rounded-full"></div>
         </div>
     </div>
 
@@ -27,7 +27,7 @@
     <div class="mb-8 flex flex-wrap items-center justify-between gap-4">
         <form method="GET" action="{{ route('admin.pendaftaran.index') }}" class="flex items-center gap-3 h-[48px]">
             <input type="text" name="search" value="{{ request('search') }}"
-                placeholder="Cari Nama, NIM, Perusahaan, Status..."
+                placeholder="Cari Nama, NISN, Perusahaan, Status..."
                 class="h-[48px] px-4 py-2 rounded-lg border border-gray-300 dark:border-slate-600 focus:ring-2 focus:ring-blue-400 focus:outline-none text-sm w-96 dark:bg-slate-800 dark:text-white transition-all duration-200 shadow-sm"
                 autocomplete="off">
             <button type="submit"

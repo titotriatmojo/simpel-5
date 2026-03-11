@@ -33,7 +33,7 @@ class AuthenticatedSessionController extends Controller
             $user = User::where('email', $request->login)->first();
         } 
         
-        // 2. Cek apakah login pake NIM (Siswa) - Jika belum ketemu pake email
+        // 2. Cek apakah login pake NISN (Siswa) - Jika belum ketemu pake email
         if (!$user) {
             $siswa = Siswa::where('nim', $request->login)->first();
             if ($siswa) $user = $siswa->user;

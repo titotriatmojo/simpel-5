@@ -39,7 +39,7 @@
                                 Nama</th>
                             <th
                                 class="px-6 py-4 text-left text-xs font-semibold text-gray-700 dark:text-slate-300 uppercase tracking-wider">
-                                NIM</th>
+                                NISN</th>
                             <th
                                 class="px-6 py-4 text-left text-xs font-semibold text-gray-700 dark:text-slate-300 uppercase tracking-wider">
                                 Program Studi</th>

@@ -10,7 +10,7 @@
             </div>
         </div>
         <div class="mt-4">
-            <div class="w-32 h-1 bg-gradient-to-r from-blue-500 to-cyan-400 rounded-full"></div>
+            <div class="w-32 h-1 bg-gradient-to-r from-primary-n5 to-secondary-n5 rounded-full"></div>
         </div>
     </div>
 
@@ -40,7 +40,7 @@
         </div>
         <div class="flex flex-wrap gap-3">
             <a href="{{ route('admin.guru.create') }}"
-                class="inline-flex items-center px-6 py-3 bg-blue-500/80 hover:bg-blue-500 text-white font-semibold rounded-lg transition-all duration-200 backdrop-blur-sm border border-blue-400/30 hover:border-blue-400/50 dark:shadow-lg hover:shadow-blue-500/25">
+                class="inline-flex items-center px-6 py-3 bg-primary-n5 hover:bg-secondary-n5 text-white font-semibold rounded-lg transition-all duration-200 backdrop-blur-sm border border-blue-400/30 hover:border-blue-400/50 dark:shadow-lg hover:shadow-blue-500/25">
                 <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                         d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>

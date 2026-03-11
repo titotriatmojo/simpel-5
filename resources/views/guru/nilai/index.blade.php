@@ -8,7 +8,7 @@
             </div>
         </div>
         <div class="mt-4">
-            <div class="w-32 h-1 bg-gradient-to-r from-emerald-500 to-teal-400 rounded-full"></div>
+            <div class="w-32 h-1 bg-gradient-to-r from-primary-n5 to-secondary-n5 rounded-full"></div>
         </div>
     </div>
 
@@ -36,7 +36,7 @@
                             {{ $mhs->nama }}
                         </h3>
                         <div class="flex items-center space-x-4 text-sm">
-                            <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-blue-100 dark:bg-blue-500/20 text-blue-700 dark:text-blue-300 border border-blue-200 dark:border-blue-400/30">
+                            <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-primary-n5/10 dark:bg-primary-n5/20 text-primary-n5 dark:text-white border border-blue-200 dark:border-blue-400/30">
                                 NISN: {{ $mhs->nim }}
                             </span>
                         </div>
@@ -65,7 +65,7 @@
                     {{-- Tampilan Nilai (View Mode) --}}
                     <div x-show="!isEditing" class="flex items-center justify-between bg-slate-50 dark:bg-white/5 rounded-xl p-5 border border-slate-100 dark:border-white/5 shadow-inner">
                         <div class="flex items-center gap-4">
-                            <div class="text-4xl font-black text-slate-800 dark:text-emerald-400">
+                            <div class="text-4xl font-black text-slate-800 dark:text-white">
                                 {{ number_format($mhs->nilaiPkl->nilai, 2) }}
                             </div>
                             <div class="h-10 w-[2px] bg-slate-200 dark:bg-white/10"></div>

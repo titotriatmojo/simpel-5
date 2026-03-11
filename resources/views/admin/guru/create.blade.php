@@ -92,7 +92,7 @@
                             <div class="relative">
                                 <x-text-input id="program_studi" name="program_studi" type="text"
                                     class="w-full bg-white dark:bg-white/5 border border-gray-200 dark:border-white/20 rounded-xl px-4 py-3 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-slate-400 focus:border-indigo-400/50 focus:bg-gray-50 dark:focus:bg-white/10 transition-all duration-200"
-                                    placeholder="Contoh: Manajemen Informatika" required />
+                                    placeholder="Contoh: Multimedia" required />
                             </div>
                             <x-input-error :messages="$errors->get('program_studi')"
                                 class="text-red-500 dark:text-red-400 text-sm" />

@@ -2,7 +2,7 @@
     <div class="max-w-5xl mx-auto py-8 px-4">
         {{-- Breadcrumbs & Back Button --}}
         <div class="mb-6 flex items-center justify-between">
-            <a href="{{ route('siswa.perusahaan') }}" class="inline-flex items-center text-sm font-medium text-gray-500 hover:text-blue-600 dark:text-slate-400 dark:hover:text-blue-400 transition-colors">
+            <a href="{{ route('siswa.perusahaan') }}" class="inline-flex items-center text-sm font-medium text-gray-500 hover:text-primary-n5 dark:text-slate-400 dark:hover:text-primary-n5 transition-colors">
                 <svg class="w-5 h-5 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
                 </svg>
@@ -20,7 +20,7 @@
                 {{-- Card Nama Perusahaan --}}
                 <div class="bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-2xl p-8 shadow-sm">
                     <div class="flex items-center gap-6 mb-6">
-                        <div class="w-20 h-20 bg-blue-600 rounded-2xl flex items-center justify-center text-white text-3xl font-bold shadow-lg shadow-blue-500/20">
+                        <div class="w-20 h-20 bg-primary-n5 rounded-2xl flex items-center justify-center text-white text-3xl font-bold shadow-lg shadow-primary-n5/20">
                             {{ substr($perusahaan->nama, 0, 1) }}
                         </div>
                         <div>
@@ -44,7 +44,7 @@
                     <div class="prose dark:prose-invert max-w-none border-t border-gray-100 dark:border-slate-700 pt-6">
                         <h3 class="text-lg font-bold mb-2 text-gray-900 dark:text-white">Bidang Perusahaan</h3>
                         <p class="text-gray-600 dark:text-slate-400 leading-relaxed text-sm">
-                            Perusahaan ini bergerak di bidang <span class="font-semibold text-blue-600 dark:text-blue-400">{{ $perusahaan->bidang_usaha ?? 'Umum / Belum ditentukan' }}</span>.
+                            Perusahaan ini bergerak di bidang <span class="font-semibold text-primary-n5 dark:text-white">{{ $perusahaan->bidang_usaha ?? 'Umum / Belum ditentukan' }}</span>.
                         </p>
                     </div>
                 </div>

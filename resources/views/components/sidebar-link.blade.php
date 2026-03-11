@@ -27,7 +27,7 @@
 <a href="{{ $url }}"
     class="group relative flex items-center px-3 py-3 rounded-xl text-sm font-medium transition-all duration-200 mb-2
     {{ $isActive
-        ? 'bg-gradient-to-r from-secondary-n5/20 to-secondary-n5/20 border border-primary-n5/30 shadow-lg text-primary-n5 dark:text-primary-n5'
+        ? 'bg-gradient-to-r from-secondary-n5/20 to-secondary-n5/20 border border-primary-n5/30 shadow-lg text-primary-n5 dark:text-white'
         : 'text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-white/10 hover:border-gray-200 dark:hover:border-white/20 border border-transparent' }}"
     title="{{ $collapsed ? $label : '' }}">
 

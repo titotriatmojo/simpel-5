@@ -7,7 +7,7 @@
                 <p class="text-gray-500 dark:text-gray-400 text-sm">Kelola daftar instansi dan validasi usulan tempat PKL dari siswa.</p>
             </div>
             <a href="{{ route('admin.perusahaan.create') }}"
-                class="inline-flex items-center justify-center px-5 py-3 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl transition-all duration-200 shadow-lg shadow-blue-500/25 group">
+                class="inline-flex items-center justify-center px-5 py-3 bg-primary-n5 hover:bg-secondary-n5 text-white font-bold rounded-xl transition-all duration-200 shadow-lg shadow-primary-n5/25 group">
                 <svg class="w-5 h-5 mr-2 group-hover:rotate-90 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
                 </svg>
@@ -15,7 +15,7 @@
             </a>
         </div>
         <div class="mt-4">
-            <div class="w-32 h-1.5 bg-gradient-to-r from-blue-500 to-cyan-400 rounded-full"></div>
+            <div class="w-32 h-1.5 bg-gradient-to-r from-primary-n5 to-secondary-n5 rounded-full"></div>
         </div>
     </div>
 
@@ -85,11 +85,11 @@
                         <td class="px-6 py-4 text-center">
                             @if($item->pengusul)
                                 <div class="inline-flex flex-col items-center">
-                                    <span class="font-semibold text-blue-600 dark:text-blue-400">{{ $item->pengusul->nama }}</span>
+                                    <span class="font-semibold text-primary-n5 dark:text-white">{{ $item->pengusul->nama }}</span>
                                     <span class="text-[10px] font-bold px-2 py-0.5 bg-blue-100 dark:bg-blue-500/20 text-blue-600 rounded-full mt-1 uppercase tracking-tight">Siswa</span>
                                 </div>
                             @else
-                                <span class="text-xs font-semibold text-gray-400 dark:text-gray-500 uppercase tracking-widest">Internal / Admin</span>
+                                <span class="text-xs font-semibold text-gray-400 dark:text-white uppercase tracking-widest">Internal / Admin</span>
                             @endif
                         </td>
                         <td class="px-6 py-4 text-center">

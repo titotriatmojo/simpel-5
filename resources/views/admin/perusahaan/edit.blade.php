@@ -61,12 +61,12 @@
                                 class="text-red-500 dark:text-red-400 text-sm" />
                         </div>
                         <div class="space-y-2 col-span-2">
-                            <x-input-label for="no_hp" :value="'No. HP *'"
+                            <x-input-label for="no_hp" :value="'No Telepon *'"
                                 class="text-gray-700 dark:text-slate-300 font-medium" />
                             <div class="relative">
                                 <x-text-input name="no_hp" id="no_hp" type="text" value="{{ $perusahaan->no_hp }}"
                                     class="w-full bg-gray-50 dark:bg-white/5 border border-gray-200 dark:border-white/20 rounded-xl px-4 py-3 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-slate-400 focus:border-indigo-400/50 focus:bg-white/10 transition-all duration-200"
-                                    placeholder="Masukkan nomor HP perusahaan" required />
+                                    placeholder="Masukkan nomor telepon perusahaan" required />
                             </div>
                             <x-input-error :messages="$errors->get('no_hp')"
                                 class="text-red-500 dark:text-red-400 text-sm" />

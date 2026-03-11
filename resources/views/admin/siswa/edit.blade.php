@@ -50,12 +50,12 @@
                                 class="text-red-500 dark:text-red-400 text-sm" />
                         </div>
                         <div class="space-y-2 col-span-2">
-                            <x-input-label for="nim" :value="'NIM *'"
+                            <x-input-label for="nim" :value="'NISN *'"
                                 class="text-gray-700 dark:text-slate-300 font-medium" />
                             <div class="relative">
                                 <x-text-input name="nim" id="nim" type="text" value="{{ $siswa->nim }}"
                                     class="w-full bg-gray-50 dark:bg-white/5 border border-gray-200 dark:border-white/20 rounded-xl px-4 py-3 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-slate-400 focus:border-indigo-400/50 focus:bg-white/10 transition-all duration-200"
-                                    placeholder="Masukkan NIM siswa" required />
+                                    placeholder="Masukkan NISN siswa" required />
                             </div>
                             <x-input-error :messages="$errors->get('nim')"
                                 class="text-red-500 dark:text-red-400 text-sm" />

@@ -20,7 +20,7 @@ class LoginRequest extends FormRequest
 
     /**
      * Rules kita ubah: 'email' tidak boleh dipaksa format email, 
-     * karena isinya bisa jadi NIP atau NIM.
+     * karena isinya bisa jadi NIP atau NISN.
      */
     public function rules(): array
     {
@@ -31,7 +31,7 @@ class LoginRequest extends FormRequest
     }
 
     /**
-     * Logika autentikasi CUSTOM: Cari berdasarkan Email, NIP, atau NIM.
+     * Logika autentikasi CUSTOM: Cari berdasarkan Email, NIP, atau NISN.
      */
     public function authenticate(): void
     {
@@ -43,7 +43,7 @@ class LoginRequest extends FormRequest
         // Cari User dengan logika:
         // 1. Cek kolom email di tabel users
         // 2. ATAU Cek NIP di tabel guru (lewat relasi)
-        // 3. ATAU Cek NIM di tabel siswa (lewat relasi)
+        // 3. ATAU Cek NISN di tabel siswa (lewat relasi)
         $user = User::where('email', $loginValue)
             ->orWhereHas('guru', function ($query) use ($loginValue) {
                 $query->where('nip', $loginValue);

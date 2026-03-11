@@ -48,7 +48,7 @@ class ProfileUpdateRequest extends FormRequest
     public function attributes(): array
     {
         return [
-            'no_hp_ortu' => 'Nomor HP Orang Tua',
+            'no_hp_ortu' => 'Nomor Telepon',
             'alamat' => 'Alamat Lengkap',
             'password' => 'Kata Sandi Baru',
         ];

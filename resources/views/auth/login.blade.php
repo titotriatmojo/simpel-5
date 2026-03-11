@@ -19,7 +19,7 @@
 
         <!-- Login Field -->
         <div>
-            <x-input-label for="login" :value="__('Email / NIM / NIP')" class="text-sm font-medium text-slate-700 mb-2" />
+            <x-input-label for="login" :value="__('Email / NISN / NIP')" class="text-sm font-medium text-slate-700 mb-2" />
             <div class="relative">
                 <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                     <svg class="h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -30,7 +30,7 @@
                 <x-text-input id="login"
                     class="block mt-1 w-full pl-10 pr-3 py-3 border-gray-300 rounded-lg focus:border-primary-n5 focus:ring-primary-n5 text-gray-900"
                     type="text" name="login" :value="old('login')" required autofocus autocomplete="username"
-                    placeholder="Masukkan email, NIM, atau NIP" />
+                    placeholder="Masukkan email, NISN, atau NIP" />
             </div>
             <x-input-error :messages="$errors->get('login')" class="mt-2" />
         </div>

@@ -252,7 +252,7 @@
                     </div>
                     <div class="flex items-center space-x-2">
                         <div class="w-1.5 h-1.5 bg-red-400 rounded-full"></div>
-                        <p class="text-gray-700 dark:text-slate-300">NIM harus unique</p>
+                        <p class="text-gray-700 dark:text-slate-300">NISN harus unique</p>
                     </div>
                 </div>
             </div>

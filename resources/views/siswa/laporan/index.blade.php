@@ -11,7 +11,7 @@
             </div>
         </div>
         <div class="mt-4">
-            <div class="w-32 h-1 bg-gradient-to-r from-blue-500 to-cyan-400 rounded-full"></div>
+            <div class="w-32 h-1 bg-gradient-to-r from-primary-n5 to-secondary-n5 rounded-full"></div>
         </div>
     </div>
 
@@ -37,7 +37,7 @@
                 class="backdrop-blur-sm bg-white/90 dark:bg-white/[0.03] border border-gray-200 dark:border-white/10 rounded-2xl p-6 dark:shadow-xl">
                 <div class="mb-6">
                     <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-2">Form Upload Laporan</h3>
-                    <div class="w-12 h-1 bg-gradient-to-r from-blue-500 to-cyan-400 rounded-full"></div>
+                    <div class="w-12 h-1 bg-gradient-to-r from-primary-n5 to-secondary-n5 rounded-full"></div>
                 </div>
 
                 <form action="{{ route('siswa.laporan.upload') }}" method="POST" enctype="multipart/form-data"

@@ -13,12 +13,12 @@
                     </p>
                 </div>
                 {{-- Badge Total --}}
-                <div class="inline-flex items-center px-4 py-2 bg-indigo-50 dark:bg-indigo-500/10 border border-indigo-100 dark:border-indigo-500/20 rounded-xl">
-                    <span class="text-xs font-bold text-indigo-600 dark:text-indigo-400 uppercase tracking-widest mr-2">Total Mitra:</span>
-                    <span class="text-lg font-black text-indigo-700 dark:text-indigo-300">{{ $instansi->count() }}</span>
+                <div class="inline-flex items-center px-4 py-2 bg-primary-n5/10 dark:bg-primary-n5/10 border border-indigo-100 dark:border-indigo-500/20 rounded-xl">
+                    <span class="text-xs font-bold text-primary-n5 dark:text-white uppercase tracking-widest mr-2">Total Mitra:</span>
+                    <span class="text-lg font-black text-primary-n5 dark:text-white">{{ $instansi->count() }}</span>
                 </div>
             </div>
-            <div class="mt-4 w-24 h-1.5 bg-indigo-600 rounded-full"></div>
+            <div class="mt-4 w-24 h-1.5 bg-primary-n5 rounded-full"></div>
         </div>
 
         {{-- Main Content --}}
@@ -47,7 +47,7 @@
                             {{-- Nama Instansi --}}
                             <td class="px-6 py-6">
                                 <div class="flex items-center gap-4">
-                                    <div class="w-10 h-10 bg-indigo-100 dark:bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 rounded-xl flex items-center justify-center font-bold text-lg group-hover:bg-indigo-600 group-hover:text-white transition-all duration-300">
+                                    <div class="w-10 h-10 bg-indigo-100 dark:bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 rounded-xl flex items-center justify-center font-bold text-lg group-hover:bg-primary-n5 group-hover:text-white transition-all duration-300">
                                         {{ substr($item->nama, 0, 1) }}
                                     </div>
                                     <div class="text-sm font-bold text-gray-900 dark:text-white leading-tight">
@@ -83,7 +83,7 @@
                             {{-- Alamat (Icon Map) --}}
                             <td class="px-6 py-6">
                                 <div class="flex items-start gap-2 max-w-xs">
-                                    <svg class="w-4 h-4 text-grey-500 shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <svg class="w-4 h-4 dark:text-white text-primary-n5 shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
                                     </svg>

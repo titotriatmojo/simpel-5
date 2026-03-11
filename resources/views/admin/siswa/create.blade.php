@@ -53,12 +53,12 @@
                         </div>
 
                         <div class="space-y-2">
-                            <x-input-label for="nim" :value="'NIM *'"
+                            <x-input-label for="nim" :value="'NISN *'"
                                 class="text-gray-700 dark:text-slate-300 font-medium" />
                             <div class="relative">
                                 <x-text-input id="nim" name="nim" type="text"
                                     class="w-full bg-gray-50 dark:bg-white/5 border border-gray-200 dark:border-white/20 rounded-xl px-4 py-3 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-slate-400 focus:border-blue-400/50 focus:bg-white/10 transition-all duration-200"
-                                    placeholder="Contoh: 2215323000" required />
+                                    placeholder="Contoh: 10101010" required />
                             </div>
                             <x-input-error :messages="$errors->get('nim')"
                                 class="text-red-500 dark:text-red-400 text-sm" />
@@ -99,7 +99,7 @@
                             <div class="relative">
                                 <x-text-input id="program_studi" name="program_studi" type="text"
                                     class="w-full bg-gray-50 dark:bg-white/5 border border-gray-200 dark:border-white/20 rounded-xl px-4 py-3 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-slate-400 focus:border-indigo-400/50 focus:bg-white/10 transition-all duration-200"
-                                    placeholder="Contoh: Manajemen Informatika" required />
+                                    placeholder="Contoh: Multimedia" required />
                             </div>
                             <x-input-error :messages="$errors->get('program_studi')"
                                 class="text-red-500 dark:text-red-400 text-sm" />
@@ -111,7 +111,7 @@
                             <div class="relative">
                                 <x-text-input id="kelas" name="kelas" type="text"
                                     class="w-full bg-gray-50 dark:bg-white/5 border border-gray-200 dark:border-white/20 rounded-xl px-4 py-3 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-slate-400 focus:border-indigo-400/50 focus:bg-white/10 transition-all duration-200"
-                                    placeholder="Contoh: 6C-MI" required />
+                                    placeholder="Contoh: 11" required />
                             </div>
                             <x-input-error :messages="$errors->get('kelas')"
                                 class="text-red-500 dark:text-red-400 text-sm" />
@@ -123,7 +123,7 @@
                             <div class="relative">
                                 <x-text-input id="semester" name="semester" type="number" min="1" max="8"
                                     class="w-full bg-gray-50 dark:bg-white/5 border border-gray-200 dark:border-white/20 rounded-xl pr-4 py-3 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-slate-400 focus:border-indigo-400/50 focus:bg-white/10 transition-all duration-200"
-                                    placeholder="1-8" required />
+                                    placeholder="Contoh: 4" required />
                             </div>
                             <x-input-error :messages="$errors->get('semester')"
                                 class="text-red-500 dark:text-red-400 text-sm" />
