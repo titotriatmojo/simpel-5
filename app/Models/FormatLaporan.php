@@ -11,5 +11,6 @@ class FormatLaporan extends Model
     protected $fillable = [
         'nama',
         'file',
+        'link_format',
     ];
 }

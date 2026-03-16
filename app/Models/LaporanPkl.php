@@ -8,7 +8,7 @@ class LaporanPkl extends Model
 {
     protected $table = 'laporan_pkl';
 
-    protected $fillable = ['siswa_id', 'perusahaan_id', 'file', 'status'];
+    protected $fillable = ['siswa_id', 'perusahaan_id', 'file', 'status','link_drive'];
 
     public function siswa()
     {

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\LaporanPkl;
+use Illuminate\Support\Facades\Storage;
 
 class LaporanController extends Controller
 {
@@ -46,4 +47,18 @@ class LaporanController extends Controller
 
         return redirect()->route('admin.laporan.verifikasi')->with('success', 'Laporan berhasil diverifikasi.');
     }
+    public function destroy($id)
+{
+    $laporan = LaporanPkl::findOrFail($id);
+    
+    // Hapus file fisik jika ada
+    if ($laporan->file && Storage::disk('public')->exists($laporan->file)) {
+        Storage::disk('public')->delete($laporan->file);
+    }
+
+    $laporan->delete();
+
+    return back()->with('success', 'Laporan berhasil dihapus secara permanen.');
+}
+    
 }

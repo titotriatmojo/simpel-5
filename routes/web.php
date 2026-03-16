@@ -96,8 +96,8 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
     Route::post('/laporan/verifikasi/{id}', [AdminLaporanController::class, 'verifikasi'])->name('laporan.verifikasi.process');
     Route::resource('format-laporan', FormatLaporanController::class)->names('format')->only(['index', 'destroy']);
     Route::post('/format-laporan/upload', [FormatLaporanController::class, 'upload'])->name('format.upload');
-});
-
+    Route::get('/laporan/download/{id}', [FormatLaporanController::class, 'downloadLaporan'])->name('laporan.download');});
+    Route::delete('/admin/laporan/{id}', [AdminLaporanController::class, 'destroy'])->name('admin.laporan.destroy');
 /*
 |--------------------------------------------------------------------------
 | 3. Role: Guru
@@ -147,14 +147,15 @@ Route::middleware(['auth', 'role:siswa'])->prefix('siswa')->name('siswa.')->grou
         Route::get('/perusahaan/{id}', 'showPerusahaan')->name('perusahaan.show');
     });
 
-    // Laporan & Bimbingan
-    Route::get('/laporan', [SiswaLaporanController::class, 'index'])->name('laporan');
+    // Laporan (FIXED NAME)
+    Route::get('/laporan', [SiswaLaporanController::class, 'index'])->name('laporan.index');
     Route::post('/laporan/upload', [SiswaLaporanController::class, 'upload'])->name('laporan.upload');
+    Route::get('/laporan/download', [SiswaLaporanController::class, 'download'])->name('laporan.download');
+    
+    // Bimbingan
     Route::get('/bimbingan', [BimbinganController::class, 'index'])->name('bimbingan');
     Route::post('/bimbingan', [BimbinganController::class, 'store'])->name('bimbingan.store');
 
-    Route::get('/format-laporan', function () {
-        $format = \App\Models\FormatLaporan::latest()->get();
-        return view('siswa.format.index', compact('format'));
-    })->name('format');
+    // Format Laporan (External Controller)
+    Route::get('/format-laporan', [SiswaLaporanController::class, 'format'])->name('format');
 });
