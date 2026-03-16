@@ -6,6 +6,15 @@
 
 ## 📌 Fitur Utama
 
+Untuk semua roles:
+
+- Login dengan NIM/NIP/Email
+- Nama lengkap
+- Email
+- No Telepon
+- Alamat
+- Perbarui kata sandi
+
 ### 🔐 Otentikasi Role
 
 - Admin
@@ -16,23 +25,26 @@
 
 - Dashboard statistik
 - Kelola data siswa dan guru (manual & import Excel)
-- Kelola perusahaan mitra
-- Verifikasi pendaftaran dan laporan PKL
+- Kelola dan tambah perusahaan mitra
+- Verifikasi pendaftaran dan terima laporan PKL
 - Upload format laporan resmi
 
 ### 🧑‍🏫 Guru
 
-- Lihat siswa bimbingan
-- Konfirmasi jadwal bimbingan dan lihat jadwal
-- Input nilai PKL (hanya jika siswa minimal 4x bimbingan disetujui)
+- Lihat dan pantau daftar siswa pkl
+- Lihat daftar instansi
+- Input nilai PKL
+- Analisis kesiapan kerja dengan KNN
+- Training dataset dengan KNN (manual & import Excel (soon))
 
 ### 🎓 Siswa
 
-- Pendaftaran PKL dan pantau status pendaftaran
-- Lihat list perusahaan dan ajukan referensi perusahaan
+- Pendaftaran PKL dan pantau status pendaftaran dengan guru pembimbing
+- Lihat list perusahaan
+- Tambah rekomendasi perusahaan
 - Ajukan bimbingan PKL
-- Unggah laporan PKL
-- Unduh format laporan
+- Upload laporan PKL
+- Unduh format laporan PKL
 
 ## 🧩 Teknologi
 
