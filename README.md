@@ -115,6 +115,5 @@ Untuk semua roles:
   <tr>
     <td><img src="public/screenshots/guru-5.png" alt="Guru 5" width="220" /></td>
     <td><img src="public/screenshots/guru-5.png" alt="Guru 5" width="220" /></td>
-    <td></td>
   </tr>
 </table>
