@@ -8,7 +8,7 @@
 
 Untuk semua roles:
 
-- Login dengan NIM/NIP/Email
+- Login dengan NISN/NIP/Email
 - Nama lengkap
 - Email
 - No Telepon
