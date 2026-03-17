@@ -27,7 +27,7 @@
         <!-- Version Info -->
         <div class="text-center mt-6 mb-6">
             <p class="text-white text-xs drop-shadow-sm">
-                SIMPEL-5 v1.0 &mdash; Crafted with Laravel & Tailwind CSS &copy; {{ date('Y') }}
+                SIMPEL-5 &mdash; Crafted with Laravel & Tailwind CSS &copy; {{ date('Y') }}
             </p>
         </div>
     </div>
