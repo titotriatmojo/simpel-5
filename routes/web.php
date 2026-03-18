@@ -107,27 +107,38 @@ Route::middleware(['auth', 'role:guru'])->prefix('guru')->name('guru.')->group(f
     Route::get('/dashboard', [GuruDashboardController::class, 'index'])->name('dashboard');
     Route::get('/monitoring', [MonitoringController::class, 'index'])->name('monitoring.siswa');
     Route::get('/instansi', [InstansiController::class, 'index'])->name('instansi.index');
+    Route::get('/export', [MonitoringController::class, 'exportExcel'])->name('export'); 
     
-    // Bimbingan PKL (Verifikasi & Destroy)
+    // Bimbingan PKL
     Route::get('/bimbingan', [BimbinganPKLController::class, 'index'])->name('bimbingan.index');
     Route::post('/bimbingan/{id}/verifikasi', [BimbinganPKLController::class, 'verifikasi'])->name('bimbingan.verifikasi');
-    Route::delete('/bimbingan/{id}', [BimbinganPKLController::class, 'destroy'])->name('bimbingan.destroy'); // FITUR DESTROY BUAT GURU
+    Route::delete('/bimbingan/{id}', [BimbinganPKLController::class, 'destroy'])->name('bimbingan.destroy'); 
     
-    // Nilai (Pastiin .index sinkron sama Sidebar)
+    // Nilai
     Route::resource('nilai', NilaiController::class)->names(['index' => 'nilai.index'])->except(['show', 'create', 'edit']);
 
     // SPK Module (KNN)
     Route::prefix('spk')->name('spk.')->group(function() {
         Route::get('/', [SPKController::class, 'index'])->name('index'); 
-        Route::get('/training', [SPKController::class, 'training'])->name('training');
-        Route::post('/training', [SPKController::class, 'storeTraining'])->name('training.store');
-        Route::delete('/training/{id}', [SPKController::class, 'destroyTraining'])->name('training.destroy');
-        // Di web.php lo tertulis:
+        
+        // --- GROUP TRAINING (Dataset Alumni) ---
+        Route::prefix('training')->name('training.')->group(function() {
+            Route::get('/', [SPKController::class, 'training'])->name('index');           // guru.spk.training.index
+            Route::post('/', [SPKController::class, 'storeTraining'])->name('store');      // guru.spk.training.store
+            //hapus semua
+            // Cukup satu baris ini saja untuk hapus semua
+            Route::delete('/truncate', [SPKController::class, 'truncateTraining'])->name('truncate');
+            Route::delete('/{id}', [SPKController::class, 'destroyTraining'])->name('destroy');
+            // Export & Import (Sekarang namanya konsisten)
+            Route::get('/export', [SPKController::class, 'exportTraining'])->name('export');  // guru.spk.training.export
+            Route::post('/import', [SPKController::class, 'importTraining'])->name('import'); // guru.spk.training.import
+        });
+
+        // --- Input Nilai Siswa & Predict ---
         Route::get('/input/{id}', [SPKController::class, 'input'])->name('input'); 
         Route::post('/input/{id}', [SPKController::class, 'storeInput'])->name('store');
         Route::post('/predict/{id}', [SPKController::class, 'predict'])->name('predict'); 
     });
-    
 });
 
 /*

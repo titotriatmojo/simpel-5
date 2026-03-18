@@ -7,13 +7,15 @@ use Illuminate\Http\Request;
 use App\Models\Siswa;
 use App\Models\NilaiPkl;
 use Illuminate\Support\Facades\Auth;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Exports\NilaiPklExport; // Pastikan sudah buat file Export-nya
 
 class NilaiController extends Controller
 {
     /**
-     * Tampilkan daftar siswa bimbingan dan nilainya
+     * Tampilkan daftar siswa bimbingan, fitur search, dan handle export.
      */
-    public function index()
+    public function index(Request $request)
     {
         $guru = Auth::user()->guru;
 
@@ -23,15 +25,30 @@ class NilaiController extends Controller
 
         $guruId = $guru->id;
 
-        // Ambil siswa yang memiliki pendaftaran_pkl dengan guru_id ini
-        $siswa = Siswa::whereHas('pendaftaranPkl', function ($query) use ($guruId) {
-                $query->where('guru_id', $guruId);
+        // 1. Logika Query Dasar
+        $query = Siswa::whereHas('pendaftaranPkl', function ($q) use ($guruId) {
+                $q->where('guru_id', $guruId);
             })
             ->with(['nilaiPkl' => function ($q) use ($guruId) {
-                // Pastikan nilai yang diambil hanya yang diinput guru ini
                 $q->where('guru_id', $guruId);
-            }])
-            ->get();
+            }]);
+
+        // 2. Fitur Search (Berdasarkan Nama atau NISN)
+        if ($request->filled('search')) {
+            $search = $request->search;
+            $query->where(function($q) use ($search) {
+                $q->where('nama', 'like', "%{$search}%")
+                  ->orWhere('nim', 'like', "%{$search}%");
+            });
+        }
+
+        // 3. Handle Export Excel
+        if ($request->query('export') === 'excel') {
+            $fileName = 'Rekap_Nilai_Siswa_' . now()->format('d-m-Y') . '.xlsx';
+            return Excel::download(new NilaiPklExport($guruId), $fileName);
+        }
+
+        $siswa = $query->get();
 
         return view('guru.nilai.index', compact('siswa'));
     }
@@ -48,8 +65,7 @@ class NilaiController extends Controller
 
         $guruId = Auth::user()->guru->id;
 
-        // Logic sakti: Cari berdasarkan siswa_id & guru_id. 
-        // Kalau ketemu di-UPDATE nilainya, kalau tidak ada di-INSERT baru.
+        // Update jika sudah ada, buat baru jika belum
         NilaiPkl::updateOrCreate(
             ['siswa_id' => $request->siswa_id, 'guru_id' => $guruId],
             ['nilai'    => $request->nilai]
@@ -69,7 +85,6 @@ class NilaiController extends Controller
 
         $guruId = Auth::user()->guru->id;
 
-        // Cari data nilai spesifik milik guru yang sedang login
         $nilai = NilaiPkl::where('id', $id)
                         ->where('guru_id', $guruId)
                         ->firstOrFail();
@@ -80,13 +95,12 @@ class NilaiController extends Controller
     }
 
     /**
-     * HAPUS NILAI (Fungsi Baru)
+     * Hapus Nilai
      */
     public function destroy($id)
     {
         $guruId = Auth::user()->guru->id;
 
-        // Pastikan guru hanya bisa menghapus nilai yang dia input sendiri
         $nilai = NilaiPkl::where('id', $id)
                         ->where('guru_id', $guruId)
                         ->firstOrFail();

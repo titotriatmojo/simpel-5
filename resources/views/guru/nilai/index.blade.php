@@ -7,6 +7,17 @@
                 <p class="text-gray-600 dark:text-gray-400 text-sm">Input, edit, atau perbarui penilaian Praktik Kerja Lapangan siswa bimbingan Anda.</p>
             </div>
         </div>
+        {{-- TOMBOL EXCEL BARU --}}
+        <div class="flex-shrink-0 mt-4">
+                    <a href="{{ request()->fullUrlWithQuery(['export' => 'excel']) }}" 
+                    class="inline-flex items-center px-6 py-3 bg-emerald-600 hover:bg-emerald-700 text-white text-sm font-bold uppercase tracking-wider rounded-xl transition-all shadow-lg shadow-emerald-500/20 gap-3 group">
+                        <svg class="w-5 h-5 text-emerald-200 group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                        </svg>
+                        Export Nilai
+                    </a>
+                </div>
+            </div>
         <div class="mt-4">
             <div class="w-32 h-1 bg-gradient-to-r from-primary-n5 to-secondary-n5 rounded-full"></div>
         </div>

@@ -6,13 +6,21 @@ use App\Http\Controllers\Controller;
 use App\Models\User;
 use App\Models\Guru;
 use App\Models\DataTraining;
-use App\Models\NilaiPkl;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Maatwebsite\Excel\Facades\Excel;
+use Illuminate\Support\Facades\DB;
+use App\Exports\HasilSpkExport;
+use App\Exports\DataTrainingExport; // Tambahkan ini
+use App\Imports\DataTrainingImport; // Tambahkan ini
+
 
 class SPKController extends Controller
 {
-    public function index()
+    /**
+     * Index: Daftar Siswa & Export Hasil Prediksi
+     */
+    public function index(Request $request)
     {
         $userId = Auth::id(); 
         $guruProfile = Guru::where('user_id', $userId)->first();
@@ -22,21 +30,58 @@ class SPKController extends Controller
                    ->with('error', 'Profil Guru tidak ditemukan.');
         }
 
-        // Ambil siswa bimbingan dengan Eager Loading
-        $siswas = User::where('role', 'siswa')
-            ->whereHas('siswa.pendaftaranPkl', function($q) use ($guruProfile) {
-                $q->where('guru_id', $guruProfile->id)
+        $guruId = $guruProfile->id;
+
+        $query = User::where('role', 'siswa')
+            ->whereHas('siswa.pendaftaranPkl', function($q) use ($guruId) {
+                $q->where('guru_id', $guruId)
                   ->where('status', 'diterima');
             })
-            ->with(['siswa', 'nilaiPkl']) // Pastikan relasi nilaiPkl ada di Model User
-            ->get();
+            ->with(['siswa', 'nilaiPkl']);
 
+        if ($request->filled('search')) {
+            $search = $request->search;
+            $query->where(function($q) use ($search) {
+                $q->where('name', 'like', "%{$search}%")
+                  ->orWhereHas('siswa', function($sq) use ($search) {
+                      $sq->where('nim', 'like', "%{$search}%");
+                  });
+            });
+        }
+
+        // Export Hasil Prediksi (Halaman Index)
+        if ($request->query('export') === 'excel') {
+            $fileName = 'Hasil_Prediksi_KNN_' . now()->format('d-m-Y') . '.xlsx';
+            return Excel::download(new HasilSpkExport($guruId), $fileName);
+        }
+
+        $siswas = $query->get();
         return view('guru.spk.index', compact('siswas'));
     }
 
+            //import hasil prediksi
+        public function truncateTraining()
+        {
+            try {
+                // Cara 1: Menggunakan Model (Lebih disarankan di Laravel)
+                DataTraining::truncate(); 
+
+                // Cara 2: Menggunakan DB facade (Jika cara 1 ada kendala foreign key)
+                // DB::table('data_trainings')->truncate(); 
+                
+                return redirect()->route('guru.spk.training.index')
+                                ->with('success', 'Seluruh dataset alumni berhasil dikosongkan!');
+            } catch (\Exception $e) {
+                return redirect()->back()
+                                ->with('error', 'Gagal menghapus data: ' . $e->getMessage());
+            }
+        }
+
+    /**
+     * Prediksi KNN
+     */
     public function predict($id)
     {
-        // 1. Ambil Data Siswa & Nilai PKL (82.00)
         $siswa = User::with('nilaiPkl')->findOrFail($id);
         $dataset = DataTraining::all();
 
@@ -44,34 +89,26 @@ class SPKController extends Controller
             return back()->with('error', 'Prediksi gagal! Dataset alumni kosong.');
         }
 
-        // 2. Ambil Nilai Uji (Gunakan default 0 jika null agar tidak error matematika)
         $x1 = (float) ($siswa->nilai_akademik ?? 0);
         $x2 = (float) ($siswa->nilai_instansi ?? 0);
         $x3 = (float) ($siswa->nilaiPkl->nilai ?? 0); 
 
-        // Proteksi: Jika nilai masih 0, jangan izinkan prediksi
-        if ($x1 == 0 || $x2 == 0 || $x3 == 0) {
-            return back()->with('error', 'Gagal! Pastikan semua nilai (Akademik, Instansi, Pembimbing) sudah terisi.');
+        if ($x1 <= 0 || $x2 <= 0 || $x3 <= 0) {
+            return back()->with('error', 'Gagal! Pastikan Nilai Akademik, Instansi, dan Pembimbing sudah terisi.');
         }
 
         $distances = [];
-
-        // 3. Hitung Jarak Euclidean
         foreach ($dataset as $data) {
             $distance = sqrt(
                 pow(($data->nilai_akademik - $x1), 2) +
                 pow(($data->nilai_instansi - $x2), 2) +
                 pow(($data->nilai_pembimbing - $x3), 2)
             );
-
-            $distances[] = [
-                'jarak' => $distance,
-                'label' => $data->label
-            ];
+            $distances[] = ['jarak' => $distance, 'label' => $data->label];
         }
 
-        // 4. Urutkan & Voting
         usort($distances, fn($a, $b) => $a['jarak'] <=> $b['jarak']);
+        
         $k = 3;
         $neighbors = array_slice($distances, 0, $k);
         $labels = array_column($neighbors, 'label');
@@ -79,58 +116,86 @@ class SPKController extends Controller
         arsort($counts);
         $hasilPrediksi = array_key_first($counts);
 
-        // 5. Simpan Hasil
         $siswa->update(['hasil_prediksi' => $hasilPrediksi]);
 
         return redirect()->route('guru.spk.index')->with('success', "Analisis Selesai! Hasil: $hasilPrediksi");
     }
+
     /**
-     * Fungsi Pendukung (Training Data)
+     * Halaman Data Training
      */
-    public function training() {
+    public function training() 
+    {
+        // Ambil data terbaru
         $trainingData = DataTraining::latest()->get(); 
+        
+        // Kirim ke view dengan nama 'trainingData'
         return view('guru.spk.training', compact('trainingData'));
     }
-
+    /**
+     * Store Data Training Manual
+     */
     public function storeTraining(Request $request) {
         $data = $request->validate([
             'nama' => 'nullable|string',
-            'nilai_akademik' => 'required|numeric',
-            'nilai_instansi' => 'required|numeric',
-            'nilai_pembimbing' => 'required|numeric',
+            'nilai_akademik' => 'required|numeric|min:0|max:100',
+            'nilai_instansi' => 'required|numeric|min:0|max:100',
+            'nilai_pembimbing' => 'required|numeric|min:0|max:100',
             'label' => 'required|string',
         ]);
         DataTraining::create($data);
-        return redirect()->back()->with('success', 'Data training ditambahkan.');
+        return redirect()->back()->with('success', 'Data training berhasil ditambahkan.');
+    }
+
+    /**
+     * Export Data Training
+     */
+    public function exportTraining()
+    {
+        return Excel::download(new DataTrainingExport, 'Dataset_Alumni_' . now()->format('d-m-Y') . '.xlsx');
+    }
+
+    /**
+     * Import Data Training
+     */
+    public function importTraining(Request $request)
+    {
+        $request->validate([
+            'file' => 'required|mimes:xlsx,xls'
+        ]);
+
+        try {
+            Excel::import(new DataTrainingImport, $request->file('file'));
+            return back()->with('success', 'Data training berhasil diimport!');
+        } catch (\Exception $e) {
+            return back()->with('error', 'Gagal mengimport data. Pastikan format file benar.');
+        }
     }
 
     public function destroyTraining($id) {
         DataTraining::findOrFail($id)->delete();
-        return redirect()->back()->with('success', 'Data training dihapus.');
+        return redirect()->back()->with('success', 'Data training telah dihapus.');
     }
-    public function input($id)
-{
-    // Ambil data user beserta profil siswanya
-    $siswa = User::with('siswa')->findOrFail($id);
-    return view('guru.spk.input', compact('siswa'));
-}
 
-/**
- * Simpan Nilai ke Tabel Users
- */
-public function storeInput(Request $request, $id)
-{
-    $request->validate([
-        'nilai_akademik' => 'required|numeric|min:0|max:100',
-        'nilai_instansi' => 'required|numeric|min:0|max:100',
-    ]);
+    /**
+     * Input Nilai Akademik & Instansi Siswa
+     */
+    public function input($id) {
+        $siswa = User::with('siswa')->findOrFail($id);
+        return view('guru.spk.input', compact('siswa'));
+    }
 
-    $siswa = User::findOrFail($id);
-    $siswa->update([
-        'nilai_akademik' => $request->nilai_akademik,
-        'nilai_instansi' => $request->nilai_instansi,
-    ]);
+    public function storeInput(Request $request, $id) {
+        $request->validate([
+            'nilai_akademik' => 'required|numeric|min:0|max:100',
+            'nilai_instansi' => 'required|numeric|min:0|max:100',
+        ]);
 
-    return redirect()->route('guru.spk.index')->with('success', 'Nilai berhasil diperbarui!');
-}
+        User::findOrFail($id)->update([
+            'nilai_akademik' => $request->nilai_akademik,
+            'nilai_instansi' => $request->nilai_instansi,
+        ]);
+
+        return redirect()->route('guru.spk.index')->with('success', 'Nilai berhasil disimpan!');
+    }
 }

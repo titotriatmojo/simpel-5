@@ -1,18 +1,79 @@
 <x-app-layout>
-    {{-- Header --}}
-    <div class="mb-8">
-        <a href="{{ route('guru.spk.index') }}" class="inline-flex items-center text-sm text-primary-n5 hover:text-blue-600 mb-4 font-medium transition-colors group">
-            <svg class="w-4 h-4 mr-2 transform group-hover:-translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
-            </svg>
-            Kembali ke Analisis
-        </a>
-        <h1 class="text-3xl font-bold text-gray-900 dark:text-white">Data Training Alumni</h1>
-        <p class="text-gray-500 dark:text-gray-400 text-sm mt-1">Kelola dataset referensi untuk perhitungan algoritma KNN.</p>
+   {{-- Header --}}
+<div class="mb-8 bg-white dark:bg-white/[0.03] border border-gray-200 dark:border-white/10 rounded-2xl p-6 shadow-sm">
+    <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div>
+            <h1 class="text-3xl font-bold text-gray-900 dark:text-white mb-2 tracking-tight">Dataset Referensi (Alumni)</h1>
+            <p class="text-gray-500 dark:text-gray-400 text-sm">Kelola data alumni yang digunakan sebagai dasar perhitungan <span class="text-primary-n5 dark:text-white font-semibold">K-Nearest Neighbor</span>.</p>
+        </div>
+        <div class="flex items-center gap-3">
+            {{-- TOMBOL HAPUS SEMUA (TRUNCATE) --}}
+            @if($trainingData->count() > 0)
+                <form action="{{ route('guru.spk.training.truncate') }}" method="POST" onsubmit="return confirm('Hapus seluruh dataset? Tindakan ini tidak bisa dibatalkan!')">
+                    @csrf
+                    @method('DELETE')
+                    <button type="submit" class="flex items-center gap-2 px-4 py-2 bg-red-50 dark:bg-red-500/10 hover:bg-red-100 dark:hover:bg-red-500/20 text-red-600 dark:text-red-400 text-sm font-bold rounded-xl transition-all border border-red-200 dark:border-red-500/20">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                        </svg>
+                        Kosongkan Dataset
+                    </button>
+                </form>
+            @endif
+
+            <a href="{{ route('guru.spk.index') }}" class="flex items-center gap-2 px-4 py-2 bg-gray-100 dark:bg-white/10 hover:bg-gray-200 dark:hover:bg-white/20 text-gray-900 dark:text-white text-sm font-semibold rounded-xl transition-all border border-gray-200 dark:border-white/10">
+                <svg class="w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/></svg>
+                Kembali
+            </a>
+        </div>
+    </div>
+</div>
+
+        {{-- Action Buttons --}}
+        <div class="flex items-center gap-3" x-data="{ openImport: false }">
+            {{-- Tombol Export --}}
+            <a href="{{ route('guru.spk.training.export') }}" class="flex items-center gap-2 px-4 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white text-sm font-bold rounded-xl transition-all shadow-lg shadow-emerald-500/20">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+                Export Excel
+            </a>
+
+            {{-- Tombol Import (Trigger Modal) --}}
+            <button @click="openImport = true" class="flex items-center gap-2 px-4 py-2.5 bg-amber-500 hover:bg-amber-600 text-white text-sm font-bold rounded-xl transition-all shadow-lg shadow-amber-500/20">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"/></svg>
+                Import Excel
+            </button>
+
+            {{-- Modal Import --}}
+            <div x-show="openImport" class="fixed inset-0 z-[50] overflow-y-auto" x-cloak>
+                <div class="flex items-center justify-center min-h-screen px-4">
+                    <div @click="openImport = false" class="fixed inset-0 bg-black/50 backdrop-blur-sm transition-opacity"></div>
+                    <div class="bg-white dark:bg-gray-800 rounded-2xl overflow-hidden shadow-2xl transform transition-all sm:max-w-lg sm:w-full border border-gray-200 dark:border-white/10">
+                        <div class="p-6">
+                            <div class="flex items-center justify-between mb-6">
+                                <h3 class="text-xl font-bold text-gray-900 dark:text-white">Import Data Training</h3>
+                                <button @click="openImport = false" class="text-gray-400 hover:text-gray-600"><svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg></button>
+                            </div>
+                            <form action="{{ route('guru.spk.training.import') }}" method="POST" enctype="multipart/form-data">
+                                @csrf
+                                <div class="mb-6">
+                                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Pilih File Excel (.xlsx)</label>
+                                    <input type="file" name="file" accept=".xlsx, .xls" required class="block w-full text-sm text-gray-500 file:mr-4 file:py-2.5 file:px-4 file:rounded-xl file:border-0 file:text-sm file:font-bold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 dark:file:bg-white/5 dark:file:text-white">
+                                    <p class="mt-2 text-xs text-gray-500 italic">* Format kolom: Nama, Nilai Akademik, Nilai Instansi, Nilai Pembimbing, Label (Siap/Tidak Siap)</p>
+                                </div>
+                                <div class="flex justify-end gap-3">
+                                    <button type="button" @click="openImport = false" class="px-4 py-2 text-sm font-bold text-gray-500 hover:text-gray-700">Batal</button>
+                                    <button type="submit" class="px-6 py-2 bg-primary-n5 hover:bg-blue-700 text-white text-sm font-bold rounded-xl shadow-lg shadow-blue-500/20">Mulai Upload</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-        {{-- Form Input Manual --}}
+        {{-- Form Input Manual (KONTEN TETAP SAMA SEPERTI MILIK USER) --}}
         <div class="lg:col-span-1">
             <div class="bg-white dark:bg-gray-800 border border-gray-200 dark:border-white/10 rounded-2xl p-6 shadow-sm sticky top-8">
                 <h2 class="text-lg font-bold text-gray-900 dark:text-white mb-6 flex items-center">
@@ -59,7 +120,7 @@
             </div>
         </div>
 
-        {{-- Tabel Dataset --}}
+        {{-- Tabel Dataset (KONTEN TETAP SAMA SEPERTI MILIK USER) --}}
         <div class="lg:col-span-2">
             <div class="bg-white dark:bg-gray-800 border border-gray-200 dark:border-white/10 rounded-2xl p-6 shadow-sm">
                 <div class="flex justify-between items-center mb-6">
@@ -97,7 +158,6 @@
                                     @endif
                                 </td>
                                 <td class="px-4 py-4 text-right">
-                                    {{-- FIX: Action Hapus diarahkan ke rute yang benar --}}
                                     <form action="{{ route('guru.spk.training.destroy', $data->id) }}" method="POST" onsubmit="return confirm('Hapus data alumni ini dari dataset?')">
                                         @csrf 
                                         @method('DELETE')
@@ -110,14 +170,7 @@
                                 </td>
                             </tr>
                             @empty
-                            <tr>
-                                <td colspan="6" class="px-4 py-12 text-center">
-                                    <div class="flex flex-col items-center">
-                                        <svg class="w-12 h-12 text-gray-300 mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4"/></svg>
-                                        <p class="text-gray-500 text-sm">Dataset masih kosong.</p>
-                                    </div>
-                                </td>
-                            </tr>
+                            <tr><td colspan="6" class="text-center py-12 text-gray-500">Dataset Kosong</td></tr>
                             @endforelse
                         </tbody>
                     </table>
