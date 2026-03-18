@@ -1,191 +1,101 @@
 <x-app-layout>
-
     {{-- Header Section --}}
-
     <div class="mb-8 bg-white dark:bg-white/[0.03] border border-gray-200 dark:border-white/10 rounded-2xl p-6 shadow-none dark:shadow-lg">
-
         <div class="flex items-center gap-4">
-
             <div>
-
                 <h1 class="text-3xl font-bold text-gray-900 dark:text-white mb-2">Verifikasi Laporan PKL</h1>
-
                 <p class="text-gray-600 dark:text-blue-100 text-sm">Tinjau, ubah status verifikasi, atau kelola laporan siswa.</p>
-
             </div>
-
         </div>
-
         <div class="mt-4">
-
-            <div class="w-32 h-1 bg-gradient-to-r from-blue-500 to-indigo-500 rounded-full"></div>
-
+            <div class="w-32 h-1 bg-gradient-to-r from-primary-n5 to-secondary-n5 rounded-full"></div>
         </div>
-
     </div>
-
-
 
     {{-- Pesan sukses --}}
-
     @if (session('success'))
-
     <div x-data="{ show: true }" x-init="setTimeout(() => show = false, 3000)" x-show="show" x-transition
-
         class="mb-6 bg-emerald-100 dark:bg-emerald-500/10 text-emerald-700 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-500/30 px-4 py-3 rounded-xl text-sm font-medium flex items-center gap-3">
-
         <svg class="w-5 h-5 text-emerald-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-
         </svg>
-
         {{ session('success') }}
-
     </div>
-
     @endif
-
-
 
     {{-- Search Area --}}
 
     <div class="mb-8 flex flex-wrap items-center justify-between gap-4">
-
         <form method="GET" action="{{ route('admin.laporan.verifikasi') }}" class="flex items-center gap-3 h-[48px]">
-
             <input type="text" name="search" value="{{ request('search') }}" placeholder="Cari Nama, NISN, Status..."
-
                 class="h-[48px] px-4 py-2 rounded-lg border border-gray-300 dark:border-slate-600 focus:ring-2 focus:ring-blue-400 focus:outline-none text-sm w-80 dark:bg-slate-800 dark:text-white transition-all shadow-sm"
-
                 autocomplete="off">
-
             <button type="submit" class="h-[48px] w-[48px] flex items-center justify-center bg-blue-500 hover:bg-blue-600 text-white rounded-lg transition-all">
-
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-
                     <circle cx="11" cy="11" r="8" />
-
                     <line x1="21" y1="21" x2="16.65" y2="16.65" stroke-linecap="round" />
-
                 </svg>
-
             </button>
 
             @if(request('search'))
-
                 <a href="{{ route('admin.laporan.verifikasi') }}" class="text-sm text-gray-500 underline">Reset</a>
-
             @endif
-
         </form>
-
     </div>
 
-
-
     {{-- Tabel Utama --}}
-
     <div class="overflow-hidden rounded-xl border border-gray-200 dark:border-white/10 bg-white dark:bg-white/5 shadow-sm">
-
         <div class="overflow-x-auto">
-
             <table class="min-w-full">
-
                 <thead>
-
                     <tr class="border-b bg-gray-50 dark:bg-slate-700/30 border-gray-200 dark:border-white/10 text-left">
-
                         <th class="px-6 py-4 text-xs font-bold text-gray-500 dark:text-slate-200 uppercase tracking-wider">No.</th>
-
                         <th class="px-6 py-4 text-xs font-bold text-gray-500 dark:text-slate-200 uppercase tracking-wider">Identitas Siswa</th>
-
                         <th class="px-6 py-4 text-xs font-bold text-gray-500 dark:text-slate-200 uppercase tracking-wider">Akses Berkas</th>
-
                         <th class="px-6 py-4 text-xs font-bold text-gray-500 dark:text-slate-200 uppercase tracking-wider">Status</th>
-
                         <th class="px-6 py-4 text-center text-xs font-bold text-gray-500 dark:text-slate-200 uppercase tracking-wider">Aksi</th>
-
                     </tr>
-
                 </thead>
 
                 <tbody class="divide-y divide-gray-200 dark:divide-white/10">
-
                     @forelse ($laporan as $index => $lapor)
-
                     <tr class="hover:bg-gray-50 dark:hover:bg-white/5 transition-colors">
-
                         {{-- No --}}
-
                         <td class="px-6 py-4 text-sm text-gray-600 dark:text-slate-300">
-
                             {{ $laporan->firstItem() + $index }}
-
                         </td>
-
-                       
-
+                    
                         {{-- Siswa --}}
-
                         <td class="px-6 py-4">
-
                             <div class="text-sm font-bold text-gray-900 dark:text-white">{{ $lapor->siswa->nama }}</div>
-
                             <div class="text-xs text-gray-500 dark:text-slate-400">NISN: {{ $lapor->siswa->nim }}</div>
-
                         </td>
-
-
 
                         {{-- Link Drive & File --}}
-
                         <td class="px-6 py-4">
-
                             <div class="flex flex-col gap-2">
-
                                 @if($lapor->file)
-
                                 <a href="{{ route('admin.laporan.download', $lapor->id) }}" class="inline-flex items-center gap-1.5 text-xs font-semibold text-blue-600 dark:text-blue-400 hover:text-blue-800">
-
                                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M4 16v1a2 2 0 002 2h12a2 2 0 002-2v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
-
                                     Download PDF/DOC
-
                                 </a>
-
                                 @endif
 
-
-
                                 @if($lapor->link_drive)
-
                                 <a href="{{ $lapor->link_drive }}" target="_blank" class="inline-flex items-center gap-1.5 text-xs font-semibold text-emerald-600 dark:text-emerald-400 hover:text-emerald-800">
-
                                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
-
                                     Link Google Drive
-
                                 </a>
 
                                 @else
-
                                 <span class="text-[10px] text-gray-400 italic font-medium uppercase">Drive Tidak Ada</span>
-
                                 @endif
-
                             </div>
-
                         </td>
 
-
-
                         {{-- Status Badge --}}
-
                         <td class="px-6 py-4">
-
                             @php
-
                                 $badge = [
 
                                     'pending' => 'bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400 border-amber-200',

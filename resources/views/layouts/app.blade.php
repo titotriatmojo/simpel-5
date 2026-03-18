@@ -23,17 +23,71 @@
             background: rgba(156, 163, 175, 0.2); 
             border-radius: 10px; 
         }
+
+        /* Warna Custom N5 (Pastikan sudah terdefinisi di tailwind.config.js atau tambahkan manual) */
+        :root {
+            --primary-n5: #004aad; /* Contoh biru N5, ganti sesuai hex aslinya */
+            --secondary-n5: #00d4ff; /* Contoh light blue N5 */
+        }
     </style>
 </head>
 
-<body class="bg-white dark:bg-slate-900 min-h-screen overflow-hidden">
+<body class="bg-white dark:bg-slate-900 min-h-screen overflow-hidden" 
+      <body x-data="{ 
+    isCollapsed: false, 
+    mobileOpen: false, 
+    darkMode: localStorage.getItem('theme') === 'dark' 
+    }" 
+    x-init="$watch('darkMode', val => document.documentElement.classList.toggle('dark', val))">
     
-    <x-navbar />
+    {{-- 
+        NAVBAR: 
+        Tombol burger diletakkan di sini agar selalu aksesibel.
+    --}}
+    <nav class="fixed top-0 z-50 w-full h-16 bg-white dark:bg-slate-900 border-b border-gray-100 dark:border-white/5 px-4 flex items-center justify-between">
+        <div class="flex items-center gap-4">
+            <button @click="mobileOpen = !mobileOpen; isCollapsed = (window.innerWidth >= 768) ? !isCollapsed : false" 
+                class="p-2 rounded-xl bg-gray-50 dark:bg-white/5 text-primary-n5 hover:bg-primary-n5/10 transition-all duration-200">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                </svg>
+            </button>
+            
+            <div class="flex items-center gap-2">
+                <img src="{{ asset('favicon-n5.png') }}" class="w-8 h-8" alt="Logo">
+                <span class="font-bold text-lg tracking-tight text-slate-800 dark:text-white hidden sm:block">SIMPEL-5</span>
+            </div>
+        </div>
+
+        {{-- Slot Navbar (Profile, Dropdown, dll) --}}
+        <x-navbar />
+    </nav>
 
     <div class="flex h-screen pt-16">
+        
+        {{-- BACKDROP MOBILE --}}
+        <div x-show="mobileOpen" 
+             x-transition:enter="transition opacity-300"
+             x-transition:enter-start="opacity-0"
+             x-transition:enter-end="opacity-100"
+             x-transition:leave="transition opacity-300"
+             x-transition:leave-start="opacity-100"
+             x-transition:leave-end="opacity-0"
+             @click="mobileOpen = false" 
+             class="fixed inset-0 z-30 bg-slate-900/60 backdrop-blur-sm md:hidden">
+        </div>
+
         {{-- SIDEBAR --}}
-        <aside class="w-72 flex-shrink-0 fixed left-0 top-16 h-[calc(100vh-4rem)] overflow-y-auto custom-scrollbar bg-white dark:bg-slate-900 border-r border-gray-100 dark:border-white/5 z-40">
-            <div class="p-4">
+        <aside 
+            :class="{
+                'w-72': !isCollapsed,
+                'w-24': isCollapsed, {{-- Lebar pas mode ikon diperbesar agar tidak sempit --}}
+                'translate-x-0': mobileOpen,
+                '-translate-x-full': !mobileOpen
+            }"
+            class="fixed md:static inset-y-0 left-0 top-16 z-40 flex-shrink-0 bg-white dark:bg-slate-900 border-r border-gray-100 dark:border-white/5 transition-all duration-300 ease-in-out md:translate-x-0 overflow-hidden">
+            
+            <div class="h-full py-4 overflow-y-auto overflow-x-hidden custom-scrollbar">
                 @auth
                     @if(Auth::user()?->role === 'siswa')
                         <x-sidebar-siswa />
@@ -47,24 +101,27 @@
         </aside>
 
         {{-- MAIN CONTENT AREA --}}
-        <main class="flex-1 ml-72 h-[calc(100vh-4rem)] overflow-y-auto custom-scrollbar bg-white dark:bg-slate-900 transition-all duration-300">
-            <div class="px-8 py-8"> {{-- Padding langsung di sini, tanpa card lagi --}}
+        <main class="flex-1 h-[calc(100vh-4rem)] overflow-y-auto custom-scrollbar bg-white dark:bg-slate-900 transition-all duration-300">
+            <div class="px-4 md:px-8 py-8">
                 
                 {{-- Alert System --}}
                 @if(session('success'))
-                    <div x-data="{ show: true }" x-show="show" class="mb-6 p-4 bg-blue-500/5 border border-blue-500/10 rounded-xl flex items-center justify-between">
-                        <span class="text-blue-600 dark:text-blue-400 text-sm font-medium">{{ session('success') }}</span>
-                        <button @click="show = false" class="text-blue-400 hover:text-blue-600">&times;</button>
+                    <div x-data="{ show: true }" x-show="show" class="mb-6 p-4 bg-primary-n5/5 border border-primary-n5/10 rounded-xl flex items-center justify-between">
+                        <div class="flex items-center gap-3">
+                            <div class="w-2 h-2 rounded-full bg-primary-n5 animate-pulse"></div>
+                            <span class="text-primary-n5 font-medium text-sm">{{ session('success') }}</span>
+                        </div>
+                        <button @click="show = false" class="text-primary-n5/50 hover:text-primary-n5 text-xl leading-none">&times;</button>
                     </div>
                 @endif
 
-                {{-- SLOT LANGSUNG NYATU --}}
+                {{-- SLOT CONTENT --}}
                 <div class="min-h-full">
                     {{ $slot }}
                 </div>
 
                 {{-- Minimal Footer --}}
-                <footer class="mt-12 pb-8 border-t border-gray-50 dark:border-white/5 pt-6 text-gray-400 text-[10px] uppercase tracking-widest text-center">
+                <footer class="mt-12 pb-8 border-t border-gray-50 dark:border-white/5 pt-6 text-gray-400 text-[10px] uppercase tracking-[0.2em] text-center">
                     SIMPEL-5 &bull; SMKN 5 Kabupaten Tangerang &bull; {{ date('Y') }}
                 </footer>
             </div>

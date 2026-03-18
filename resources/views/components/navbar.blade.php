@@ -3,6 +3,18 @@
     <div class="px-6 py-4">
         <div class="flex justify-between items-center">
             <div class="flex items-center space-x-4">
+
+                {{-- TOMBOL HAMBURGER (Hanya muncul di Mobile) --}}
+                <button @click="mobileOpen = !mobileOpen" 
+                    class="md:hidden p-2 -ml-2 rounded-xl text-primary-n5 hover:bg-primary-n5/10 transition-colors focus:outline-none">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        {{-- Icon Hamburger --}}
+                        <path x-show="!mobileOpen" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                        {{-- Icon Close (X) saat terbuka --}}
+                        <path x-show="mobileOpen" x-cloak stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                </button>
+
                 <div class="w-10 h-10 bg-white rounded-xl flex items-center justify-center shadow-lg">
                     <img src="{{ asset('favicon-n5.png') }}" alt="Logo SMKN 5 Kab Tangerang"
                         class="w-7 h-7 object-contain">
