@@ -26,7 +26,7 @@ class Siswa extends Model
 
     public function laporanPkl()
     {
-        return $this->hasMany(LaporanPkl::class);
+        return $this->hasOne(LaporanPkl::class, 'siswa_id'); // sesuaikan foreign key-nya
     }
 
     public function bimbingan()

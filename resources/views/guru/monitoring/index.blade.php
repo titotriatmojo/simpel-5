@@ -57,6 +57,7 @@
                             <th class="px-6 py-5 text-[11px] font-bold text-gray-400 uppercase tracking-widest">Kelas & Jurusan</th>
                             <th class="px-6 py-5 text-[11px] font-bold text-gray-400 uppercase tracking-widest">Instansi Tujuan</th>
                             <th class="px-6 py-5 text-[11px] font-bold text-gray-400 uppercase tracking-widest text-center">Status</th>
+                            <th class="px-6 py-5 text-[11px] font-bold text-gray-400 uppercase tracking-widest text-center">Laporan</th>
                         </tr>
                     </thead>
                     <tbody class="divide-y divide-gray-50 dark:divide-slate-700/50">
@@ -131,7 +132,44 @@
                                     {{ $status }}
                                 </span>
                             </td>
+                            {{-- Kolom Laporan --}}
+                            <td class="px-6 py-6">    
+                                        {{-- Tombol Download (Kolom 'file') --}}
+                                        @if($item->laporanPkl && $item->laporanPkl->file)
+                                            <a href="{{ route('admin.laporan.download', $item->laporanPkl->id) }}" 
+                                            class="inline-flex items-center gap-1.5 text-xs font-semibold text-blue-600 dark:text-blue-400 hover:text-blue-800">
+                                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a2 2 0 002 2h12a2 2 0 002-2v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path>
+                                                </svg>
+                                                Download PDF/DOC
+                                            </a>
+                                        @else
+                                            <span class="text-[10px] text-gray-400 italic font-medium uppercase tracking-tighter">File Kosong</span>
+                                        @endif
+
+                                        {{-- Link Drive (Kolom 'link_drive') --}}
+                                        @if($item->laporanPkl && $item->laporanPkl->link_drive)
+                                            <a href="{{ $item->laporanPkl->link_drive }}" 
+                                            target="_blank" 
+                                            class="inline-flex items-center gap-1.5 text-xs font-semibold text-emerald-600 dark:text-emerald-400 hover:text-emerald-800">
+                                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path>
+                                                </svg>
+                                                Link Google Drive
+                                            </a>
+                                        @else
+                                            <span class="text-[10px] text-gray-400 italic font-medium uppercase tracking-tighter text-rose-400">Drive Tidak Ada</span>
+                                        @endif
+
+                                    </div>
+                                </div>
+                            </td>
+
+                            
                         </tr>
+
+
+                         {{-- kalau kosong --}}
                         @empty
                         <tr>
                             <td colspan="5" class="px-6 py-32 text-center">
