@@ -119,6 +119,11 @@ Route::middleware(['auth', 'role:guru'])->prefix('guru')->name('guru.')->group(f
     Route::post('/bimbingan/{id}/verifikasi', [BimbinganPKLController::class, 'verifikasi'])->name('bimbingan.verifikasi');
     Route::delete('/bimbingan/{id}', [BimbinganPKLController::class, 'destroy'])->name('bimbingan.destroy'); 
     
+    // Monitoring & Download Laporan
+    Route::get('/monitoring', [MonitoringController::class, 'index'])->name('monitoring.siswa');
+    // --- TARO DI SINI JO ---
+    Route::get('/monitoring/laporan/download/{id}', [MonitoringController::class, 'downloadLaporan'])->name('laporan.download');
+    
     // Nilai
     Route::resource('nilai', NilaiController::class)->names(['index' => 'nilai.index'])->except(['show', 'create', 'edit']);
 

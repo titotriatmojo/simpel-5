@@ -66,4 +66,25 @@ class MonitoringController extends Controller
             return back()->with('error', 'Terjadi kesalahan saat export data.');
         }
     }
+
+    public function downloadLaporan($id)
+    {
+        // Ambil data laporan beserta data siswanya (biar dapet namanya)
+        $laporan = \App\Models\LaporanPkl::with('siswa')->findOrFail($id);
+
+        $filePath = storage_path('app/public/' . $laporan->file);
+
+        if (!file_exists($filePath)) {
+            return back()->with('error', 'File fisik tidak ditemukan!');
+        }
+
+        // --- REVISI DI SINI ---
+        // Kita susun nama file yang rapi
+        $extension = pathinfo($filePath, PATHINFO_EXTENSION); // Ambil ekstensi asli (.pdf/.docx)
+        $namaSiswa = str_replace(' ', '_', $laporan->siswa->nama); // Spasi ganti underscore
+        $fileNameCustom = "Laporan_PKL_" . $namaSiswa . "." . $extension;
+
+        // Masukin $fileNameCustom sebagai parameter kedua
+        return response()->download($filePath, $fileNameCustom);
+    }
 }

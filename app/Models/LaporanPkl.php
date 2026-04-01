@@ -10,9 +10,9 @@ class LaporanPkl extends Model
 
     protected $fillable = ['siswa_id', 'perusahaan_id', 'file', 'status','link_drive'];
 
-    public function siswa() 
+    public function siswa()
     {
-    return $this->belongsTo(Siswa::class, 'siswa_id');
+        return $this->belongsTo(Siswa::class, 'siswa_id');
     }
 
     public function perusahaan()
