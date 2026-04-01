@@ -22,33 +22,33 @@ class PendaftaranController extends Controller
         return view('siswa.pendaftaran.index', compact('pendaftaran', 'perusahaan', 'guru'));
     }
 
-    public function store(Request $request)
-    {
-        $request->validate([
-            'perusahaan_id' => 'required|exists:perusahaan,id',
-            'guru_id'       => 'required|exists:guru,id', 
-            'bidang_pkl'    => 'required|string|max:100',
-            'periode'       => 'required|string|max:100',
-        ]);
+            public function store(Request $request)
+        {
+            $request->validate([
+                'perusahaan_id' => 'required|exists:perusahaan,id',
+                'guru_id'       => 'required|exists:guru,id', 
+                'bidang_pkl'    => 'required|string|max:100',
+                'periode'       => 'required|string|max:100', // Udah bener di validasi
+            ]);
 
-        $siswaId = Auth::user()->siswa->id;
+            // Ambil ID Siswa, bukan ID User!
+            $siswaId = Auth::user()->siswa->id;
 
-        if (PendaftaranPkl::where('siswa_id', $siswaId)->exists()) {
-            return redirect()->back()->with('error', 'Anda sudah memiliki pendaftaran yang aktif.');
+            if (PendaftaranPkl::where('siswa_id', $siswaId)->exists()) {
+                return redirect()->back()->with('error', 'Anda sudah memiliki pendaftaran yang aktif.');
+            }
+
+            PendaftaranPkl::create([
+                'siswa_id'      => $siswaId, // Pake variabel yang bener
+                'guru_id'       => $request->guru_id,
+                'perusahaan_id' => $request->perusahaan_id,
+                'bidang_pkl'    => $request->bidang_pkl,
+                'periode'       => $request->periode, // <--- INI TADI YANG KETINGGALAN!
+                'status'        => 'pending',
+            ]);
+
+            return redirect()->route('siswa.pendaftaran.index')->with('success', 'Pendaftaran PKL berhasil diajukan!');
         }
-
-        // Di function store() milik Siswa
-PendaftaranPkl::create([
-    'siswa_id' => Auth::id(),
-    'guru_id'  => $request->guru_id, // Pastikan input name di form-nya adalah 'guru_id'
-    'perusahaan_id' => $request->perusahaan_id,
-    'bidang_pkl' => $request->bidang_pkl,
-    'status' => 'pending',
-]);
-
-        // FIXED: Arahkan ke pendaftaran.index
-        return redirect()->route('siswa.pendaftaran.index')->with('success', 'Pendaftaran PKL berhasil diajukan!');
-    }
 
     public function update(Request $request, $id)
     {
