@@ -56,7 +56,6 @@ class LaporanController extends Controller
 
         // Jika ada file baru yang diunggah
         if ($request->hasFile('file')) {
-            // Hapus file lama jika ada
             if ($laporan->file && Storage::disk('public')->exists($laporan->file)) {
                 Storage::disk('public')->delete($laporan->file);
             }
@@ -68,7 +67,9 @@ class LaporanController extends Controller
                 return back()->withErrors(['file' => 'Format harus PDF/DOC/DOCX']);
             }
 
-            $laporan->file = $file->store('laporan_pkl', 'public');
+            // PAKAI STOREAS BIAR GAK JADI .BIN
+            $newFileName = time() . '_' . uniqid() . '.' . $ext;
+            $laporan->file = $file->storeAs('laporan_pkl', $newFileName, 'public');
         }
 
         $laporan->perusahaan_id = $request->perusahaan_id;
@@ -82,20 +83,82 @@ class LaporanController extends Controller
     /**
      * Fungsi Download Laporan yang Sudah Diunggah
      */
-    public function download()
+    /**
+     * Fungsi Download Laporan yang Sudah Diunggah (MILIK SISWA)
+     */
+    public function download($id)
     {
-        $siswa = Auth::user()->siswa;
-        $laporan = LaporanPkl::where('siswa_id', $siswa->id)->first();
+        // 1. Cari laporan berdasarkan ID (Bisa diakses Admin maupun Siswa)
+        $laporan = LaporanPkl::findOrFail($id);
 
-        // Validasi keberadaan file
-        if (!$laporan || !$laporan->file || !Storage::disk('public')->exists($laporan->file)) {
-            return back()->with('error', 'File tidak ditemukan di server.');
+        // 2. Cek apakah file fisiknya ada di storage
+        if (!$laporan->file || !Storage::disk('public')->exists($laporan->file)) {
+            return back()->with('error', 'File laporan tidak ditemukan di server.');
         }
 
-        $extension = pathinfo($laporan->file, PATHINFO_EXTENSION);
-        $namaFile = "Laporan_PKL_" . str_replace(' ', '_', $siswa->nama) . "." . $extension;
+        // 3. JURUS ANTI .BIN (PENTING!)
+        if (ob_get_level()) ob_end_clean();
 
-        // Pakai response()->download() supaya editor (Intelephense) nggak merah
-        return response()->download(storage_path('app/public/' . $laporan->file), $namaFile);
+        $pathToFile = Storage::disk('public')->path($laporan->file);
+        $extension = strtolower(pathinfo($laporan->file, PATHINFO_EXTENSION));
+
+        // 4. PENAMAAN FILE (Ambil dari relasi siswa agar nama file rapi)
+        // Pastikan model LaporanPkl punya relasi 'siswa'
+        $namaPemilik = $laporan->siswa ? $laporan->siswa->nama : 'Siswa';
+        $namaClean = preg_replace('/[^A-Za-z0-9]/', '_', $namaPemilik);
+        $namaFile = "Laporan_PKL_" . trim($namaClean, '_') . "." . $extension;
+
+        // 5. MAPPING MIME TYPE
+        $mimeTypes = [
+            'pdf'  => 'application/pdf',
+            'doc'  => 'application/msword',
+            'docx' => 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+        ];
+        $contentType = $mimeTypes[$extension] ?? 'application/octet-stream';
+
+        // 6. RETURN DOWNLOAD
+        return response()->download($pathToFile, $namaFile, [
+            'Content-Type' => $contentType,
+            'Content-Disposition' => 'attachment; filename="' . $namaFile . '"',
+        ]);
+    }
+
+    /**
+     * Fungsi Download Format (Template dari Admin)
+     */
+    /**
+     * Fungsi Download Format (Template dari Admin)
+     */
+    public function downloadFormat($id)
+    {
+        $format = FormatLaporan::findOrFail($id);
+
+        if (!Storage::disk('public')->exists($format->file)) {
+            return back()->with('error', 'File format tidak ditemukan.');
+        }
+
+        // --- JURUS ANTI NAMA NGACAK & ANTI .BIN ---
+        // Bersihkan buffer biar nggak ada karakter sisa yang ngerusak header
+        if (ob_get_level()) ob_end_clean();
+
+        $pathToFile = Storage::disk('public')->path($format->file);
+        $extension = strtolower(pathinfo($format->file, PATHINFO_EXTENSION));
+
+        // Ambil Title dari database, ganti spasi jadi underscore biar browser gak bingung
+        $titleClean = preg_replace('/[^A-Za-z0-9]/', '_', $format->nama);
+        $namaDownload = $titleClean . "." . $extension;
+
+        // Mapping MIME Type manual biar lebih 'galak' ke browser
+        $mimeTypes = [
+            'pdf'  => 'application/pdf',
+            'doc'  => 'application/msword',
+            'docx' => 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+        ];
+        $contentType = $mimeTypes[$extension] ?? 'application/octet-stream';
+
+        return response()->download($pathToFile, $namaDownload, [
+            'Content-Type' => $contentType,
+            'Content-Disposition' => 'attachment; filename="' . $namaDownload . '"',
+        ]);
     }
 }
