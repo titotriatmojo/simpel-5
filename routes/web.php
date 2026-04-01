@@ -63,7 +63,7 @@ require __DIR__ . '/auth.php';
 | 2. Role: Admin
 |--------------------------------------------------------------------------
 */
-Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->group(function () {
+Route::middleware(['auth', 'role_or_permission:admin'])->prefix('admin')->name('admin.')->group(function () {
     Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('dashboard');
 
  // --- BAGIAN SISWA ---
@@ -91,16 +91,28 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
     Route::post('/pendaftaran/{id}/verifikasi', [AdminPendaftaranController::class, 'verifikasi'])->name('pendaftaran.verifikasi');
     Route::delete('/pendaftaran/{id}', [AdminPendaftaranController::class, 'destroy'])->name('pendaftaran.destroy'); 
     
-    // --- BAGIAN LAPORAN (Hasil Kerja Siswa) ---
-        Route::get('/laporan/verifikasi', [AdminLaporanController::class, 'index'])->name('laporan.verifikasi');
-        Route::post('/laporan/verifikasi/{id}', [AdminLaporanController::class, 'verifikasi'])->name('laporan.verifikasi.process');
-        Route::get('/laporan/download/{id}', [FormatLaporanController::class, 'downloadLaporan'])->name('laporan.download');
-        Route::delete('/laporan/{id}', [AdminLaporanController::class, 'destroy'])->name('laporan.destroy');
 
-        // --- BAGIAN FORMAT (Template dari Admin) ---
-        Route::resource('format-laporan', FormatLaporanController::class)->names('format')->only(['index', 'destroy']);
-        Route::post('/format-laporan/upload', [FormatLaporanController::class, 'upload'])->name('format.upload');
-        Route::get('/format-laporan/download/{id}', [FormatLaporanController::class, 'downloadFormat'])->name('format.download');
+    // --- BAGIAN FORMAT (Template dari Admin) ---
+    Route::resource('format-laporan', FormatLaporanController::class)->names('format')->only(['index', 'destroy']);
+    Route::post('/format-laporan/upload', [FormatLaporanController::class, 'upload'])->name('format.upload');
+    Route::get('/format-laporan/download/{id}', [FormatLaporanController::class, 'downloadFormat'])->name('format.download');
+});
+
+
+/*
+|--------------------------------------------------------------------------
+| 2.5 Shared Routes: Admin & Guru (Verifikasi Laporan)
+|--------------------------------------------------------------------------
+*/
+Route::middleware(['auth', 'role_or_permission:admin|guru'])->prefix('admin')->name('admin.')->group(function () {
+    
+    // Bagian Laporan yang sekarang bisa dibuka Guru
+    Route::get('/laporan/verifikasi', [AdminLaporanController::class, 'index'])->name('laporan.verifikasi');
+    Route::post('/laporan/verifikasi/{id}', [AdminLaporanController::class, 'verifikasi'])->name('laporan.verifikasi.process');
+    Route::get('/laporan/download/{id}', [FormatLaporanController::class, 'downloadLaporan'])->name('laporan.download');
+    
+    // Khusus Destroy, kita taruh di sini tapi di Controller sudah lo proteksi cuma Admin
+    Route::delete('/laporan/{id}', [AdminLaporanController::class, 'destroy'])->name('laporan.destroy');
 });
 
 /*
@@ -108,7 +120,7 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
 | 3. Role: Guru
 |--------------------------------------------------------------------------
 */
-Route::middleware(['auth', 'role:guru'])->prefix('guru')->name('guru.')->group(function () {
+Route::middleware(['auth', 'role_or_permission:guru'])->prefix('guru')->name('guru.')->group(function () {
     Route::get('/dashboard', [GuruDashboardController::class, 'index'])->name('dashboard');
     Route::get('/monitoring', [MonitoringController::class, 'index'])->name('monitoring.siswa');
     Route::get('/instansi', [InstansiController::class, 'index'])->name('instansi.index');
