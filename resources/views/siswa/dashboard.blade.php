@@ -32,7 +32,7 @@
                             <div class="p-2 bg-gray-100 dark:bg-slate-800 rounded-lg mr-3">
                                 <svg class="w-5 h-5 text-secondary-n5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
                             </div>
-                            <span class="font-medium"><span id="clock"></span> WITA</span>
+                            <span class="font-medium"><span id="clock"></span> WIB</span>
                         </div>
                     </div>
                 </div>
@@ -103,7 +103,7 @@
                     @if($laporan)
                         <div class="flex items-center justify-between p-3 rounded-xl bg-gray-50 dark:bg-slate-800">
                             <span class="text-sm font-medium dark:text-white">File Laporan</span>
-                            <a href="{{ asset('storage/' . $laporan->file) }}" target="_blank" class="text-primary-n5 hover:underline text-sm font-bold">Buka PDF</a>
+                            <a href="{{ route('siswa.laporan.download', $laporan->id) }}" target="_blank" class="text-primary-n5 hover:underline text-sm font-bold">Buka</a>
                         </div>
                         <div class="flex items-center gap-2">
                              <div class="flex-1 h-2 bg-gray-200 rounded-full overflow-hidden">
@@ -141,12 +141,21 @@
         </div>
     </div>
 
-    <script>
+<script>
         function updateClock() {
             const now = new Date();
+            // Ambil waktu UTC
             const utc = now.getTime() + (now.getTimezoneOffset() * 60000);
-            const wita = new Date(utc + (8 * 60 * 60 * 1000));
-            document.getElementById('clock').textContent = wita.toLocaleTimeString('id-ID', { hour12: false });
+            
+            // Ubah offset ke +7 untuk WIB
+            const wib = new Date(utc + (7 * 60 * 60 * 1000));
+            
+            document.getElementById('clock').textContent = wib.toLocaleTimeString('id-ID', { 
+                hour: '2-digit', 
+                minute: '2-digit', 
+                second: '2-digit', 
+                hour12: false 
+            });
         }
         updateClock();
         setInterval(updateClock, 1000);
