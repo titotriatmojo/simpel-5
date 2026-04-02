@@ -46,33 +46,37 @@ class PerusahaanController extends Controller
         return view('admin.perusahaan.create');
     }
 
-    public function store(Request $request)
-{
-    // 1. Validasi (Gue buat bidang_usaha dan kuota jadi nullable atau kasih default)
-    $validated = $request->validate([
-        'nama'         => 'required|string|max:255',
-        'bidang_usaha' => 'nullable|string|max:255', // Jadiin nullable dulu kalau di form belum ada
-        'alamat'       => 'required|string',
-        'no_hp'        => 'required|string|max:20',
-        'kuota'        => 'nullable|integer|min:1', // Jadiin nullable dulu
-    ]);
+        public function store(Request $request)
+    {
+        $validated = $request->validate([
+            'nama'         => 'required|string|max:255',
+            'bidang_usaha' => 'required|string|max:255',
+            'alamat'       => 'required|string',
+            'no_hp'        => 'required|string|max:20',
+            'kuota'        => 'required|integer|min:1',
+            // Tambahkan validasi opsional jika ingin database tetap rapi
+            'email'               => 'nullable|email',
+            'pembimbing_lapangan' => 'nullable|string|max:255',
+        ]);
 
-    try {
-        // 2. Set default value kalau di form gak diisi
-        $validated['status'] = 'approved';
-        $validated['bidang_usaha'] = $request->bidang_usaha ?? 'Lainnya';
-        $validated['kuota'] = $request->kuota ?? 5; // Default 5 siswa kalau gak diisi
+        try {
+            // --- LOGIC OTOMATIS ---
+            $validated['status'] = 'approved'; // Admin yang buat = Langsung Aktif
+            
+            // Jika pembimbing lapangan kosong, beri default 'Admin' atau '-'
+            if (empty($validated['pembimbing_lapangan'])) {
+                $validated['pembimbing_lapangan'] = 'Bagian HRD/Admin';
+            }
 
-        Perusahaan::create($validated);
+            Perusahaan::create($validated);
 
-        return redirect()->route('admin.perusahaan.index')
-            ->with('success', 'Perusahaan baru berhasil ditambahkan.');
+            return redirect()->route('admin.perusahaan.index')
+                ->with('success', "Perusahaan '{$request->nama}' berhasil ditambahkan dan otomatis aktif.");
 
-    } catch (\Exception $e) {
-        // Notif kalau gagal insert (misal: ada kolom di DB yang wajib tapi lupa diisi)
-        return back()->withInput()->with('error', 'Gagal simpan data: ' . $e->getMessage());
+        } catch (\Exception $e) {
+            return back()->withInput()->with('error', 'Gagal simpan data: ' . $e->getMessage());
+        }
     }
-}
 
     public function show(Perusahaan $perusahaan)
     {
@@ -86,22 +90,29 @@ class PerusahaanController extends Controller
         return view('admin.perusahaan.edit', compact('perusahaan'));
     }
 
-    public function update(Request $request, Perusahaan $perusahaan)
-    {
-        $validated = $request->validate([
-            'nama'         => 'required|string|max:255',
-            'bidang_usaha' => 'required|string|max:255',
-            'alamat'       => 'required|string',
-            'no_hp'        => 'required|string|max:20',
-            'kuota'        => 'required|integer|min:1',
-            'status'       => 'required|in:pending,approved,rejected',
-        ]);
+            public function update(Request $request, Perusahaan $perusahaan)
+            {
+                // 1. Validasi data (HAPUS 'status' dari list validasi karena sudah tidak ada di form)
+                $validated = $request->validate([
+                    'nama'                => 'required|string|max:255',
+                    'bidang_usaha'        => 'required|string|max:255',
+                    'alamat'              => 'required|string',
+                    'no_hp'               => 'required|string|max:20',
+                    'kuota'               => 'required|integer|min:1',
+                    'pembimbing_lapangan' => 'required|string|max:255',
+                    'email'               => 'nullable|email',
+                    'koordinat_lokasi'    => 'nullable|string',
+                ]);
 
-        $perusahaan->update($validated);
+                // 2. Paksa status jadi 'approved' (karena yang edit Admin)
+                $validated['status'] = 'approved';
 
-        return redirect()->route('admin.perusahaan.index')
-            ->with('success', 'Data perusahaan berhasil diperbarui.');
-    }
+                // 3. Eksekusi Update
+                $perusahaan->update($validated);
+
+                return redirect()->route('admin.perusahaan.index')
+                    ->with('success', "Data '{$perusahaan->nama}' berhasil diperbarui dan otomatis aktif.");
+            }
 
     public function destroy(Perusahaan $perusahaan)
     {
