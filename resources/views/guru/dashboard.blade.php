@@ -32,7 +32,7 @@
                             <div class="p-2 bg-gray-100 dark:bg-slate-800 rounded-lg mr-3">
                                 <svg class="w-5 h-5 text-secondary-n5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
                             </div>
-                            <span class="font-medium text-sm"><span id="clock"></span> WITA</span>
+                            <span class="font-medium text-sm"><span id="clock"></span> WIB</span>
                         </div>
                     </div>
                 </div>
@@ -90,14 +90,22 @@
         </div>
     </div>
 
-    <script>
-        function updateClock() {
-            const now = new Date();
-            const utc = now.getTime() + (now.getTimezoneOffset() * 60000);
-            const wita = new Date(utc + (8 * 60 * 60 * 1000));
-            document.getElementById('clock').textContent = wita.toLocaleTimeString('id-ID', { hour12: false });
-        }
-        updateClock();
-        setInterval(updateClock, 1000);
-    </script>
+        <script>
+            function updateClock() {
+                const now = new Date();
+                const utc = now.getTime() + (now.getTimezoneOffset() * 60000);
+                // Ganti jadi +7 untuk WIB (Waktu Indonesia Barat)
+                const wib = new Date(utc + (7 * 60 * 60 * 1000)); 
+                
+                document.getElementById('clock').textContent = wib.toLocaleTimeString('id-ID', { 
+                    hour: '2-digit', 
+                    minute: '2-digit', 
+                    second: '2-digit', 
+                    hour12: false 
+                });
+            }
+            updateClock();
+            setInterval(updateClock, 1000);
+        </script>
+
 </x-app-layout>
