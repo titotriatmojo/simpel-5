@@ -79,10 +79,10 @@
                     
                     <div class="p-5 rounded-2xl bg-slate-50 dark:bg-slate-800/50 border border-slate-100 dark:border-slate-700/50">
                         <h4 class="text-secondary-n5 font-bold text-sm flex items-center gap-2 mb-2">
-                            <span>📢</span> Status Data
+                            <span>📢</span> Sinkronisasi Data
                         </h4>
                         <p class="text-gray-600 dark:text-slate-400 text-sm leading-relaxed">
-                            Data bimbingan sedang disinkronisasi. Silakan hubungi admin jika terdapat ketidaksesuaian data.
+                            Harap pastikan setiap data yang dimasukkan ke dalam sistem, baik berupa data siswa maupun laporan kegiatan, sudah akurat. Ketidaksesuaian data dapat mempengaruhi proses sinkronisasi dan penilaian akhir. 
                         </p>
                     </div>
                 </div>
