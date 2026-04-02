@@ -41,33 +41,6 @@ class User extends Authenticatable
         ];
     }
 
-    protected static function booted()
-    {
-        static::created(function ($user) {
-            if ($user->role === 'guru') {
-                $user->guru()->updateOrCreate(
-                    ['user_id' => $user->id],
-                    [
-                        'nama' => $user->name, 
-                        'nip' => 'PENDING-' . $user->id,
-                        'program_studi' => 'Belum Diatur'
-                    ]
-                );
-            } elseif ($user->role === 'siswa') {
-                $user->siswa()->updateOrCreate(
-                    ['user_id' => $user->id],
-                    [
-                        'nama' => $user->name, 
-                        'nim' => 'PENDING-' . $user->id,
-                        'program_studi' => 'Belum Diatur',
-                        'kelas' => '-',
-                        'semester' => '1'
-                    ]
-                );
-            }
-        });
-    }
-
     /*
     |--------------------------------------------------------------------------
     | Relasi Utama
