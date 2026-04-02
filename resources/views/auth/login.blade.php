@@ -11,7 +11,7 @@
         <img src="{{ asset('favicon-n5.png') }}" alt="Logo" class="h-12 w-12 object-contain">
     </div>
         <h2 class="text-2xl font-bold text-slate-900 mb-2">Selamat Datang di SIMPEL-5</h2>
-        <p class="text-slate-700 text-sm">Sistem Informasi Monitoring Praktik Kerja Lapangan SMKN 5</p>
+        <p class="text-slate-700 text-sm">Sistem Monitoring Praktik Kerja Lapangan SMKN 5</p>
     </div>
 
     <form method="POST" action="{{ route('login') }}" class="space-y-6">

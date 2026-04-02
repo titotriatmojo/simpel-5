@@ -7,9 +7,7 @@
                 <h1 class="text-3xl font-bold text-gray-900 dark:text-white mb-2">Selamat datang,
                     {{ auth()->user()->name }}!
                 </h1>
-                <p class="text-gray-900 dark:text-blue-100 text-sm">Di dashboard admin untuk memantau dan mengelola
-                    seluruh data Sistem
-                    Informasi PKL.
+                <p class="text-gray-900 dark:text-blue-100 text-sm">Di dashboard admin untuk memantau dan mengelola seluruh data Praktik Kerja Lapangan.
                 </p>
             </div>
         </div>

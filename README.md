@@ -1,4 +1,4 @@
-# 🎓 SIMPEL-5 (Sistem Informasi Praktik Kerja Lapangan)
+# 🎓 SIMPEL-5 (Sistem Monitoring PKL SMKN 5)
 
 **SIMPEL-5** adalah aplikasi web berbasis Laravel untuk mempermudah pengelolaan proses **Praktik Kerja Lapangan (PKL)** di lingkungan **SMKN 5 Kabupaten Tangerang**. Sistem ini menyediakan fitur lengkap mulai dari pendaftaran PKL, pengajuan tempat PKL, manajemen dan monitoring siswa beserta instansi, upload laporan, penilaian akhir oleh guru pembimbing, hingga prediksi kesiapan kerja siswa.
 

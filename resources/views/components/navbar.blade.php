@@ -24,7 +24,7 @@
                         class="text-xl font-bold bg-gradient-to-r from-gray-900 to-gray-500 dark:from-white dark:to-gray-300 bg-clip-text text-transparent">
                         SIMPEL-5
                     </h2>
-                    <p class="text-xs text-gray-500 dark:text-gray-400 -mt-1">Sistem Informasi PKL SMKN 5</p>
+                    <p class="text-xs text-gray-500 dark:text-gray-400 -mt-1">Sistem Monitoring PKL SMKN 5</p>
                 </div>
             </div>
 
