@@ -15,7 +15,7 @@ class DatabaseSeeder extends Seeder
         // 1. BUAT ADMIN (Tetap 1)
         User::create([
             'name' => 'Admin 1',
-            'email' => 'admin@example.com',
+            'email' => 'admin@gmail.com',
             'password' => Hash::make('password'),
             'role' => 'admin',
         ]);
@@ -24,7 +24,7 @@ class DatabaseSeeder extends Seeder
         for ($i = 1; $i <= 3; $i++) {
             $userGuru = User::create([
                 'name' => 'Guru ' . $i,
-                'email' => 'guru' . $i . '@example.com',
+                'email' => 'guru' . $i . '@gmail.com',
                 'password' => Hash::make('password'),
                 'role' => 'guru',
             ]);
@@ -33,7 +33,7 @@ class DatabaseSeeder extends Seeder
                 'user_id'       => $userGuru->id,
                 'nama'          => $userGuru->name,
                 'nip'           => '1980010' . $i,
-                'program_studi' => 'Teknik Informatika',
+                'program_studi' => 'Multimedia',
             ]);
         }
 
@@ -41,7 +41,7 @@ class DatabaseSeeder extends Seeder
         for ($j = 1; $j <= 3; $j++) {
             $userSiswa = User::create([
                 'name' => 'siswa ' . $j,
-                'email' => 'siswa' . $j . '@example.com',
+                'email' => 'siswa' . $j . '@gmail.com',
                 'password' => Hash::make('password'),
                 'role' => 'siswa',
             ]);
@@ -50,9 +50,9 @@ class DatabaseSeeder extends Seeder
                 'user_id'       => $userSiswa->id,
                 'nama'          => $userSiswa->name,
                 'nim'           => '202400' . $j,
-                'program_studi' => 'Teknik Informatika',
-                'kelas'         => '12 RPL ' . $j,
-                'semester'      => '6',
+                'program_studi' => 'Multimedia',
+                'kelas'         => '12 MM 1 ' . $j,
+                'semester'      => '3',
             ]);
         }
     }
