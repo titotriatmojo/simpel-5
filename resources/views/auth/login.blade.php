@@ -89,7 +89,7 @@
     <div class="mt-6 text-center">
         <p class="text-sm text-slate-700">
             Belum punya akun?
-            <a href="instagram.com/smkn5kabtang" 
+            <a href="https://instagram.com/smkn5kabtang" 
                 target="_blank" rel="noopener noreferrer"
                 class="font-medium text-primary-n5 hover:secondary-n5 transition-colors">
                 Hubungi Administrator
