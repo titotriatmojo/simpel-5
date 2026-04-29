@@ -42,7 +42,6 @@ Untuk semua roles:
 - Pendaftaran PKL dan pantau status pendaftaran dengan guru pembimbing
 - Lihat list perusahaan
 - Tambah rekomendasi perusahaan
-- Ajukan bimbingan PKL
 - Upload laporan PKL
 - Unduh format laporan PKL
 
