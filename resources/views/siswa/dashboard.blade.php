@@ -81,7 +81,7 @@
                             <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
                         </div>
                         <p class="text-gray-500 mb-4">Anda belum mengajukan pendaftaran PKL.</p>
-                        <a href="{{ route('siswa.pendaftaran.create') }}" class="px-6 py-2 bg-gradient-to-r from-primary-n5 to-secondary-n5 text-white font-bold rounded-xl shadow-lg shadow-primary-n5/20 hover:scale-105 transition-transform">
+                        <a href="{{ route('siswa.pendaftaran.index') }}" class="px-6 py-2 bg-gradient-to-r from-primary-n5 to-secondary-n5 text-white font-bold rounded-xl shadow-lg shadow-primary-n5/20 hover:scale-105 transition-transform">
                             Daftar Sekarang
                         </a>
                     </div>
