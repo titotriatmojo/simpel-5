@@ -198,4 +198,109 @@ class SPKController extends Controller
 
         return redirect()->route('guru.spk.index')->with('success', 'Nilai berhasil disimpan!');
     }
+
+    
+    /* Testing & Confusion Matrix */
+    public function testing()
+    {
+        // 1. Ambil semua data dari database
+        $semuaData = DataTraining::all();
+        
+        // 2. Hitung total data untuk statistik di dashboard testing
+        $totalData = $semuaData->count();
+        
+        // 3. Ambil data dengan label tertentu (contoh buat statistik awal)
+        $sesuai = $semuaData->where('label', 'Sesuai')->count();
+        $tidakSesuai = $semuaData->where('label', 'Tidak Sesuai')->count();
+
+        // Kirim data ke view (Nilai TP, TN, dll masih 0 sebelum tombol "Uji" diklik)
+        return view('guru.spk.testing', [
+            'akurasi' => 0,
+            'totalDataUji' => $totalData,
+            'k_value' => 5, // default value
+            'tp' => 0,
+            'tn' => 0,
+            'fp' => 0,
+            'fn' => 0,
+            'data_db' => $semuaData // Kalau mau nampilin tabel datanya juga
+        ]);
+    }
+
+    /**
+     * Memproses perhitungan K-NN untuk uji akurasi
+     */
+        public function prosesUji(Request $request)
+        {
+            // Pakai K=3 sesuai request, atau ambil dari input kalau user ganti
+            $k = $request->k ?? 3;
+
+            // Ambil semua data dari database
+            $dataset = DataTraining::all()->toArray();
+            
+            if (count($dataset) < 1) {
+                return redirect()->back()->with('error', 'Data training kosong!');
+            }
+
+            $tp = 0; $tn = 0; $fp = 0; $fn = 0;
+
+            // Loop Utama: Anggap setiap data di DB adalah "Data Uji"
+            foreach ($dataset as $test) {
+                $distances = [];
+
+                // Loop Pembanding: Bandingkan data uji dengan data lainnya di DB (Data Training)
+                foreach ($dataset as $train) {
+                    // JANGAN bandingkan data dengan dirinya sendiri
+                    if ($test['id'] == $train['id']) {
+                        continue;
+                    }
+
+                    // Hitung Euclidean Distance
+                    $dist = sqrt(
+                        pow((float)$test['nilai_akademik'] - (float)$train['nilai_akademik'], 2) +
+                        pow((float)$test['nilai_instansi'] - (float)$train['nilai_instansi'], 2) +
+                        pow((float)$test['nilai_pembimbing'] - (float)$train['nilai_pembimbing'], 2)
+                    );
+
+                    $distances[] = [
+                        'distance' => $dist,
+                        'label' => $train['label']
+                    ];
+                }
+
+                // Urutkan jarak terdekat (terkecil ke terbesar)
+                usort($distances, fn($a, $b) => $a['distance'] <=> $b['distance']);
+
+                // Ambil 3 tetangga terdekat (K=3)
+                $neighbors = array_slice($distances, 0, $k);
+                $labels = array_column($neighbors, 'label');
+                $counts = array_count_values($labels);
+                
+                // Voting: Ambil label yang paling banyak muncul
+                arsort($counts);
+                $prediction = array_key_first($counts);
+
+                // --- Confusion Matrix Logic (Siap vs Tidak Siap) ---
+                $actual = strtolower(trim($test['label']));
+                $pred = strtolower(trim($prediction));
+
+                if ($actual == 'siap' && $pred == 'siap') $tp++;
+                elseif ($actual == 'tidak siap' && $pred == 'tidak siap') $tn++;
+                elseif ($actual == 'tidak siap' && $pred == 'siap') $fp++;
+                elseif ($actual == 'siap' && $pred == 'tidak siap') $fn++;
+            }
+
+            // Hitung Akurasi dari TOTAL dataset (23 data)
+            $totalUji = count($dataset);
+            $akurasi = ($totalUji > 0) ? (($tp + $tn) / $totalUji) * 100 : 0;
+
+            return view('guru.spk.testing', [
+                'akurasi' => round($akurasi, 2),
+                'totalDataUji' => $totalUji,
+                'k_value' => $k,
+                'tp' => $tp,
+                'tn' => $tn,
+                'fp' => $fp,
+                'fn' => $fn
+            ])->with('success', 'Uji Akurasi Selesai dengan K=3!');
+        }
 }

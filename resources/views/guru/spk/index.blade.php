@@ -42,6 +42,7 @@
             <div>
                 <h1 class="text-3xl font-bold text-gray-900 dark:text-white mb-2 tracking-tight">Analisis Kesiapan Kerja</h1>
                 <p class="text-gray-500 dark:text-gray-400 text-sm">Prediksi kesiapan kerja siswa menggunakan metode <span class="text-primary-n5 dark:text-white font-semibold">K-Nearest Neighbor (KNN)</span>.</p>
+                <p class="text-gray-500 dark:text-gray-400 text-sm">Untuk Confusion Matrix: <a href="{{ route('guru.spk.testing.index') }}" class="text-primary-n5 dark:text-white font-semibold">Disini</a>
             </div>
             <div class="flex items-center gap-3">
                 {{-- TOMBOL EXCEL BARU --}}

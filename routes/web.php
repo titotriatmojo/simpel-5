@@ -144,11 +144,19 @@ Route::middleware(['auth', 'role:guru'])->prefix('guru')->name('guru.')->group(f
             Route::post('/import', [SPKController::class, 'importTraining'])->name('import'); // guru.spk.training.import
         });
 
+                // --- GROUP TESTING (Uji Akurasi & Confusion Matrix) ---
+        // TARUH DI SINI:
+        Route::prefix('testing')->name('testing.')->group(function() {
+            Route::get('/', [SPKController::class, 'testing'])->name('index');            // guru.spk.testing.index
+            Route::post('/proses', [SPKController::class, 'prosesUji'])->name('proses');   // guru.spk.testing.proses
+        });
+
         // --- Input Nilai Siswa & Predict ---
         Route::get('/input/{id}', [SPKController::class, 'input'])->name('input'); 
         Route::post('/input/{id}', [SPKController::class, 'storeInput'])->name('store');
         Route::post('/predict/{id}', [SPKController::class, 'predict'])->name('predict'); 
     });
+
 });
 
 /*
