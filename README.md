@@ -35,7 +35,8 @@ Untuk semua roles:
 - Lihat daftar instansi
 - Input nilai PKL
 - Analisis kesiapan kerja dengan KNN
-- Training dataset dengan KNN (manual & import Excel (soon))
+- Training dataset dengan K-NN (manual & import Excel)
+- Cek akurasi K-NN dengan Confusion Matrix
 
 ### 🎓 Siswa
 
