@@ -20,9 +20,9 @@ class DataTraining extends Model
      */
     protected $fillable = [
         'nama',
-        'nilai_akademik',
-        'nilai_instansi',
-        'nilai_pembimbing',
+        'nilai_pkl',
+        'nilai_sidang',
+        'nilai_total',
         'label',
     ];
 
@@ -31,8 +31,8 @@ class DataTraining extends Model
      * Memastikan nilai yang ditarik dari DB bertipe numerik untuk kebutuhan KNN.
      */
     protected $casts = [
-        'nilai_akademik'   => 'float',
-        'nilai_instansi'   => 'float',
-        'nilai_pembimbing' => 'float',
+        'nilai_pkl'   => 'float',
+        'nilai_sidang'   => 'float',
+        'nilai_total' => 'float',
     ];
 }

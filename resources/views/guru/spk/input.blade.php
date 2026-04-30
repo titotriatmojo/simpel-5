@@ -33,54 +33,42 @@
                         </p>
                     </div>
 
-                    <form action="{{ route('guru.spk.store', $siswa->id) }}" method="POST" class="space-y-6">
-                        @csrf
-                        
-                        {{-- Input Nilai Akademik --}}
-                        <div>
-                            <label for="nilai_akademik" class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">
-                                Rata-rata Nilai Akademik (Rapor)
-                            </label>
-                            <input type="number" step="0.01" name="nilai_akademik" id="nilai_akademik"
-                                value="{{ old('nilai_akademik', $siswa->nilai_akademik) }}" 
-                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-n5 focus:border-primary-n5 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white" 
-                                placeholder="0.00 - 100.00" required>
-                            @error('nilai_akademik')
-                                <p class="mt-1 text-xs text-red-600">{{ $message }}</p>
-                            @enderror
-                        </div>
+                <form action="{{ route('guru.spk.store', $siswa->id) }}" method="POST" class="space-y-6">
+                    @csrf
+                    
+                    {{-- Input Nilai PKL --}}
+                    <div>
+                        <label for="nilai_pkl" class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">
+                            Nilai PKL (Instansi)
+                        </label>
+                        <input type="number" step="0.01" name="nilai_pkl" id="nilai_pkl"
+                            value="{{ old('nilai_pkl', $siswa->nilai_pkl) }}" 
+                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-n5 focus:border-primary-n5 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:text-white" 
+                            placeholder="0.00 - 100.00" required>
+                        @error('nilai_pkl')
+                            <p class="mt-1 text-xs text-red-600">{{ $message }}</p>
+                        @enderror
+                    </div>
 
-                        {{-- Input Nilai Instansi --}}
-                        <div>
-                            <label for="nilai_instansi" class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">
-                                Nilai dari Instansi (DUDI)
-                            </label>
-                            <input type="number" step="0.01" name="nilai_instansi" id="nilai_instansi"
-                                value="{{ old('nilai_instansi', $siswa->nilai_instansi) }}" 
-                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-n5 focus:border-primary-n5 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white" 
-                                placeholder="0.00 - 100.00" required>
-                            @error('nilai_instansi')
-                                <p class="mt-1 text-xs text-red-600">{{ $message }}</p>
-                            @enderror
-                        </div>
+                    {{-- Nilai Guru (AUTO / READ ONLY) --}}
+                    <div class="bg-primary-n5/20 p-4 rounded-lg flex justify-between items-center">
+                        <span class="text-sm font-medium text-primary-n5 dark:text-white">
+                            Nilai Sidang (Guru)
+                        </span>
+                        <span class="text-lg font-bold text-primary-n5 dark:text-white">
+                            {{ number_format(optional($siswa->nilaiPkl)->nilai ?? 0, 2) }}
+                        </span>
+                    </div>
 
-                        {{-- Info Nilai Pembimbing (Read Only) --}}
-                        <div class="bg-primary-n5/20 dark:bg-primary-n5/20 p-4 rounded-lg flex justify-between items-center">
-                            <span class="text-sm text-primary-n5 dark:text-white font-medium">Nilai Pembimbing (PKL):</span>
-                            <span class="text-lg font-bold text-primary-n5 dark:text-white">
-                                {{ $siswa->nilaiPkl->nilai ?? '0.00' }}
-                            </span>
-                        </div>
-
-                        <div class="flex items-center justify-end gap-3 mt-8">
-                            <a href="{{ route('guru.spk.index') }}" class="text-gray-600 dark:text-gray-400 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 hover:bg-gray-50 font-medium rounded-lg text-sm px-5 py-2.5 focus:outline-none">
-                                Batal
-                            </a>
-                            <button type="submit" class="text-white bg-primary-n5 hover:bg-primary-n5/90 focus:ring-4 focus:ring-primary-n5/70 font-medium rounded-lg text-sm px-5 py-2.5 focus:outline-none">
-                                Simpan Perubahan
-                            </button>
-                        </div>
-                    </form>
+                    <div class="flex items-center justify-end gap-3 mt-8">
+                        <a href="{{ route('guru.spk.index') }}" class="text-gray-600 bg-white border border-gray-300 hover:bg-gray-50 font-medium rounded-lg text-sm px-5 py-2.5">
+                            Batal
+                        </a>
+                        <button type="submit" class="text-white bg-primary-n5 hover:bg-primary-n5/90 rounded-lg text-sm px-5 py-2.5">
+                            Simpan
+                        </button>
+                    </div>
+                </form>
                 </div>
             </div>
         </div>

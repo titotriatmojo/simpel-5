@@ -35,9 +35,9 @@ class DataTrainingSeeder extends Seeder
 
             DataTraining::create([
                 'nama' => $faker->name(), // Nama Indonesia (Budi Santoso, Siti Aminah, dll)
-                'nilai_akademik' => $val[0],
-                'nilai_instansi' => $val[1],
-                'nilai_pembimbing' => $val[2],
+                'nilai_pkl' => $val[0],
+                'nilai_sidang' => $val[1],
+                'nilai_total' => $val[2],
                 'label' => $label,
             ]);
         }

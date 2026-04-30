@@ -23,8 +23,8 @@ class User extends Authenticatable
         'password',
         'role',
         'guru_id',
-        'nilai_akademik', 
-        'nilai_instansi', 
+        'nilai_pkl', 
+        'nilai_sidang', 
         'hasil_prediksi', 
     ];
 

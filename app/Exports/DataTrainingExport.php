@@ -10,11 +10,11 @@ class DataTrainingExport implements FromCollection, WithHeadings
 {
     public function collection()
     {
-        return DataTraining::all(['nama', 'nilai_akademik', 'nilai_instansi', 'nilai_pembimbing', 'label']);
+        return DataTraining::all(['nama', 'nilai_pkl', 'nilai_sidang', 'nilai_total', 'label']);
     }
 
     public function headings(): array
     {
-        return ['Nama', 'Nilai Akademik', 'Nilai Instansi', 'Nilai Pembimbing', 'Label'];
+        return ['Nama', 'Nilai PKL', 'Nilai Sidang', 'Nilai Total', 'Label'];
     }
 }

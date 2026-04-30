@@ -11,11 +11,14 @@ class DataTrainingImport implements ToModel, WithHeadingRow
     public function model(array $row)
     {
         return new DataTraining([
-            'nama'             => $row['nama'],
-            'nilai_akademik'   => $row['nilai_akademik'],
-            'nilai_instansi'   => $row['nilai_instansi'],
-            'nilai_pembimbing' => $row['nilai_pembimbing'],
-            'label'            => $row['label'], // Harus 'Siap' atau 'Tidak Siap'
+            'nama'          => $row['nama'],
+            'nilai_pkl'     => $row['nilai_pkl'],
+            'nilai_sidang'  => $row['nilai_sidang'],
+            'nilai_total'   => $row['nilai_total'],
+            'label'         => ucfirst(strtolower(trim($row['label'])))
         ]);
+        \Log::info($data);
+
+    return $data;
     }
 }

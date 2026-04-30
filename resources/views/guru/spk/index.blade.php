@@ -71,9 +71,9 @@
                     <tr class="bg-gray-50 dark:bg-white/[0.02] text-gray-500 dark:text-gray-400 text-[10px] uppercase tracking-[0.15em] font-black">
                         <th class="px-6 py-4 text-center">Aksi</th>
                         <th class="px-6 py-4">Siswa</th>
-                        <th class="px-6 py-4 text-center border-x border-gray-200 dark:border-white/10">Nilai Akademik</th>
-                        <th class="px-6 py-4 text-center border-r border-gray-200 dark:border-white/10">Nilai Instansi</th>
-                        <th class="px-6 py-4 text-center">Nilai Pembimbing</th>
+                        <th class="px-6 py-4 text-center border-x border-gray-200 dark:border-white/10">Nilai PKL</th>
+                        <th class="px-6 py-4 text-center border-r border-gray-200 dark:border-white/10">Nilai Sidang</th>
+                        <th class="px-6 py-4 text-center">Nilai Total</th>
                         <th class="px-6 py-4 text-center">Hasil Prediksi</th>
                     </tr>
                 </thead>
@@ -83,7 +83,7 @@
                         
                         {{-- Aksi --}}
                         <td class="px-6 py-4 text-center">
-                            @if($s->nilai_akademik && $s->nilai_instansi && optional($s->nilaiPkl)->nilai)
+                            @if($s->nilai_pkl && $s->nilai_sidang && optional($s->nilaiPkl)->nilai)
                                 <form action="{{ route('guru.spk.predict', $s->id) }}" method="POST">
                                     @csrf
                                     <button type="submit" class="p-2.5 bg-primary-n5 hover:secondary-n5/20 text-white rounded-xl shadow-lg shadow-blue-500/20 transition-all active:scale-95 group-hover:scale-110">
@@ -105,11 +105,11 @@
                             </div>
                         </td>
 
-                        {{-- Akademik --}}
+                        {{-- NILAI PKL --}}
                         <td class="px-6 py-4 text-center border-x border-gray-200 dark:border-white/10">
                             <a href="{{ route('guru.spk.input', $s->id) }}" class="inline-block group-hover:scale-110 transition-transform">
-                                @if($s->nilai_akademik)
-                                    <span class="text-gray-900 dark:text-white font-mono font-bold text-base bg-blue-500/5 px-2 py-1 rounded-md border border-blue-500/10">{{ $s->nilai_akademik }}</span>
+                                @if($s->nilai_pkl)
+                                    <span class="text-gray-900 dark:text-white font-mono font-bold text-base bg-blue-500/5 px-2 py-1 rounded-md border border-blue-500/10">{{ $s->nilai_pkl }}</span>
                                 @else
                                     <span class="inline-flex items-center px-3 py-1.5 rounded-lg border border-dashed border-gray-300 dark:border-white/20 text-gray-400 hover:text-blue-500 hover:border-blue-500 transition-all text-[10px] font-bold uppercase tracking-tighter">
                                         <svg class="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M12 4v16m8-8H4"/></svg> Input
@@ -118,28 +118,34 @@
                             </a>
                         </td>
 
-                        {{-- Instansi --}}
-                        <td class="px-6 py-4 text-center border-r border-gray-200 dark:border-white/10">
-                            <a href="{{ route('guru.spk.input', $s->id) }}" class="inline-block group-hover:scale-110 transition-transform">
-                                @if($s->nilai_instansi)
-                                    <span class="text-gray-900 dark:text-white font-mono font-bold text-base bg-purple-500/5 px-2 py-1 rounded-md border border-purple-500/10">{{ $s->nilai_instansi }}</span>
-                                @else
-                                    <span class="inline-flex items-center px-3 py-1.5 rounded-lg border border-dashed border-gray-300 dark:border-white/20 text-gray-400 hover:text-blue-500 hover:border-blue-500 transition-all text-[10px] font-bold uppercase tracking-tighter">
-                                        <svg class="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M12 4v16m8-8H4"/></svg> Input
-                                    </span>
-                                @endif
-                            </a>
-                        </td>
-
-                        {{-- NILAI PEMBIMBING --}}
+                        {{-- NILAI SIDANG --}}
                         <td class="px-6 py-4 text-sm text-center">
                             @if(optional($s->nilaiPkl)->nilai)
-                                <span class="px-3 py-1 bg-primary-n5 text-white rounded-lg font-mono font-black shadow-sm">
+                                <span class="text-gray-900 dark:text-white font-mono font-bold text-base bg-blue-500/5 px-2 py-1 rounded-md border border-blue-500/10">
                                     {{ number_format($s->nilaiPkl->nilai, 2) }}
                                 </span>
                             @else
                                 <span class="text-[10px] font-bold uppercase tracking-tighter text-gray-400 dark:text-gray-500 italic">Belum Dinilai</span>
                             @endif
+                        </td>
+
+                        {{-- TOTAL --}}
+                        <td class="px-6 py-4 text-center border-r border-gray-200 dark:border-white/10">
+                            <a class="inline-block group-hover:scale-110 transition-transform">
+                                @php
+                                    $pkl = $s->nilai_pkl ?? 0;
+                                    $sidang = optional($s->nilaiPkl)->nilai ?? 0;
+                                    $total = ($pkl && $sidang) ? ($pkl + $sidang) / 2 : null;
+                                @endphp
+
+                                @if($total)
+                                    <span class="px-3 py-1 bg-primary-n5 text-white rounded-lg font-mono font-black shadow-sm">
+                                        {{ number_format($total, 2) }}
+                                    </span>
+                                @else
+                                    <span class="text-[10px] text-gray-400 italic">Belum Lengkap</span>
+                                @endif
+                            </a>
                         </td>
 
                         {{-- Prediksi --}}

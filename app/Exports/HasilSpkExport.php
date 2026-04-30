@@ -45,9 +45,9 @@ class HasilSpkExport implements FromCollection, WithHeadings, WithMapping, Shoul
             'No',
             'Nama Siswa',
             'NISN',
-            'Nilai Akademik',
-            'Nilai Instansi',
-            'Nilai Pembimbing',
+            'Nilai PKL',
+            'Nilai Sidang',
+            'Nilai Total',
             'Hasil Prediksi KNN',
             'Tanggal Analisis'
         ];
@@ -64,8 +64,8 @@ class HasilSpkExport implements FromCollection, WithHeadings, WithMapping, Shoul
             $no++,
             $user->name,
             $user->siswa->nim ?? '-',
-            $user->nilai_akademik ?? '0',
-            $user->nilai_instansi ?? '0',
+            $user->nilai_pkl ?? '0',
+            $user->nilai_sidang ?? '0',
             optional($user->nilaiPkl)->nilai ?? '0',
             $user->hasil_prediksi ?? 'Belum Dianalisis',
             $user->updated_at->format('d/m/Y H:i')

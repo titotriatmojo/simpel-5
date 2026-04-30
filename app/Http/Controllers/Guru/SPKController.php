@@ -9,17 +9,12 @@ use App\Models\DataTraining;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Maatwebsite\Excel\Facades\Excel;
-use Illuminate\Support\Facades\DB;
 use App\Exports\HasilSpkExport;
-use App\Exports\DataTrainingExport; // Tambahkan ini
-use App\Imports\DataTrainingImport; // Tambahkan ini
-
+use App\Exports\DataTrainingExport;
+use App\Imports\DataTrainingImport;
 
 class SPKController extends Controller
 {
-    /**
-     * Index: Daftar Siswa & Export Hasil Prediksi
-     */
     public function index(Request $request)
     {
         $userId = Auth::id(); 
@@ -37,7 +32,7 @@ class SPKController extends Controller
                 $q->where('guru_id', $guruId)
                   ->where('status', 'diterima');
             })
-            ->with(['siswa', 'nilaiPkl']);
+            ->with(['siswa']);
 
         if ($request->filled('search')) {
             $search = $request->search;
@@ -49,7 +44,6 @@ class SPKController extends Controller
             });
         }
 
-        // Export Hasil Prediksi (Halaman Index)
         if ($request->query('export') === 'excel') {
             $fileName = 'Hasil_Prediksi_KNN_' . now()->format('d-m-Y') . '.xlsx';
             return Excel::download(new HasilSpkExport($guruId), $fileName);
@@ -59,105 +53,93 @@ class SPKController extends Controller
         return view('guru.spk.index', compact('siswas'));
     }
 
-            //import hasil prediksi
-        public function truncateTraining()
-        {
-            try {
-                // Cara 1: Menggunakan Model (Lebih disarankan di Laravel)
-                DataTraining::truncate(); 
-
-                // Cara 2: Menggunakan DB facade (Jika cara 1 ada kendala foreign key)
-                // DB::table('data_trainings')->truncate(); 
-                
-                return redirect()->route('guru.spk.training.index')
-                                ->with('success', 'Seluruh dataset alumni berhasil dikosongkan!');
-            } catch (\Exception $e) {
-                return redirect()->back()
-                                ->with('error', 'Gagal menghapus data: ' . $e->getMessage());
-            }
-        }
+    public function truncateTraining()
+    {
+        DataTraining::truncate(); 
+        return redirect()->route('guru.spk.training.index')
+            ->with('success', 'Dataset berhasil dikosongkan.');
+    }
 
     /**
-     * Prediksi KNN
+     * 🔥 PREDICT KNN
      */
     public function predict($id)
     {
-        $siswa = User::with('nilaiPkl')->findOrFail($id);
+        $siswa = User::findOrFail($id);
         $dataset = DataTraining::all();
 
         if ($dataset->isEmpty()) {
-            return back()->with('error', 'Prediksi gagal! Dataset alumni kosong.');
+            return back()->with('error', 'Dataset kosong.');
         }
 
-        $x1 = (float) ($siswa->nilai_akademik ?? 0);
-        $x2 = (float) ($siswa->nilai_instansi ?? 0);
-        $x3 = (float) ($siswa->nilaiPkl->nilai ?? 0); 
+        $x1 = (float) ($siswa->nilai_pkl ?? 0);
+        $x2 = (float) (optional($siswa->nilaiPkl)->nilai ?? 0); // ini jadi sidang (guru)
+        $x3 = ($x1 + $x2) / 2;
 
         if ($x1 <= 0 || $x2 <= 0 || $x3 <= 0) {
-            return back()->with('error', 'Gagal! Pastikan Nilai Akademik, Instansi, dan Pembimbing sudah terisi.');
+            return back()->with('error', 'Nilai PKL, Sidang, dan Total harus diisi.');
         }
 
         $distances = [];
+
         foreach ($dataset as $data) {
-            $distance = sqrt(
-                pow(($data->nilai_akademik - $x1), 2) +
-                pow(($data->nilai_instansi - $x2), 2) +
-                pow(($data->nilai_pembimbing - $x3), 2)
-            );
-            $distances[] = ['jarak' => $distance, 'label' => $data->label];
+        $distance = sqrt(
+            pow(($data->nilai_pkl - $x1), 2) +
+            pow(($data->nilai_sidang - $x2), 2) +
+            pow((($data->nilai_pkl + $data->nilai_sidang)/2 - $x3), 2)
+        );
+
+            $distances[] = [
+                'jarak' => $distance,
+                'label' => strtolower(trim($data->label))
+            ];
         }
 
         usort($distances, fn($a, $b) => $a['jarak'] <=> $b['jarak']);
-        
+
         $k = 3;
         $neighbors = array_slice($distances, 0, $k);
+
         $labels = array_column($neighbors, 'label');
         $counts = array_count_values($labels);
         arsort($counts);
-        $hasilPrediksi = array_key_first($counts);
+
+        $hasilPrediksi = ucfirst(array_key_first($counts));
 
         $siswa->update(['hasil_prediksi' => $hasilPrediksi]);
 
-        return redirect()->route('guru.spk.index')->with('success', "Analisis Selesai! Hasil: $hasilPrediksi");
+        return redirect()->route('guru.spk.index')
+            ->with('success', "Hasil Prediksi: $hasilPrediksi");
     }
 
-    /**
-     * Halaman Data Training
-     */
-    public function training() 
+    public function training()
     {
-        // Ambil data terbaru
         $trainingData = DataTraining::latest()->get(); 
-        
-        // Kirim ke view dengan nama 'trainingData'
         return view('guru.spk.training', compact('trainingData'));
     }
-    /**
-     * Store Data Training Manual
-     */
-    public function storeTraining(Request $request) {
+
+    public function storeTraining(Request $request)
+    {
         $data = $request->validate([
             'nama' => 'nullable|string',
-            'nilai_akademik' => 'required|numeric|min:0|max:100',
-            'nilai_instansi' => 'required|numeric|min:0|max:100',
-            'nilai_pembimbing' => 'required|numeric|min:0|max:100',
+            'nilai_pkl' => 'required|numeric|min:0|max:100',
+            'nilai_sidang' => 'required|numeric|min:0|max:100',
+            'nilai_total' => 'required|numeric|min:0|max:100',
             'label' => 'required|string',
         ]);
+
+        $data['label'] = ucfirst(strtolower(trim($data['label'])));
+
         DataTraining::create($data);
-        return redirect()->back()->with('success', 'Data training berhasil ditambahkan.');
+
+        return back()->with('success', 'Data training ditambahkan.');
     }
 
-    /**
-     * Export Data Training
-     */
     public function exportTraining()
     {
-        return Excel::download(new DataTrainingExport, 'Dataset_Alumni_' . now()->format('d-m-Y') . '.xlsx');
+        return Excel::download(new DataTrainingExport, 'Dataset.xlsx');
     }
 
-    /**
-     * Import Data Training
-     */
     public function importTraining(Request $request)
     {
         $request->validate([
@@ -166,141 +148,149 @@ class SPKController extends Controller
 
         try {
             Excel::import(new DataTrainingImport, $request->file('file'));
-            return back()->with('success', 'Data training berhasil diimport!');
+            return back()->with('success', 'Import berhasil!');
         } catch (\Exception $e) {
-            return back()->with('error', 'Gagal mengimport data. Pastikan format file benar.');
+            return back()->with('error', $e->getMessage());
         }
     }
 
-    public function destroyTraining($id) {
+    public function destroyTraining($id)
+    {
         DataTraining::findOrFail($id)->delete();
-        return redirect()->back()->with('success', 'Data training telah dihapus.');
+        return back()->with('success', 'Data dihapus.');
     }
 
-    /**
-     * Input Nilai Akademik & Instansi Siswa
-     */
-    public function input($id) {
-        $siswa = User::with('siswa')->findOrFail($id);
+    public function input($id)
+    {
+        $siswa = User::findOrFail($id);
         return view('guru.spk.input', compact('siswa'));
     }
 
-    public function storeInput(Request $request, $id) {
+    public function storeInput(Request $request, $id)
+    {
         $request->validate([
-            'nilai_akademik' => 'required|numeric|min:0|max:100',
-            'nilai_instansi' => 'required|numeric|min:0|max:100',
+            'nilai_pkl' => 'required|numeric|min:0|max:100',
         ]);
 
-        User::findOrFail($id)->update([
-            'nilai_akademik' => $request->nilai_akademik,
-            'nilai_instansi' => $request->nilai_instansi,
+        $siswa = User::findOrFail($id);
+
+        // ambil nilai guru (sidang)
+        $nilaiSidang = (float) (optional($siswa->nilaiPkl)->nilai ?? 0);
+
+        // hitung total otomatis
+        $nilaiTotal = ($request->nilai_pkl + $nilaiSidang) / 2;
+
+        $siswa->update([
+            'nilai_pkl'   => $request->nilai_pkl,
+            'nilai_sidang'=> $nilaiSidang, // auto dari DB
+            'nilai_total' => $nilaiTotal,  // auto hitung
         ]);
 
-        return redirect()->route('guru.spk.index')->with('success', 'Nilai berhasil disimpan!');
+        return redirect()->route('guru.spk.index')
+            ->with('success', 'Nilai berhasil disimpan (auto hitung total & sidang).');
     }
-
-    
-    /* Testing & Confusion Matrix */
+    //page
     public function testing()
     {
-        // 1. Ambil semua data dari database
-        $semuaData = DataTraining::all();
-        
-        // 2. Hitung total data untuk statistik di dashboard testing
-        $totalData = $semuaData->count();
-        
-        // 3. Ambil data dengan label tertentu (contoh buat statistik awal)
-        $sesuai = $semuaData->where('label', 'Sesuai')->count();
-        $tidakSesuai = $semuaData->where('label', 'Tidak Sesuai')->count();
-
-        // Kirim data ke view (Nilai TP, TN, dll masih 0 sebelum tombol "Uji" diklik)
         return view('guru.spk.testing', [
             'akurasi' => 0,
-            'totalDataUji' => $totalData,
-            'k_value' => 5, // default value
             'tp' => 0,
             'tn' => 0,
             'fp' => 0,
             'fn' => 0,
-            'data_db' => $semuaData // Kalau mau nampilin tabel datanya juga
+            'k_value' => 3,
+            'totalDataUji' => 0
         ]);
     }
-
     /**
-     * Memproses perhitungan K-NN untuk uji akurasi
+     * 🔥 TESTING (CONFUSION MATRIX)
      */
-        public function prosesUji(Request $request)
-        {
-            // Pakai K=3 sesuai request, atau ambil dari input kalau user ganti
-            $k = $request->k ?? 3;
+    public function prosesUji()
+    {
+        $k = 3;
+        $fold = 5;
 
-            // Ambil semua data dari database
-            $dataset = DataTraining::all()->toArray();
-            
-            if (count($dataset) < 1) {
-                return redirect()->back()->with('error', 'Data training kosong!');
+        // Ambil data & shuffle dengan seed biar reproducible
+        $dataset = DataTraining::all()->shuffle(42)->values()->toArray();
+
+        // === STRATIFIED GROUPING ===
+        $siap = array_values(array_filter($dataset, fn($d) => strtolower(trim($d['label'])) === 'siap'));
+        $tidak = array_values(array_filter($dataset, fn($d) => strtolower(trim($d['label'])) === 'tidak siap'));
+
+        $folds = array_fill(0, $fold, []);
+
+        // distribusi rata per kelas ke tiap fold
+        $distribute = function($classData) use (&$folds, $fold) {
+            $i = 0;
+            foreach ($classData as $item) {
+                $folds[$i % $fold][] = $item;
+                $i++;
+            }
+        };
+
+        $distribute($siap);
+        $distribute($tidak);
+
+        $totalTp = $totalTn = $totalFp = $totalFn = 0;
+
+        for ($i = 0; $i < $fold; $i++) {
+
+            $testing = $folds[$i];
+
+            $training = [];
+            for ($j = 0; $j < $fold; $j++) {
+                if ($j != $i) {
+                    $training = array_merge($training, $folds[$j]);
+                }
             }
 
-            $tp = 0; $tn = 0; $fp = 0; $fn = 0;
+            foreach ($testing as $test) {
 
-            // Loop Utama: Anggap setiap data di DB adalah "Data Uji"
-            foreach ($dataset as $test) {
                 $distances = [];
 
-                // Loop Pembanding: Bandingkan data uji dengan data lainnya di DB (Data Training)
-                foreach ($dataset as $train) {
-                    // JANGAN bandingkan data dengan dirinya sendiri
-                    if ($test['id'] == $train['id']) {
-                        continue;
-                    }
-
-                    // Hitung Euclidean Distance
-                    $dist = sqrt(
-                        pow((float)$test['nilai_akademik'] - (float)$train['nilai_akademik'], 2) +
-                        pow((float)$test['nilai_instansi'] - (float)$train['nilai_instansi'], 2) +
-                        pow((float)$test['nilai_pembimbing'] - (float)$train['nilai_pembimbing'], 2)
-                    );
+                foreach ($training as $train) {
 
                     $distances[] = [
-                        'distance' => $dist,
-                        'label' => $train['label']
+                        'distance' => sqrt(
+                            pow($test['nilai_pkl'] - $train['nilai_pkl'], 2) +
+                            pow($test['nilai_sidang'] - $train['nilai_sidang'], 2)
+                        ),
+                        'label' => strtolower(trim($train['label']))
                     ];
                 }
 
-                // Urutkan jarak terdekat (terkecil ke terbesar)
                 usort($distances, fn($a, $b) => $a['distance'] <=> $b['distance']);
 
-                // Ambil 3 tetangga terdekat (K=3)
                 $neighbors = array_slice($distances, 0, $k);
                 $labels = array_column($neighbors, 'label');
+
                 $counts = array_count_values($labels);
-                
-                // Voting: Ambil label yang paling banyak muncul
                 arsort($counts);
+
                 $prediction = array_key_first($counts);
-
-                // --- Confusion Matrix Logic (Siap vs Tidak Siap) ---
                 $actual = strtolower(trim($test['label']));
-                $pred = strtolower(trim($prediction));
 
-                if ($actual == 'siap' && $pred == 'siap') $tp++;
-                elseif ($actual == 'tidak siap' && $pred == 'tidak siap') $tn++;
-                elseif ($actual == 'tidak siap' && $pred == 'siap') $fp++;
-                elseif ($actual == 'siap' && $pred == 'tidak siap') $fn++;
+                if ($actual === 'siap' && $prediction === 'siap') $totalTp++;
+                elseif ($actual === 'tidak siap' && $prediction === 'tidak siap') $totalTn++;
+                elseif ($actual === 'tidak siap' && $prediction === 'siap') $totalFp++;
+                elseif ($actual === 'siap' && $prediction === 'tidak siap') $totalFn++;
             }
-
-            // Hitung Akurasi dari TOTAL dataset (23 data)
-            $totalUji = count($dataset);
-            $akurasi = ($totalUji > 0) ? (($tp + $tn) / $totalUji) * 100 : 0;
-
-            return view('guru.spk.testing', [
-                'akurasi' => round($akurasi, 2),
-                'totalDataUji' => $totalUji,
-                'k_value' => $k,
-                'tp' => $tp,
-                'tn' => $tn,
-                'fp' => $fp,
-                'fn' => $fn
-            ])->with('success', 'Uji Akurasi Selesai dengan K=3!');
         }
+
+        $totalData = $totalTp + $totalTn + $totalFp + $totalFn;
+
+        $akurasi = $totalData > 0
+            ? (($totalTp + $totalTn) / $totalData) * 100
+            : 0;
+
+        return view('guru.spk.testing', [
+            'akurasi' => round($akurasi, 2),
+            'tp' => $totalTp,
+            'tn' => $totalTn,
+            'fp' => $totalFp,
+            'fn' => $totalFn,
+            'k_value' => $k,
+            'totalDataUji' => $totalData
+        ]);
+    }
 }

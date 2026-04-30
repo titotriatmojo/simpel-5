@@ -18,11 +18,11 @@ return new class extends Migration
         }
 
         // Kolom tambahan untuk parameter KNN lo
-        $table->decimal('nilai_akademik', 5, 2)->nullable()->after('password');
-        $table->decimal('nilai_instansi', 5, 2)->nullable()->after('nilai_akademik');
+        $table->decimal('nilai_pkl', 5, 2)->nullable()->after('password');
+        $table->decimal('nilai_sidang', 5, 2)->nullable()->after('nilai_pkl');
         
         // Kolom untuk menyimpan hasil akhir KNN
-        $table->string('hasil_prediksi')->nullable()->after('nilai_instansi');
+        $table->string('hasil_prediksi')->nullable()->after('nilai_sidang');
     });
 }
 
@@ -30,7 +30,7 @@ public function down(): void
 {
     Schema::table('users', function (Blueprint $table) {
         $table->dropForeign(['guru_id']);
-        $table->dropColumn(['guru_id', 'nilai_akademik', 'nilai_instansi', 'hasil_prediksi']);
+        $table->dropColumn(['guru_id', 'nilai_pkl', 'nilai_sidang', 'hasil_prediksi']);
     });
 }
 };  

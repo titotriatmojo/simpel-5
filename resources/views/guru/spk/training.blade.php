@@ -58,7 +58,7 @@
                                 <div class="mb-6">
                                     <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Pilih File Excel (.xlsx)</label>
                                     <input type="file" name="file" accept=".xlsx, .xls" required class="block w-full text-sm text-gray-500 file:mr-4 file:py-2.5 file:px-4 file:rounded-xl file:border-0 file:text-sm file:font-bold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 dark:file:bg-white/5 dark:file:text-white">
-                                    <p class="mt-2 text-xs text-gray-500 italic">* Format kolom: Nama, Nilai Akademik, Nilai Instansi, Nilai Pembimbing, Label (Siap/Tidak Siap)</p>
+                                    <p class="mt-2 text-xs text-gray-500 italic">* Format kolom: Nama, Nilai PKL, Nilai Sidang, Nilai Total, Label (Siap/Tidak Siap)</p>
                                 </div>
                                 <div class="flex justify-end gap-3">
                                     <button type="button" @click="openImport = false" class="px-4 py-2 text-sm font-bold text-gray-500 hover:text-gray-700">Batal</button>
@@ -90,18 +90,18 @@
 
                     <div class="grid grid-cols-2 gap-4">
                         <div>
-                            <label class="block text-[10px] font-semibold text-gray-500 dark:text-gray-400 uppercase mb-2 ml-1">Akademik</label>
-                            <input type="number" name="nilai_akademik" step="0.01" min="0" max="100" required placeholder="0-100" class="w-full bg-gray-50 dark:bg-white/5 border border-gray-200 dark:border-white/10 rounded-xl px-4 py-3 text-sm outline-none transition-all focus:ring-2 focus:ring-blue-500 dark:text-white">
+                            <label class="block text-[10px] font-semibold text-gray-500 dark:text-gray-400 uppercase mb-2 ml-1">Nilai PKL</label>
+                            <input type="number" name="nilai_pkl" step="0.01" min="0" max="100" required placeholder="0-100" class="w-full bg-gray-50 dark:bg-white/5 border border-gray-200 dark:border-white/10 rounded-xl px-4 py-3 text-sm outline-none transition-all focus:ring-2 focus:ring-blue-500 dark:text-white">
                         </div>
                         <div>
-                            <label class="block text-[10px] font-semibold text-gray-500 dark:text-gray-400 uppercase mb-2 ml-1">Instansi</label>
-                            <input type="number" name="nilai_instansi" step="0.01" min="0" max="100" required placeholder="0-100" class="w-full bg-gray-50 dark:bg-white/5 border border-gray-200 dark:border-white/10 rounded-xl px-4 py-3 text-sm outline-none transition-all focus:ring-2 focus:ring-blue-500 dark:text-white">
+                            <label class="block text-[10px] font-semibold text-gray-500 dark:text-gray-400 uppercase mb-2 ml-1">Nilai Sidang</label>
+                            <input type="number" name="nilai_sidang" step="0.01" min="0" max="100" required placeholder="0-100" class="w-full bg-gray-50 dark:bg-white/5 border border-gray-200 dark:border-white/10 rounded-xl px-4 py-3 text-sm outline-none transition-all focus:ring-2 focus:ring-blue-500 dark:text-white">
                         </div>
                     </div>
 
                     <div>
-                        <label class="block text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase mb-2 ml-1">Nilai Pembimbing</label>
-                        <input type="number" name="nilai_pembimbing" step="0.01" min="0" max="100" required placeholder="0-100" class="w-full bg-gray-50 dark:bg-white/5 border border-gray-200 dark:border-white/10 rounded-xl px-4 py-3 text-sm outline-none transition-all focus:ring-2 focus:ring-blue-500 dark:text-white">
+                        <label class="block text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase mb-2 ml-1">Nilai Total</label>
+                        <input type="number" name="nilai_total" step="0.01" min="0" max="100" required placeholder="0-100" class="w-full bg-gray-50 dark:bg-white/5 border border-gray-200 dark:border-white/10 rounded-xl px-4 py-3 text-sm outline-none transition-all focus:ring-2 focus:ring-blue-500 dark:text-white">
                     </div>
 
                     <div>
@@ -147,9 +147,9 @@
                                     <div class="font-medium text-gray-900 dark:text-white">{{ $data->nama ?? 'Anonim' }}</div>
                                     <div class="text-[10px] text-gray-400">ID: #TRN-{{ str_pad($data->id, 3, '0', STR_PAD_LEFT) }}</div>
                                 </td>
-                                <td class="px-2 py-4 text-center font-mono text-xs">{{ $data->nilai_akademik }}</td>
-                                <td class="px-2 py-4 text-center font-mono text-xs">{{ $data->nilai_instansi }}</td>
-                                <td class="px-2 py-4 text-center font-mono text-xs">{{ $data->nilai_pembimbing }}</td>
+                                <td class="px-2 py-4 text-center font-mono text-xs">{{ $data->nilai_pkl }}</td>
+                                <td class="px-2 py-4 text-center font-mono text-xs">{{ $data->nilai_sidang }}</td>
+                                <td class="px-2 py-4 text-center font-mono text-xs">{{ $data->nilai_total }}</td>
                                 <td class="px-4 py-4 text-center">
                                     @if($data->label == 'Siap')
                                         <span class="px-3 py-1 bg-green-500/10 text-green-500 rounded-full text-[9px] font-black uppercase tracking-tighter border border-green-500/20">SIAP</span>

@@ -14,9 +14,9 @@ return new class extends Migration
     Schema::create('data_trainings', function (Blueprint $table) {
         $table->id();
         $table->string('nama')->nullable(); // TAMBAHKAN INI
-        $table->double('nilai_akademik');
-        $table->double('nilai_instansi');
-        $table->double('nilai_pembimbing');
+        $table->double('nilai_pkl');
+        $table->double('nilai_sidang');
+        $table->double('nilai_total');
         $table->string('label'); // Siap / Tidak Siap
         $table->timestamps();
     });
