@@ -34,7 +34,7 @@
                     <tr class="bg-gray-50 dark:bg-white/[0.02] text-gray-500 dark:text-gray-400 text-[10px] uppercase tracking-[0.15em] font-black">
                         <th class="px-6 py-4 text-center">Aksi</th>
                         <th class="px-6 py-4">Siswa</th>
-                        <th class="px-6 py-4 text-center border-x border-gray-200 dark:border-white/10">Nilai Instansi PKL</th>
+                        <th class="px-6 py-4 text-center border-x border-gray-200 dark:border-white/10">Nilai Instansi</th>
                         <th class="px-6 py-4 text-center border-r border-gray-200 dark:border-white/10">Nilai Sidang</th>
                         <th class="px-6 py-4 text-center">Nilai Total</th>
                         <th class="px-6 py-4 text-center">Hasil Prediksi</th>
