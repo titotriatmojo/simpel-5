@@ -24,7 +24,7 @@
                 <div class="p-8">
                     <div class="mb-6 border-b border-gray-100 dark:border-gray-700 pb-4">
                         <h2 class="text-xl font-semibold text-gray-800 dark:text-white">
-                            Input Parameter KNN
+                            Input Nilai Instasi PKL
                         </h2>
                         <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">
                             Siswa: <span class="font-bold text-primary-n5 dark:text-white">{{ $siswa->siswa->nama ?? $siswa->name }}</span> 
@@ -39,7 +39,7 @@
                     {{-- Input Nilai PKL --}}
                     <div>
                         <label for="nilai_pkl" class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">
-                            Nilai PKL (Instansi)
+                            Nilai PKL dari Instansi
                         </label>
                         <input type="number" step="0.01" name="nilai_pkl" id="nilai_pkl"
                             value="{{ old('nilai_pkl', $siswa->nilai_pkl) }}" 

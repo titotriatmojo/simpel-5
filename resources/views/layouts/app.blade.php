@@ -104,16 +104,51 @@
         <main class="flex-1 h-[calc(100vh-4rem)] overflow-y-auto custom-scrollbar bg-white dark:bg-slate-900 transition-all duration-300">
             <div class="px-4 md:px-8 py-8">
                 
-                {{-- Alert System --}}
-                @if(session('success'))
-                    <div x-data="{ show: true }" x-show="show" class="mb-6 p-4 bg-primary-n5/5 border border-primary-n5/10 rounded-xl flex items-center justify-between">
-                        <div class="flex items-center gap-3">
-                            <div class="w-2 h-2 rounded-full bg-primary-n5 animate-pulse"></div>
-                            <span class="text-primary-n5 font-medium text-sm">{{ session('success') }}</span>
-                        </div>
-                        <button @click="show = false" class="text-primary-n5/50 hover:text-primary-n5 text-xl leading-none">&times;</button>
+{{-- Alert System Global di app.blade.php --}}
+@if(session('success') || session('error'))
+    <div class="mb-6 space-y-3"> {{-- Container utama --}}
+        
+        {{-- Alert Success --}}
+        @if(session('success'))
+            <div x-data="{ show: true }" 
+                 x-show="show" 
+                 x-init="setTimeout(() => show = false, 5000)" 
+                 class="p-4 bg-green-50/80 dark:bg-green-500/10 border border-green-200 dark:border-green-500/20 rounded-2xl flex items-center justify-between shadow-sm backdrop-blur-sm animate-fade-in">
+                <div class="flex items-center">
+                    <div class="bg-green-500 p-2 rounded-xl mr-4 shadow-lg shadow-green-500/30">
+                        <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
                     </div>
-                @endif
+                    <div>
+                        <p class="text-green-800 dark:text-green-400 font-bold text-sm">Berhasil!</p>
+                        <p class="text-green-600 dark:text-green-500/80 text-xs">{{ session('success') }}</p>
+                    </div>
+                </div>
+                <button @click="show = false" class="text-green-400 hover:text-green-600">&times;</button>
+            </div>
+        @endif
+
+        {{-- Alert Error --}}
+        @if(session('error'))
+            <div x-data="{ show: true }" 
+                 x-show="show" 
+                 class="p-4 bg-red-50/80 dark:bg-red-500/10 border border-red-200 dark:border-red-500/20 rounded-2xl flex items-center justify-between shadow-sm backdrop-blur-sm animate-shake">
+                <div class="flex items-center">
+                    <div class="bg-red-500 p-2 rounded-xl mr-4 shadow-lg shadow-red-500/30">
+                        <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"/></svg>
+                    </div>
+                    <div>
+                        <p class="text-red-800 dark:text-red-400 font-bold text-sm">Opps, Ada Masalah!</p>
+                        <p class="text-red-600 dark:text-red-500/80 text-xs">{{ session('error') }}</p>
+                    </div>
+                </div>
+                <button @click="show = false" class="text-red-400 hover:text-red-600">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+                </button>
+            </div>
+        @endif
+
+    </div> {{-- Penutup space-y-3 --}}
+@endif
 
                 {{-- SLOT CONTENT --}}
                 <div class="min-h-full">

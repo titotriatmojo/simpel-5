@@ -10,15 +10,26 @@ class DataTrainingImport implements ToModel, WithHeadingRow
 {
     public function model(array $row)
     {
-        return new DataTraining([
-            'nama'          => $row['nama'],
-            'nilai_pkl'     => $row['nilai_pkl'],
-            'nilai_sidang'  => $row['nilai_sidang'],
-            'nilai_total'   => $row['nilai_total'],
-            'label'         => ucfirst(strtolower(trim($row['label'])))
-        ]);
-        \Log::info($data);
+        // 1. Ambil nilai dan pastikan tipenya angka (float)
+        $nilai_pkl = (float) ($row['nilai_pkl'] ?? 0);
+        $nilai_sidang = (float) ($row['nilai_sidang'] ?? 0);
 
-    return $data;
+        // 2. Hitung total di sini (Bypass rumus Excel yang bermasalah)
+        $nilai_total = ($nilai_pkl + $nilai_sidang) / 2;
+
+        // 3. Simpan ke variabel dulu kalau mau di-Log
+        $data = [
+            'nama'         => $row['nama'],
+            'nilai_pkl'    => $nilai_pkl,
+            'nilai_sidang' => $nilai_sidang,
+            'nilai_total'  => $nilai_total, // Pakai hasil hitungan Laravel
+            'label'        => ucfirst(strtolower(trim($row['label'])))
+        ];
+
+        // 4. Log buat debugging (Opsional)
+        // \Log::info('Importing Row:', $data);
+
+        // 5. Baru return Model-nya
+        return new DataTraining($data);
     }
 }

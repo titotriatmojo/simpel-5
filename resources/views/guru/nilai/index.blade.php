@@ -3,8 +3,8 @@
     <div class="mb-8 bg-white dark:bg-white/[0.03] border border-gray-200 dark:border-white/10 rounded-2xl p-6 dark:shadow-lg">
         <div class="flex items-center gap-4">
             <div>
-                <h1 class="text-3xl font-bold text-slate-800 dark:text-white mb-2">Manajemen Nilai PKL</h1>
-                <p class="text-gray-600 dark:text-gray-400 text-sm">Input, edit, atau perbarui penilaian Praktik Kerja Lapangan siswa bimbingan Anda.</p>
+                <h1 class="text-3xl font-bold text-slate-800 dark:text-white mb-2">Manajemen Nilai Sidang PKL</h1>
+                <p class="text-gray-600 dark:text-gray-400 text-sm">Input, edit, atau perbarui Nilai Sidang Praktik Kerja Lapangan siswa bimbingan Anda.</p>
             </div>
         </div>
         {{-- TOMBOL EXCEL BARU --}}

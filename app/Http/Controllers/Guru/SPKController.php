@@ -210,13 +210,17 @@ class SPKController extends Controller
         $k = 3;
         $fold = 5;
 
-        // Ambil data & shuffle dengan seed biar reproducible
-        $dataset = DataTraining::all()->shuffle(42)->values()->toArray();
+        // Ambil data URUT berdasarkan ID biar tidak acak dari database
+        $dataset = DataTraining::orderBy('id', 'asc')->get()->toArray();
 
-        // === STRATIFIED GROUPING ===
+        // Pisahkan kelas
         $siap = array_values(array_filter($dataset, fn($d) => strtolower(trim($d['label'])) === 'siap'));
         $tidak = array_values(array_filter($dataset, fn($d) => strtolower(trim($d['label'])) === 'tidak siap'));
 
+        // SEEDING MANUAL: Acak dengan urutan yang sama setiap kali dipanggil
+        mt_srand(42); 
+        shuffle($siap);
+        shuffle($tidak);
         $folds = array_fill(0, $fold, []);
 
         // distribusi rata per kelas ke tiap fold
