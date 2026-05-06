@@ -12,17 +12,6 @@
         </div>
     </div>
 
-    {{-- Success Message --}}
-    @if (session('success'))
-        <div x-data="{ show: true }" x-init="setTimeout(() => show = false, 3000)" x-show="show" x-transition
-            class="mb-6 bg-emerald-100 dark:bg-emerald-500/10 text-emerald-700 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-500/30 px-4 py-3 rounded-xl text-sm font-medium flex items-center gap-3">
-            <svg class="w-5 h-5 text-emerald-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-            </svg>
-            {{ session('success') }}
-        </div>
-    @endif
-
     <div class="grid grid-cols-1 xl:grid-cols-3 gap-6">
         {{-- Upload Form Section --}}
         <div class="xl:col-span-1">
@@ -51,7 +40,7 @@
                         </label>
                         <input type="text" name="nama" id="nama" required
                             class="w-full bg-gray-50 dark:bg-white/5 border border-gray-200 dark:border-white/20 rounded-xl px-4 py-3 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-slate-400 focus:border-indigo-400/50 focus:bg-white/10 transition-all duration-200"
-                            placeholder="Contoh: Template Laporan PKL 2025">
+                            placeholder="Contoh: Template Laporan PKL 2026">
                         @error('nama') <p class="text-red-500 text-xs mt-1">{{ $message }}</p> @enderror
                     </div>
 

@@ -33,7 +33,7 @@
                     class="block w-full pl-10 pr-3 py-3 border border-gray-300 dark:border-slate-600 rounded-xl bg-gray-50 dark:bg-slate-900 text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all">
             </div>
             <button type="submit" class="px-6 py-3 bg-slate-800 dark:bg-slate-700 text-white font-semibold rounded-xl hover:bg-slate-900 transition-colors">
-                Filter Data
+                Cari Data
             </button>
             @if(request('search'))
                 <a href="{{ route('admin.perusahaan.index') }}" class="px-6 py-3 bg-gray-100 dark:bg-white/5 text-gray-600 dark:text-gray-300 rounded-xl flex items-center justify-center hover:bg-gray-200 transition-all">
