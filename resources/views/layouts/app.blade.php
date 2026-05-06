@@ -33,7 +33,7 @@
 </head>
 
 <body class="bg-white dark:bg-slate-900 min-h-screen overflow-hidden" 
-      <body x-data="{ 
+    x-data="{ 
     isCollapsed: false, 
     mobileOpen: false, 
     darkMode: localStorage.getItem('theme') === 'dark' 
