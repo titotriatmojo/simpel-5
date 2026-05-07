@@ -171,7 +171,7 @@
                 </div>
                 <p class="text-gray-500 dark:text-slate-400 text-sm mb-4">Download template untuk memastikan format yang
                     benar</p>
-                <a href="{{ asset('template_siswa.xlsx') }}" download
+                <a href="{{ asset('asset/template_siswa.xlsx') }}" download
                     class="inline-flex items-center space-x-2 px-4 py-2 bg-blue-100 dark:bg-blue-500/20 hover:bg-blue-200 dark:hover:bg-blue-500/30 border border-blue-200 dark:border-blue-400/30 rounded-xl text-blue-700 dark:text-blue-300 hover:text-blue-900 dark:hover:text-blue-200 transition-all duration-200 text-sm font-medium">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
