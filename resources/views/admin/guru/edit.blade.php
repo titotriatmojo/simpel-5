@@ -61,6 +61,15 @@
                                 class="text-red-500 dark:text-red-400 text-sm" />
                         </div>
                         <div class="space-y-2 col-span-2">
+                            <x-input-label for="email" :value="'Email *'" class="text-gray-700 dark:text-slate-300 font-medium" />
+                            <div class="relative">
+                                <x-text-input name="email" id="email" type="email" value="{{ $guru->user->email ?? '' }}"
+                                    class="w-full bg-gray-50 dark:bg-white/5 border border-gray-200 dark:border-white/20 rounded-xl px-4 py-3 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-slate-400 focus:border-indigo-400/50 focus:bg-white/10 transition-all duration-200"
+                                    placeholder="Masukkan email guru" required />
+                            </div>
+                            <x-input-error :messages="$errors->get('email')" class="text-red-500 dark:text-red-400 text-sm" />
+                        </div>
+                        <div class="space-y-2 col-span-2">
                             <x-input-label for="program_studi" :value="'Program Studi *'"
                                 class="text-gray-700 dark:text-slate-300 font-medium" />
                             <div class="relative">
