@@ -8,8 +8,7 @@
                 Evaluasi performa model menggunakan Confusion Matrix dengan nilai K = 3
             </p>
             <p class="text-gray-600 dark:text-slate-400">
-                Pengujian dilakukan dengan metode 5-Fold Cross Validation, dimana data dibagi menjadi 5 bagian, lalu secara bergantian 4 bagian digunakan sebagai data latih dan 1 bagian sebagai data uji hingga seluruh data diuji.
-        </div>
+                Sistem diuji menggunakan 5-Fold Cross Validation, yang berarti dataset dibagi secara proporsional ke dalam 5 bagian (fold).        </div>
 
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
 

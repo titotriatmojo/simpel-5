@@ -43,41 +43,37 @@ class LaporanController extends Controller
      */
     public function upload(Request $request)
     {
+        // validasi wajib ada file
         $request->validate([
             'link_drive' => 'required|url',
             'perusahaan_id' => 'required|exists:perusahaan,id',
-            'file' => 'nullable|file|max:102400' 
+        ], [
+            // Custom pesan error
+            'link_drive.required' => 'Link Google Drive wajib diisi!',
+            'file.required' => 'File fisik laporan (PDF/DOCX) wajib diunggah!',
         ]);
 
         $siswa = Auth::user()->siswa;
-        
-        // Cari laporan yang sudah ada atau buat instance baru
         $laporan = LaporanPkl::firstOrNew(['siswa_id' => $siswa->id]);
 
-        // Jika ada file baru yang diunggah
         if ($request->hasFile('file')) {
             if ($laporan->file && Storage::disk('public')->exists($laporan->file)) {
                 Storage::disk('public')->delete($laporan->file);
             }
             
             $file = $request->file('file');
-            $ext = strtolower($file->getClientOriginalExtension());
-
-            if (!in_array($ext, ['pdf', 'doc', 'docx'])) {
-                return back()->withErrors(['file' => 'Format harus PDF/DOC/DOCX']);
-            }
-
-            // PAKAI STOREAS BIAR GAK JADI .BIN
+            $ext = $file->getClientOriginalExtension();
             $newFileName = time() . '_' . uniqid() . '.' . $ext;
+            
             $laporan->file = $file->storeAs('laporan_pkl', $newFileName, 'public');
         }
 
         $laporan->perusahaan_id = $request->perusahaan_id;
         $laporan->link_drive = $request->link_drive;
-        $laporan->status = 'pending'; // Reset status ke pending saat update
+        $laporan->status = 'pending';
         $laporan->save();
 
-        return redirect()->route('siswa.laporan.index')->with('success', 'Laporan berhasil diperbarui!');
+        return redirect()->route('siswa.laporan.index')->with('success', 'Laporan berhasil dikirim!');
     }
 
     /**

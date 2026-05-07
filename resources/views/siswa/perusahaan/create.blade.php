@@ -41,7 +41,7 @@
 
                         <div class="space-y-2">
                             <x-input-label for="bidang_usaha" :value="'Bidang Usaha *'" />
-                            <x-text-input name="bidang_usaha" id="bidang_usaha" type="text" class="w-full" placeholder="Contoh: IT Support, Design, dll" required />
+                            <x-text-input name="bidang_usaha" id="bidang_usaha" type="text" class="w-full" placeholder="Contoh: Transportasi" required />
                         </div>
 
                         {{-- Alamat & Koordinat --}}

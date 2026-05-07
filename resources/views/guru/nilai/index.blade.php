@@ -23,17 +23,6 @@
         </div>
     </div>
 
-    {{-- Pesan sukses --}}
-    @if (session('success'))
-    <div x-data="{ show: true }" x-init="setTimeout(() => show = false, 3000)" x-show="show" x-transition
-        class="mb-6 bg-emerald-100/80 dark:bg-emerald-500/10 backdrop-blur-sm text-emerald-700 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-500/30 px-4 py-3 rounded-xl text-sm font-medium flex items-center gap-3 shadow-sm">
-        <svg class="w-5 h-5 text-emerald-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-        </svg>
-        {{ session('success') }}
-    </div>
-    @endif
-
     {{-- Main Content --}}
     <div class="space-y-4">
         @forelse ($siswa as $mhs)

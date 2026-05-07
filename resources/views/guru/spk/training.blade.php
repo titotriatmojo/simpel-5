@@ -133,9 +133,9 @@
                         <thead>
                             <tr class="border-b border-gray-100 dark:border-white/5 text-gray-400 text-[10px] uppercase tracking-widest">
                                 <th class="px-4 py-3 font-semibold">Nama Alumni</th>
-                                <th class="px-2 py-3 text-center font-semibold">Akad</th>
-                                <th class="px-2 py-3 text-center font-semibold">Inst</th>
-                                <th class="px-2 py-3 text-center font-semibold">Pemb</th>
+                                <th class="px-2 py-3 text-center font-semibold">Sidang</th>
+                                <th class="px-2 py-3 text-center font-semibold">Instansi</th>
+                                <th class="px-2 py-3 text-center font-semibold">Total</th>
                                 <th class="px-4 py-3 text-center font-semibold">Label</th>
                                 <th class="px-4 py-3 text-right font-semibold">Aksi</th>
                             </tr>

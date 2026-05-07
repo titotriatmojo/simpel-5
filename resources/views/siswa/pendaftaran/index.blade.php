@@ -20,17 +20,6 @@
         </div>
     </div>
 
-    {{-- Alert Section --}}
-    @if (session('success'))
-        <div x-data="{ show: true }" x-init="setTimeout(() => show = false, 5000)" x-show="show" 
-             class="flex p-4 mb-4 text-sm text-green-800 border border-green-300 rounded-lg bg-green-50 dark:bg-gray-800 dark:text-green-400 dark:border-green-800" role="alert">
-            <svg class="flex-shrink-0 inline w-4 h-4 me-3 mt-[2px]" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
-                <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5Zm3.707 8.207-4 4a1 1 0 0 1-1.414 0l-2-2a1 1 0 0 1 1.414-1.414L9 10.586l3.293-3.293a1 1 0 0 1 1.414 1.414Z"/>
-            </svg>
-            <div><span class="font-medium">Sukses!</span> {{ session('success') }}</div>
-        </div>
-    @endif
-
     {{-- Form Section (Hanya muncul jika BELUM daftar atau status MENUNGGU) --}}
     @if(!$pendaftaran || $pendaftaran->status === 'menunggu')
     <div class="mb-8 backdrop-blur-sm bg-white dark:bg-white/[0.03] border border-gray-200 dark:border-white/10 rounded-2xl dark:shadow-xl overflow-hidden">
@@ -94,8 +83,8 @@
 
                     {{-- Bidang PKL --}}
                     <div class="space-y-2">
-                        <label class="block text-sm font-medium text-gray-900 dark:text-white/90">Bidang PKL <span class="text-red-600">*</span></label>
-                        <input type="text" name="bidang_pkl" value="{{ $pendaftaran?->bidang_pkl }}" required placeholder="Contoh: Web Development" class="w-full px-4 py-3 bg-white dark:bg-white/[0.05] text-gray-900 dark:text-white rounded-lg border border-gray-200 dark:border-white/20 focus:ring-2 focus:ring-blue-500/50" />
+                        <label class="block text-sm font-medium text-gray-900 dark:text-white/90">Posisi <span class="text-red-600">*</span></label>
+                        <input type="text" name="bidang_pkl" value="{{ $pendaftaran?->bidang_pkl }}" required placeholder="Contoh: Programmer" class="w-full px-4 py-3 bg-white dark:bg-white/[0.05] text-gray-900 dark:text-white rounded-lg border border-gray-200 dark:border-white/20 focus:ring-2 focus:ring-blue-500/50" />
                     </div>
 
                     {{-- Periode --}}
