@@ -35,22 +35,22 @@
 
                             <div class="space-y-2">
                                 <x-input-label for="nama" :value="'Nama Perusahaan *'" />
-                                <x-text-input name="nama" id="nama" type="text" class="w-full" :value="old('nama')" placeholder="PT. Example Technology" required autofocus />
+                                <x-text-input name="nama" id="nama" type="text" class="w-full" :value="old('nama')" placeholder="PT Maju Jaya" required autofocus />
                             </div>
 
                             <div class="space-y-2">
                                 <x-input-label for="bidang_usaha" :value="'Bidang Usaha *'" />
-                                <x-text-input name="bidang_usaha" id="bidang_usaha" type="text" class="w-full" :value="old('bidang_usaha')" placeholder="Contoh: Software House / Jaringan" required />
+                                <x-text-input name="bidang_usaha" id="bidang_usaha" type="text" class="w-full" :value="old('bidang_usaha')" placeholder="Contoh: Transportasi / Jaringan" required />
                             </div>
 
                             <div class="space-y-2">
                                 <x-input-label for="alamat" :value="'Alamat Lengkap *'" />
-                                <textarea name="alamat" id="alamat" rows="3" class="w-full bg-gray-50 dark:bg-white/5 border border-gray-200 dark:border-white/10 rounded-xl px-4 py-3 text-gray-900 dark:text-white focus:ring-emerald-500" placeholder="Jl. Raya No. 123..." required>{{ old('alamat') }}</textarea>
+                                <textarea name="alamat" id="alamat" rows="3" class="w-full bg-gray-50 dark:bg-white/5 border border-gray-200 dark:border-white/10 rounded-xl px-4 py-3 text-gray-900 dark:text-white focus:ring-emerald-500" placeholder="Masukkan alamat lengkap" required>{{ old('alamat') }}</textarea>
                             </div>
 
                             <div class="space-y-2">
                                 <x-input-label for="koordinat_lokasi" :value="'Link Google Maps (Koordinat)'" />
-                                <x-text-input name="koordinat_lokasi" id="koordinat_lokasi" type="text" class="w-full" :value="old('koordinat_lokasi')" placeholder="https://goo.gl/maps/..." />
+                                <x-text-input name="koordinat_lokasi" id="koordinat_lokasi" type="text" class="w-full" :value="old('koordinat_lokasi')" placeholder="https://maps.google.com/..." />
                             </div>
                         </div>
 
