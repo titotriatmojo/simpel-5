@@ -8,16 +8,10 @@ use Illuminate\Http\Request;
 
 class PerusahaanController extends Controller
 {
-    /**
-     * Menampilkan daftar perusahaan dengan filter dan pencarian.
-     */
     public function index(Request $request)
     {
-        // PERBAIKAN: Gunakan 'pengusul' sesuai nama relasi di Model Perusahaan
-        // Gunakan withCount('pendaftaran') untuk melihat berapa siswa yang sudah di sana
         $query = Perusahaan::with('pengusul')->withCount('pendaftaran');
 
-        // Logic Pencarian
         if ($request->filled('search')) {
             $search = $request->search;
             $query->where(function ($q) use ($search) {
@@ -28,11 +22,6 @@ class PerusahaanController extends Controller
             });
         }
 
-        /**
-         * Urutan Cerdas: 
-         * 1. Status 'pending' muncul paling atas (biar admin cepat notice)
-         * 2. Sisanya diurutkan berdasarkan yang terbaru
-         */
         $perusahaan = $query->orderByRaw("FIELD(status, 'pending', 'approved', 'rejected')")
                             ->latest()
                             ->paginate(10)
@@ -54,16 +43,13 @@ class PerusahaanController extends Controller
             'alamat'       => 'required|string',
             'no_hp'        => 'required|string|max:20',
             'kuota'        => 'required|integer|min:1',
-            // Tambahkan validasi opsional jika ingin database tetap rapi
             'email'               => 'nullable|email',
             'pembimbing_lapangan' => 'nullable|string|max:255',
         ]);
 
         try {
-            // --- LOGIC OTOMATIS ---
-            $validated['status'] = 'approved'; // Admin yang buat = Langsung Aktif
+            $validated['status'] = 'approved'; 
             
-            // Jika pembimbing lapangan kosong, beri default 'Admin' atau '-'
             if (empty($validated['pembimbing_lapangan'])) {
                 $validated['pembimbing_lapangan'] = 'Bagian HRD/Admin';
             }
@@ -80,7 +66,6 @@ class PerusahaanController extends Controller
 
     public function show(Perusahaan $perusahaan)
     {
-        // Eager load pendaftaran.siswa untuk melihat siapa saja yang PKL di sana
         $perusahaan->load(['pengusul', 'pendaftaran.siswa']);
         return view('admin.perusahaan.show', compact('perusahaan'));
     }
@@ -92,7 +77,7 @@ class PerusahaanController extends Controller
 
             public function update(Request $request, Perusahaan $perusahaan)
             {
-                // 1. Validasi data (HAPUS 'status' dari list validasi karena sudah tidak ada di form)
+            
                 $validated = $request->validate([
                     'nama'                => 'required|string|max:255',
                     'bidang_usaha'        => 'required|string|max:255',
@@ -104,10 +89,10 @@ class PerusahaanController extends Controller
                     'koordinat_lokasi'    => 'nullable|string',
                 ]);
 
-                // 2. Paksa status jadi 'approved' (karena yang edit Admin)
+                
                 $validated['status'] = 'approved';
 
-                // 3. Eksekusi Update
+                
                 $perusahaan->update($validated);
 
                 return redirect()->route('admin.perusahaan.index')
@@ -116,7 +101,6 @@ class PerusahaanController extends Controller
 
     public function destroy(Perusahaan $perusahaan)
     {
-        // Proteksi: Jangan hapus perusahaan jika sudah ada siswa yang terdaftar PKL
         if ($perusahaan->pendaftaran()->exists()) {
             return redirect()->back()->with('error', 'Gagal menghapus! Perusahaan ini masih memiliki siswa yang terdaftar PKL.');
         }
@@ -127,7 +111,6 @@ class PerusahaanController extends Controller
             ->with('success', 'Perusahaan berhasil dihapus.');
     }
 
-    // --- FITUR APPROVAL ---
 
     public function approve($id)
     {

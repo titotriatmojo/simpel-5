@@ -28,10 +28,9 @@ class PendaftaranController extends Controller
                 'perusahaan_id' => 'required|exists:perusahaan,id',
                 'guru_id'       => 'required|exists:guru,id', 
                 'bidang_pkl'    => 'required|string|max:100',
-                'periode'       => 'required|string|max:100', // Udah bener di validasi
+                'periode'       => 'required|string|max:100', 
             ]);
 
-            // Ambil ID Siswa, bukan ID User!
             $siswaId = Auth::user()->siswa->id;
 
             if (PendaftaranPkl::where('siswa_id', $siswaId)->exists()) {
@@ -39,11 +38,11 @@ class PendaftaranController extends Controller
             }
 
             PendaftaranPkl::create([
-                'siswa_id'      => $siswaId, // Pake variabel yang bener
+                'siswa_id'      => $siswaId, 
                 'guru_id'       => $request->guru_id,
                 'perusahaan_id' => $request->perusahaan_id,
                 'bidang_pkl'    => $request->bidang_pkl,
-                'periode'       => $request->periode, // <--- INI TADI YANG KETINGGALAN!
+                'periode'       => $request->periode, 
                 'status'        => 'pending',
             ]);
 
@@ -76,7 +75,6 @@ class PendaftaranController extends Controller
             'periode'       => $request->periode,
         ]);
 
-        // FIXED: Arahkan ke pendaftaran.index
         return redirect()->route('siswa.pendaftaran.index')->with('success', 'Pendaftaran berhasil diperbarui.');
     }
 
@@ -94,7 +92,6 @@ class PendaftaranController extends Controller
 
         $pendaftaran->delete();
         
-        // FIXED: Arahkan ke pendaftaran.index
         return redirect()->route('siswa.pendaftaran.index')->with('success', 'Pendaftaran berhasil dihapus.');
     }
 }

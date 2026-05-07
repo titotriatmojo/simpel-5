@@ -122,13 +122,12 @@
                 </svg>
             </button>
 
-            {{-- Dropdown Menu: Melayang (Absolute) --}}
+            {{-- Dropdown Menu --}}
             <div x-show="open" 
                 @click.away="open = false" 
                 x-transition:enter="transition ease-out duration-100"
                 x-transition:enter-start="opacity-0 scale-95"
                 x-transition:enter-end="opacity-100 scale-100"
-                {{-- z-50 supaya di atas, absolute biar gak ngerusak layout --}}
                 class="absolute right-0 mt-2 w-40 bg-white dark:bg-slate-800 border border-gray-200 dark:border-white/10 rounded-xl shadow-2xl z-[100] overflow-hidden origin-top-right">
                 
                 <form action="{{ route('admin.laporan.verifikasi.process', $lapor->id) }}" method="POST">

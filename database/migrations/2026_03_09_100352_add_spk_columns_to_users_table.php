@@ -17,7 +17,7 @@ return new class extends Migration
             $table->foreignId('guru_id')->nullable()->after('id')->constrained('users')->onDelete('set null');
         }
 
-        // Kolom tambahan untuk parameter KNN lo
+        // Kolom tambahan untuk parameter KNN 
         $table->decimal('nilai_pkl', 5, 2)->nullable()->after('password');
         $table->decimal('nilai_sidang', 5, 2)->nullable()->after('nilai_pkl');
         

@@ -12,7 +12,7 @@
 
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
 
-            {{-- 🔥 Statistik --}}
+            {{-- Statistik --}}
             <div class="bg-white dark:bg-white/[0.03] p-6 rounded-2xl border shadow-sm">
                 <p class="text-sm text-gray-500">Akurasi</p>
                 <h3 class="text-3xl font-bold text-emerald-500">
@@ -34,7 +34,7 @@
                 </h3>
             </div>
 
-            {{-- 🔥 CONFUSION MATRIX --}}
+            {{-- CONFUSION MATRIX --}}
             <div class="md:col-span-2 bg-white dark:bg-white/[0.03] rounded-2xl border overflow-hidden shadow-sm">
                 <div class="px-6 py-4 border-b bg-gray-50 dark:bg-white/5">
                     <h4 class="font-semibold text-gray-800 dark:text-white">
@@ -99,7 +99,7 @@
                 </div>
             </div>
 
-            {{-- 🔥 CONTROL --}}
+            {{-- CONTROL --}}
             <div class="bg-white dark:bg-white/[0.03] p-6 rounded-2xl border shadow-sm">
                 <h4 class="font-semibold text-gray-800 dark:text-white mb-4">
                     Pengujian

@@ -9,9 +9,7 @@ use Illuminate\Support\Facades\Storage;
 
 class LaporanController extends Controller
 {
-    /**
-     * Tampilkan daftar laporan PKL siswa.
-     */
+
     public function index(Request $request)
     {
         $query = LaporanPkl::with(['siswa.user']);
@@ -32,9 +30,6 @@ class LaporanController extends Controller
         return view('admin.laporan.index', compact('laporan'));
     }
 
-    /**
-     * Proses verifikasi laporan PKL.
-     */
     public function verifikasi(Request $request, $id)
     {
         $request->validate([
@@ -51,7 +46,6 @@ class LaporanController extends Controller
 {
     $laporan = LaporanPkl::findOrFail($id);
     
-    // Hapus file fisik jika ada
     if ($laporan->file && Storage::disk('public')->exists($laporan->file)) {
         Storage::disk('public')->delete($laporan->file);
     }

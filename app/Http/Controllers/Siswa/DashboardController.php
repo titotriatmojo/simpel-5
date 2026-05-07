@@ -9,15 +9,13 @@ use Illuminate\Support\Facades\Auth;
 
 class DashboardController extends Controller
 {
-    /**
-     * Tampilan Dashboard dengan Proteksi Profil
-     */
+
     public function index()
     {
         $user = Auth::user();
         $siswa = $user->siswa;
 
-        // PROTEKSI: Tampilan Darurat jika Profil Siswa Tidak Ditemukan
+       
         if (!$siswa) {
             return $this->errorResponse($user->id, 'Siswa');
         }
@@ -25,9 +23,7 @@ class DashboardController extends Controller
         return view('siswa.dashboard', compact('siswa'));
     }
 
-    /**
-     * Menampilkan daftar perusahaan yang sudah disetujui
-     */
+
     public function perusahaan(Request $request)
     {
         $user = Auth::user();
@@ -90,7 +86,7 @@ class DashboardController extends Controller
         ]);
 
         $validated['status']   = 'pending';
-        $validated['siswa_id'] = $siswa->id; // Menggunakan ID yang sudah divalidasi
+        $validated['siswa_id'] = $siswa->id; 
 
         Perusahaan::create($validated);
 
@@ -98,9 +94,7 @@ class DashboardController extends Controller
             ->with('success', 'Saran perusahaan berhasil dikirim! Mohon tunggu verifikasi admin.');
     }
 
-    /**
-     * Helper untuk menampilkan tampilan error & tombol logout
-     */
+
     private function errorResponse($userId, $role)
     {
         $logoutUrl = route('logout');

@@ -23,11 +23,10 @@ class ProfileUpdateRequest extends FormRequest
                 Rule::unique(User::class)->ignore($this->user()->id),
             ],
 
-            // TAMBAHKAN VALIDASI PASSWORD DI SINI
             'password' => [
                 'nullable', 
                 'confirmed', 
-                Password::defaults() // Standar Laravel: min 8 karakter
+                Password::defaults() 
             ],
 
             'no_hp_ortu' => [

@@ -156,7 +156,6 @@
                 <div class="col-span-2">
                     <div class="flex flex-col gap-1.5">
                         @if($file->file)
-                            {{-- GANTI DI SINI: Pake route, bukan asset() --}}
                             <a href="{{ route('admin.format.download', $file->id) }}" 
                                 class="inline-flex items-center gap-1.5 text-blue-600 dark:text-blue-400 hover:text-blue-800 text-xs font-medium transition-colors hover:underline">
                                 <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">

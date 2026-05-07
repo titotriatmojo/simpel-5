@@ -85,10 +85,9 @@ class SiswaImport implements OnEachRow, WithHeadingRow
             'role'     => 'siswa',
         ]);
 
-        // 2. Buat Siswa secara manual (Tanpa update, langsung Create)
-        // Gunakan updateOrCreate untuk memastikan data masuk baik ada observer maupun tidak
+        // 2. Buat Siswa secara manual 
         Siswa::updateOrCreate(
-            ['user_id' => $user->id], // Cari berdasarkan user_id
+            ['user_id' => $user->id], 
             [
                 'nama'          => $data['nama'],
                 'nim'           => $data['nim'],

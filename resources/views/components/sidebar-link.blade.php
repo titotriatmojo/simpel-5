@@ -6,7 +6,6 @@
 
     if (Route::has($route)) {
         $url = route($route);
-        // Logika Aktif: Dashboard harus persis, lainnya boleh prefix
         $isActive = str_contains($route, 'dashboard') 
             ? request()->routeIs($route) 
             : (request()->routeIs($route) || request()->routeIs($route . '.*'));
@@ -16,7 +15,7 @@
 @endphp
 
 <a href="{{ $url }}"
-    {{-- Dynamic Width & Center pas Collapsed agar tidak sempit --}}
+    {{-- Dynamic Width & Center --}}
     :class="isCollapsed ? 'justify-center px-0 mx-auto w-12 h-12' : 'px-4 py-3 w-full'"
     class="group relative flex items-center rounded-xl text-sm font-medium transition-all duration-300 mb-2
     {{ $isActive
@@ -57,7 +56,7 @@
     <div x-show="!isCollapsed" class="ml-2 w-1.5 h-1.5 rounded-full bg-primary-n5 animate-pulse"></div>
     @endif
 
-    {{-- Floating Tooltip pas Collapsed --}}
+    {{-- Floating Tooltip --}}
     <div x-show="isCollapsed" 
          class="absolute left-full ml-4 px-3 py-1.5 bg-slate-900 dark:bg-white text-white dark:text-slate-900 text-xs font-bold rounded-lg opacity-0 group-hover:opacity-100 pointer-events-none transition-all duration-200 whitespace-nowrap z-50 shadow-xl translate-x-2 group-hover:translate-x-0">
         {{ $label }}

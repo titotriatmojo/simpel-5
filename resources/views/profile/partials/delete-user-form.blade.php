@@ -14,10 +14,9 @@
         {{ __('Hapus Akun') }}
     </x-danger-button>
 
-    {{-- Modal ini di-push ke @stack('modals') di app.blade.php --}}
     @push('modals')
     <x-modal name="confirm-user-deletion" :show="$errors->userDeletion->isNotEmpty()" focusable>
-        {{-- FORM DI DALAM MODAL --}}
+        {{-- FORM --}}
         <div
             class="backdrop-blur-xl bg-white/95 dark:bg-slate-800/90 border border-gray-200 dark:border-slate-700/50 rounded-xl shadow-none dark:shadow-2xl">
             <form method="post" action="{{ route('profile.destroy') }}" class="p-8">

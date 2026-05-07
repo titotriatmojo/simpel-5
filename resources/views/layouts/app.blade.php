@@ -24,10 +24,9 @@
             border-radius: 10px; 
         }
 
-        /* Warna Custom N5 (Pastikan sudah terdefinisi di tailwind.config.js atau tambahkan manual) */
         :root {
-            --primary-n5: #004aad; /* Contoh biru N5, ganti sesuai hex aslinya */
-            --secondary-n5: #00d4ff; /* Contoh light blue N5 */
+            --primary-n5: #004aad; 
+            --secondary-n5: #00d4ff; 
         }
     </style>
 </head>
@@ -42,7 +41,6 @@
     
     {{-- 
         NAVBAR: 
-        Tombol burger diletakkan di sini agar selalu aksesibel.
     --}}
     <nav class="fixed top-0 z-50 w-full h-16 bg-white dark:bg-slate-900 border-b border-gray-100 dark:border-white/5 px-4 flex items-center justify-between">
         <div class="flex items-center gap-4">
@@ -81,7 +79,7 @@
         <aside 
             :class="{
                 'w-72': !isCollapsed,
-                'w-24': isCollapsed, {{-- Lebar pas mode ikon diperbesar agar tidak sempit --}}
+                'w-24': isCollapsed, 
                 'translate-x-0': mobileOpen,
                 '-translate-x-full': !mobileOpen
             }"

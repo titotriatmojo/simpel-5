@@ -8,7 +8,6 @@ use Illuminate\Database\Eloquent\Relations\HasOneThrough;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
-// WAJIB IMPORT MODEL-MODEL RELASINYA DI SINI
 use App\Models\Siswa;
 use App\Models\Guru;
 use App\Models\NilaiPkl;
@@ -55,8 +54,8 @@ class User extends Authenticatable
     public function nilaiPkl(): HasOneThrough
     {
         return $this->hasOneThrough(
-            \App\Models\NilaiPkl::class, // Pakai backslash di depan
-            \App\Models\Siswa::class,    // Pakai backslash di depan
+            \App\Models\NilaiPkl::class, 
+            \App\Models\Siswa::class,    
             'user_id',
             'siswa_id',
             'id',

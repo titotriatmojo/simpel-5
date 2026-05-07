@@ -61,7 +61,7 @@ class SPKController extends Controller
     }
 
     /**
-     * 🔥 PREDICT KNN
+     * PREDICT KNN
      */
     public function predict($id)
     {
@@ -182,8 +182,8 @@ class SPKController extends Controller
 
         $siswa->update([
             'nilai_pkl'   => $request->nilai_pkl,
-            'nilai_sidang'=> $nilaiSidang, // auto dari DB
-            'nilai_total' => $nilaiTotal,  // auto hitung
+            'nilai_sidang'=> $nilaiSidang, 
+            'nilai_total' => $nilaiTotal,  
         ]);
 
         return redirect()->route('guru.spk.index')
@@ -203,21 +203,21 @@ class SPKController extends Controller
         ]);
     }
     /**
-     * 🔥 TESTING (CONFUSION MATRIX)
+     *  TESTING (CONFUSION MATRIX)
      */
     public function prosesUji()
     {
         $k = 3;
         $fold = 5;
 
-        // Ambil data URUT berdasarkan ID biar tidak acak dari database
+        // Ambil data 
         $dataset = DataTraining::orderBy('id', 'asc')->get()->toArray();
 
         // Pisahkan kelas
         $siap = array_values(array_filter($dataset, fn($d) => strtolower(trim($d['label'])) === 'siap'));
         $tidak = array_values(array_filter($dataset, fn($d) => strtolower(trim($d['label'])) === 'tidak siap'));
 
-        // SEEDING MANUAL: Acak dengan urutan yang sama setiap kali dipanggil
+        // acak data
         mt_srand(42); 
         shuffle($siap);
         shuffle($tidak);

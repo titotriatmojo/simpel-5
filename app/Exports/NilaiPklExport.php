@@ -19,9 +19,6 @@ class NilaiPklExport implements FromCollection, WithHeadings, WithMapping, Shoul
         $this->guruId = $guruId;
     }
 
-    /**
-     * Ambil data siswa yang dibimbing oleh guru ini
-     */
     public function collection()
     {
         return Siswa::whereHas('pendaftaranPkl', function ($q) {
@@ -33,9 +30,6 @@ class NilaiPklExport implements FromCollection, WithHeadings, WithMapping, Shoul
             ->get();
     }
 
-    /**
-     * Header Tabel Excel
-     */
     public function headings(): array
     {
         return [
@@ -49,9 +43,6 @@ class NilaiPklExport implements FromCollection, WithHeadings, WithMapping, Shoul
         ];
     }
 
-    /**
-     * Mapping data ke kolom Excel
-     */
     public function map($siswa): array
     {
         static $no = 1;
@@ -71,13 +62,11 @@ class NilaiPklExport implements FromCollection, WithHeadings, WithMapping, Shoul
         ];
     }
 
-    /**
-     * Styling Header biar cakep (Opsional)
-     */
+
     public function styles(Worksheet $sheet)
     {
         return [
-            1 => ['font' => ['bold' => true]], // Baris 1 jadi Bold
+            1 => ['font' => ['bold' => true]], 
         ];
     }
 }

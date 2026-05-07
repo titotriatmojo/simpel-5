@@ -121,7 +121,6 @@ Route::middleware(['auth', 'role:guru'])->prefix('guru')->name('guru.')->group(f
     
     // Monitoring & Download Laporan
     Route::get('/monitoring', [MonitoringController::class, 'index'])->name('monitoring.siswa');
-    // --- TARO DI SINI JO ---
     Route::get('/monitoring/laporan/download/{id}', [MonitoringController::class, 'downloadLaporan'])->name('laporan.download');
     
     // Nilai
@@ -135,17 +134,13 @@ Route::middleware(['auth', 'role:guru'])->prefix('guru')->name('guru.')->group(f
         Route::prefix('training')->name('training.')->group(function() {
             Route::get('/', [SPKController::class, 'training'])->name('index');           // guru.spk.training.index
             Route::post('/', [SPKController::class, 'storeTraining'])->name('store');      // guru.spk.training.store
-            //hapus semua
-            // Cukup satu baris ini saja untuk hapus semua
             Route::delete('/truncate', [SPKController::class, 'truncateTraining'])->name('truncate');
             Route::delete('/{id}', [SPKController::class, 'destroyTraining'])->name('destroy');
-            // Export & Import (Sekarang namanya konsisten)
             Route::get('/export', [SPKController::class, 'exportTraining'])->name('export');  // guru.spk.training.export
             Route::post('/import', [SPKController::class, 'importTraining'])->name('import'); // guru.spk.training.import
         });
 
-                // --- GROUP TESTING (Uji Akurasi & Confusion Matrix) ---
-        // TARUH DI SINI:
+        // --- GROUP TESTING (Uji Akurasi & Confusion Matrix) ---
         Route::prefix('testing')->name('testing.')->group(function() {
             Route::get('/', [SPKController::class, 'testing'])->name('index');            // guru.spk.testing.index
             Route::post('/proses', [SPKController::class, 'prosesUji'])->name('proses');   // guru.spk.testing.proses

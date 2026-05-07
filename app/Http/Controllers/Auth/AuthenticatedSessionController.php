@@ -28,31 +28,28 @@ class AuthenticatedSessionController extends Controller
 
         $user = null;
 
-        // 1. Cek apakah login pake EMAIL (Universal untuk Admin/Guru/Siswa)
+  
         if (filter_var($request->login, FILTER_VALIDATE_EMAIL)) {
             $user = User::where('email', $request->login)->first();
         } 
         
-        // 2. Cek apakah login pake NISN (Siswa) - Jika belum ketemu pake email
+        
         if (!$user) {
             $siswa = Siswa::where('nim', $request->login)->first();
             if ($siswa) $user = $siswa->user;
         }
 
-        // 3. Cek apakah login pake NIP (Guru) - Jika belum ketemu juga
         if (!$user) {
             $guru = Guru::where('nip', $request->login)->first();
             if ($guru) $user = $guru->user;
         }
 
-        // VERIFIKASI AKHIR
         if (!$user || !Hash::check($request->password, $user->password)) {
             return back()->withInput()->withErrors([
                 'login' => 'Kredensial tidak cocok dengan data kami.',
             ]);
         }
 
-        // Validasi Tambahan: Pastikan profil ada (Auto-fix jika hilang)
         $this->ensureProfileExists($user);
 
         Auth::login($user);
@@ -61,9 +58,7 @@ class AuthenticatedSessionController extends Controller
         return redirect('/redirect');
     }
 
-    /**
-     * Mencegah error "Profil Hilang" saat runtime
-     */
+
     private function ensureProfileExists($user)
     {
         if ($user->role === 'guru' && !$user->guru_profile) {

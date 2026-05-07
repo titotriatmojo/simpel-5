@@ -11,7 +11,7 @@ class PendaftaranPkl extends Model
     protected $fillable = [
         'siswa_id',
         'perusahaan_id',
-        'guru_id', // WAJIB DITAMBAHIN INI
+        'guru_id', 
         'bidang_pkl',
         'periode',
         'status',

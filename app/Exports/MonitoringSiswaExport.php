@@ -22,7 +22,7 @@ class MonitoringSiswaExport implements FromCollection, WithHeadings, WithMapping
         return Siswa::whereHas('pendaftaranPkl', function ($q) {
                 $q->where('guru_id', $this->guruId);
             })
-            // Tambahkan 'laporanPkl' di sini biar datanya narik ke excel
+  
             ->with(['pendaftaranPkl.perusahaan', 'laporanPkl']) 
             ->get();
     }
@@ -37,8 +37,8 @@ class MonitoringSiswaExport implements FromCollection, WithHeadings, WithMapping
             'Jurusan',
             'Instansi Tujuan',
             'Status Pendaftaran',
-            'Link File Laporan', // Kolom Baru
-            'Link Google Drive', // Kolom Baru
+            'Link File Laporan', 
+            'Link Google Drive', 
         ];
     }
 
@@ -46,7 +46,6 @@ class MonitoringSiswaExport implements FromCollection, WithHeadings, WithMapping
     {
         static $no = 1;
         
-        // Bikin URL Full buat download file (pake url asset)
         $fileUrl = ($siswa->laporanPkl && $siswa->laporanPkl->file) 
             ? url('storage/' . $siswa->laporanPkl->file) 
             : 'Belum Upload';

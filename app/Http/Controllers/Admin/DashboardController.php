@@ -17,17 +17,14 @@ class DashboardController extends Controller
     {
         $user = Auth::user();
 
-        // PROTEKSI: Cek apakah user beneran Admin (Opsional jika middleware sudah ketat)
         if (!$user || $user->role !== 'admin') {
             return $this->errorResponse($user->id ?? 'Unknown', 'Admin');
         }
 
-        // Statistik Dashboard
         $totalSiswa = Siswa::count();
         $totalGuru = Guru::count();
         $totalPerusahaan = Perusahaan::count();
         
-        // Cek apakah tabel LaporanPkl ada isinya (mencegah error jika tabel kosong/baru migration)
         $totalLaporan = LaporanPkl::count();
         $laporanPending = LaporanPkl::where('status', 'pending')->count();
         $laporanDiterima = LaporanPkl::where('status', 'diterima')->count();
@@ -44,9 +41,6 @@ class DashboardController extends Controller
         ));
     }
 
-    /**
-     * Helper untuk menampilkan tampilan error & tombol logout jika terjadi anomali data
-     */
     private function errorResponse($userId, $role)
     {
         $logoutUrl = route('logout');

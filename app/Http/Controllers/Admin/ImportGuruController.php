@@ -9,7 +9,6 @@ use Maatwebsite\Excel\Facades\Excel;
 
 class ImportGuruController extends Controller
 {
-    // GANTI 'create' JADI 'index'
     public function index() 
     {
         return view('admin.guru.import');

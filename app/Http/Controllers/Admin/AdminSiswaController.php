@@ -10,9 +10,6 @@ use Illuminate\Support\Facades\Hash;
 
 class AdminSiswaController extends Controller
 {
-    /**
-     * Tampilkan daftar semua siswa.
-     */
     public function index(Request $request)
     {
         $query = Siswa::with('user');
@@ -32,17 +29,11 @@ class AdminSiswaController extends Controller
         return view('admin.siswa.index', compact('siswa'));
     }
 
-    /**
-     * Tampilkan form tambah siswa manual.
-     */
     public function create()
     {
         return view('admin.siswa.create');
     }
 
-    /**
-     * Simpan data siswa baru (manual).
-     */
     public function store(Request $request)
     {
         $request->validate([
@@ -54,7 +45,6 @@ class AdminSiswaController extends Controller
             'email' => 'required|email|unique:users,email',
         ]);
 
-        // Buat akun user
         $user = User::create([
             'name' => $request->nama,
             'email' => $request->email,
@@ -62,7 +52,6 @@ class AdminSiswaController extends Controller
             'role' => 'siswa',
         ]);
 
-        // Buat entri siswa
         Siswa::create([
             'user_id' => $user->id,
             'nama' => $request->nama,
@@ -75,17 +64,11 @@ class AdminSiswaController extends Controller
         return redirect()->route('admin.siswa.index')->with('success', 'Siswa berhasil ditambahkan.');
     }
 
-    /**
-     * Tampilkan form edit siswa.
-     */
     public function edit(Siswa $siswa)
     {
         return view('admin.siswa.edit', compact('siswa'));
     }
 
-    /**
-     * Perbarui data siswa.
-     */
     public function update(Request $request, Siswa $siswa)
     {
         $request->validate([
@@ -105,7 +88,6 @@ class AdminSiswaController extends Controller
     {
         $siswa = Siswa::findOrFail($id);
 
-        // Hapus user terkait jika ada
         if ($siswa->user_id) {
             $user = User::find($siswa->user_id);
             if ($user) {

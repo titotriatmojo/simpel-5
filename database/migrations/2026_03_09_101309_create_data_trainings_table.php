@@ -13,11 +13,11 @@ return new class extends Migration
 {
     Schema::create('data_trainings', function (Blueprint $table) {
         $table->id();
-        $table->string('nama')->nullable(); // TAMBAHKAN INI
+        $table->string('nama')->nullable(); 
         $table->double('nilai_pkl');
         $table->double('nilai_sidang');
         $table->double('nilai_total');
-        $table->string('label'); // Siap / Tidak Siap
+        $table->string('label'); 
         $table->timestamps();
     });
 }};

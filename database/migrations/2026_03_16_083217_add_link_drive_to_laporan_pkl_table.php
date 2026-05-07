@@ -12,7 +12,6 @@ return new class extends Migration
     public function up()
     {
         Schema::table('laporan_pkl', function (Blueprint $table) {
-            // Pake text supaya kalau siswanya ngetik link yang sangat panjang gak error
             $table->text('link_drive')->nullable()->after('file');
         });
     }

@@ -12,7 +12,6 @@ class SiswaBimbinganController extends Controller
     {
         $guruId = Auth::user()->guru->id;
 
-        // Ambil data siswa yang bimbingannya ditangani oleh guru ini
         $siswa = Siswa::with('user')
             ->whereHas('bimbingan', function($query) use ($guruId) {
                 $query->where('guru_id', $guruId);

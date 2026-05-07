@@ -42,20 +42,19 @@ class AdminGuruController extends Controller
             'program_studi' => 'required|string|max:255',
         ]);
 
-        // Gunakan Transaction biar data sinkron antara tabel users dan guru
         DB::beginTransaction();
 
         try {
-            // 1. Buat akun user
+            
             $user = User::create([
                 'name' => $request->nama,
                 'email' => $request->email,
-                // Pake trim buat ngebuang spasi gaib yang bikin gagal login
+                
                 'password' => Hash::make(trim($request->nip)), 
                 'role' => 'guru',
             ]);
 
-            // 2. Buat data guru
+          
             Guru::create([
                 'user_id' => $user->id,
                 'nama' => $request->nama,
@@ -92,14 +91,14 @@ class AdminGuruController extends Controller
         DB::beginTransaction();
 
         try {
-            // Update tabel guru
+            
             $guru->update([
                 'nama' => $request->nama,
                 'nip' => trim($request->nip),
                 'program_studi' => $request->program_studi,
             ]);
 
-            // Update tabel user (nama & email)
+            
             if ($guru->user_id) {
                 $guru->user->update([
                     'name' => $request->nama,
@@ -123,7 +122,7 @@ class AdminGuruController extends Controller
         DB::beginTransaction();
 
         try {
-            // Hapus user dulu (karena foreign key biasanya di tabel guru)
+            
             if ($guru->user_id) {
                 User::destroy($guru->user_id);
             }

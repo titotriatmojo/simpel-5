@@ -12,10 +12,9 @@ return new class extends Migration
     public function up()
 {
     Schema::table('pendaftaran_pkl', function (Blueprint $table) {
-        // Tambahin kolom guru_id setelah perusahaan_id
+        
         $table->unsignedBigInteger('guru_id')->after('perusahaan_id')->nullable();
         
-        // Opsional: Tambah foreign key biar aman
         $table->foreign('guru_id')->references('id')->on('guru')->onDelete('cascade');
     });
 }

@@ -62,7 +62,6 @@ class GuruImport implements OnEachRow, WithHeadingRow
             return;
         }
 
-        // 1. Buat User tanpa memicu efek samping yang merusak
         $user = User::create([
             'name'     => $data['nama'],
             'email'    => $data['email'],
@@ -70,8 +69,6 @@ class GuruImport implements OnEachRow, WithHeadingRow
             'role'     => 'guru',
         ]);
 
-        // 2. Gunakan updateOrCreate untuk memastikan record 'guru' terisi dengan benar
-        // Ini akan menimpa data "PENDING" yang dibuat oleh model User
         Guru::updateOrCreate(
             ['user_id' => $user->id],
             [

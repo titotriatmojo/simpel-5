@@ -14,17 +14,11 @@ class HasilSpkExport implements FromCollection, WithHeadings, WithMapping, Shoul
 {
     protected $guruId;
 
-    /**
-     * Terima ID Guru dari Controller
-     */
     public function __construct($guruId)
     {
         $this->guruId = $guruId;
     }
 
-    /**
-     * Ambil data siswa bimbingan guru yang bersangkutan
-     */
     public function collection()
     {
         return User::where('role', 'siswa')
@@ -36,9 +30,6 @@ class HasilSpkExport implements FromCollection, WithHeadings, WithMapping, Shoul
             ->get();
     }
 
-    /**
-     * Header Tabel di Excel
-     */
     public function headings(): array
     {
         return [
@@ -53,9 +44,6 @@ class HasilSpkExport implements FromCollection, WithHeadings, WithMapping, Shoul
         ];
     }
 
-    /**
-     * Mapping data agar rapi di Excel
-     */
     public function map($user): array
     {
         static $no = 1;
@@ -72,9 +60,6 @@ class HasilSpkExport implements FromCollection, WithHeadings, WithMapping, Shoul
         ];
     }
 
-    /**
-     * Styling: Bikin Header jadi Bold
-     */
     public function styles(Worksheet $sheet)
     {
         return [

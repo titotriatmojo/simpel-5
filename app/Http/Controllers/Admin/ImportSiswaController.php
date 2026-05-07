@@ -10,9 +10,6 @@ use Illuminate\Support\Facades\Log;
 
 class ImportSiswaController extends Controller
 {
-    /**
-     * Ganti 'create' jadi 'index' agar sinkron sama web.php
-     */
     public function index()
     {
         return view('admin.siswa.import');
@@ -24,7 +21,6 @@ class ImportSiswaController extends Controller
             $import = new SiswaImport;
             Excel::import($import, $request->file('file'));
 
-            // Cek jika ada error di baris Excel tertentu
             if (isset($import->errors) && !empty($import->errors)) {
                 return redirect()->back()
                     ->withErrors(['import' => $import->errors])
@@ -35,7 +31,7 @@ class ImportSiswaController extends Controller
                 ->with('success', 'Data siswa berhasil diimport secara massal.');
 
         } catch (\Exception $e) {
-            // Log error jika ada masalah sistem (format file salah, dsb)
+        
             Log::error('Import Siswa Error: ' . $e->getMessage());
             
             return redirect()->back()

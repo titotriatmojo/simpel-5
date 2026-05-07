@@ -94,7 +94,6 @@
             function updateClock() {
                 const now = new Date();
                 const utc = now.getTime() + (now.getTimezoneOffset() * 60000);
-                // Ganti jadi +7 untuk WIB (Waktu Indonesia Barat)
                 const wib = new Date(utc + (7 * 60 * 60 * 1000)); 
                 
                 document.getElementById('clock').textContent = wib.toLocaleTimeString('id-ID', { 

@@ -44,8 +44,6 @@
             </form>
         </div>
 
-        {{-- Main Content (Tabel lo di bawah sini) --}}
-
         {{-- Main Content --}}
         <div class="bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-3xl overflow-hidden shadow-sm">
             <div class="overflow-x-auto">
