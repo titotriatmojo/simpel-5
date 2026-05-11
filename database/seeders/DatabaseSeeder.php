@@ -14,46 +14,43 @@ class DatabaseSeeder extends Seeder
     {
         // 1. BUAT ADMIN (Tetap 1)
         User::create([
-            'name' => 'Admin 1',
+            'name' => 'Admin',
             'email' => 'admin@gmail.com',
             'password' => Hash::make('password'),
             'role' => 'admin',
         ]);
 
-        // 2. BUAT 3 GURU
-        for ($i = 1; $i <= 3; $i++) {
-            $userGuru = User::create([
-                'name' => 'Guru ' . $i,
-                'email' => 'guru' . $i . '@gmail.com',
-                'password' => Hash::make('password'),
-                'role' => 'guru',
-            ]);
+        // 2. BUAT 1 GURU
+        $userGuru = User::create([
+            'name' => 'Eman Suherman',
+            'email' => 'eman.suherman@gmail.com',
+            'password' => Hash::make('password'),
+            'role' => 'guru',
+        ]);
 
-            Guru::create([
-                'user_id'       => $userGuru->id,
-                'nama'          => $userGuru->name,
-                'nip'           => '1980010' . $i,
-                'program_studi' => 'Multimedia',
-            ]);
-        }
+        Guru::create([
+            'user_id'       => $userGuru->id,
+            'nama'          => $userGuru->name,
+            'nip'           => '19800101',
+            'program_studi' => 'Desain Komunikasi Visual',
+        ]);
 
-        // 3. BUAT 3 SISWA
-        for ($j = 1; $j <= 3; $j++) {
-            $userSiswa = User::create([
-                'name' => 'siswa ' . $j,
-                'email' => 'siswa' . $j . '@gmail.com',
-                'password' => Hash::make('password'),
-                'role' => 'siswa',
-            ]);
+        // 3. BUAT 1 SISWA
+        $userSiswa = User::create([
+            'name' => 'Abdul Azis',
+            'email' => 'abdul.azis@gmail.com',
+            'password' => Hash::make('password'),
+            'role' => 'siswa',
+        ]);
 
-            Siswa::create([
-                'user_id'       => $userSiswa->id,
-                'nama'          => $userSiswa->name,
-                'nim'           => '202400' . $j,
-                'program_studi' => 'Multimedia',
-                'kelas'         => '12 MM 1 ' . $j,
-                'semester'      => '3',
-            ]);
+        Siswa::create([
+            'user_id'       => $userSiswa->id,
+            'nama'          => $userSiswa->name,
+            'nim'           => '20240001',
+            'program_studi' => 'Desain Komunikasi Visual',
+            'kelas'         => '11 DKV 1',
+            'semester'      => '3',
+        ]);
+
         }
     }
-}
