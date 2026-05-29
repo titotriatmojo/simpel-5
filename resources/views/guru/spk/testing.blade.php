@@ -107,7 +107,7 @@
                                     {{-- FP --}}
                                     <td class="p-5 border text-center text-xl font-bold text-red-600 bg-red-50/30 dark:bg-red-500/5">
                                         {{ $fp ?? 0 }}
-                                        <span class="block text-xs font-normal text-red-400 mt-1">False_Positive (FP)</span>
+                                        <span class="block text-xs font-normal text-red-400 mt-1">False Positive (FP)</span>
                                     </td>
 
                                     {{-- TN --}}
