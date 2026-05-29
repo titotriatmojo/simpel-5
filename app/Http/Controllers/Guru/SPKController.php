@@ -189,11 +189,18 @@ class SPKController extends Controller
         return redirect()->route('guru.spk.index')
             ->with('success', 'Nilai berhasil disimpan (auto hitung total & sidang).');
     }
-    //page
+
+
+    //SPK TESTING
+    // Halaman awal Uji Akurasi (Default nilai 0)
     public function testing()
     {
         return view('guru.spk.testing', [
             'akurasi' => 0,
+            'precision' => 0,
+            'recall' => 0,
+            'specificity' => 0,
+            'f1_score' => 0,
             'tp' => 0,
             'tn' => 0,
             'fp' => 0,
@@ -202,8 +209,9 @@ class SPKController extends Controller
             'totalDataUji' => 0
         ]);
     }
+
     /**
-     *  TESTING (CONFUSION MATRIX)
+     * TESTING (CONFUSION MATRIX + METRIK EVALUASI)
      */
     public function prosesUji()
     {
@@ -212,6 +220,10 @@ class SPKController extends Controller
 
         // Ambil data 
         $dataset = DataTraining::orderBy('id', 'asc')->get()->toArray();
+
+        if (count($dataset) < $fold) {
+            return redirect()->back()->with('error', 'Jumlah dataset kurang untuk melakukan 5-Fold Cross Validation.');
+        }
 
         // Pisahkan kelas
         $siap = array_values(array_filter($dataset, fn($d) => strtolower(trim($d['label'])) === 'siap'));
@@ -253,7 +265,6 @@ class SPKController extends Controller
                 $distances = [];
 
                 foreach ($training as $train) {
-
                     $distances[] = [
                         'distance' => sqrt(
                             pow($test['nilai_pkl'] - $train['nilai_pkl'], 2) +
@@ -283,12 +294,29 @@ class SPKController extends Controller
 
         $totalData = $totalTp + $totalTn + $totalFp + $totalFn;
 
-        $akurasi = $totalData > 0
-            ? (($totalTp + $totalTn) / $totalData) * 100
-            : 0;
+        // --- HITUNG METRIK EVALUASI ---
+        
+        // 1. Akurasi
+        $akurasi = $totalData > 0 ? (($totalTp + $totalTn) / $totalData) * 100 : 0;
+
+        // 2. Precision = TP / (TP + FP)
+        $precision = ($totalTp + $totalFp) > 0 ? ($totalTp / ($totalTp + $totalFp)) * 100 : 0;
+
+        // 3. Recall / Sensitivity = TP / (TP + FN)
+        $recall = ($totalTp + $totalFn) > 0 ? ($totalTp / ($totalTp + $totalFn)) * 100 : 0;
+
+        // 4. Specificity = TN / (TN + FP)
+        $specificity = ($totalTn + $totalFp) > 0 ? ($totalTn / ($totalTn + $totalFp)) * 100 : 0;
+
+        // 5. F1-Score = 2 * (Precision * Recall) / (Precision + Recall)
+        $f1Score = ($precision + $recall) > 0 ? 2 * (($precision * $recall) / ($precision + $recall)) : 0;
 
         return view('guru.spk.testing', [
             'akurasi' => round($akurasi, 2),
+            'precision' => round($precision, 2),
+            'recall' => round($recall, 2),
+            'specificity' => round($specificity, 2),
+            'f1_score' => round($f1Score, 2),
             'tp' => $totalTp,
             'tn' => $totalTn,
             'fp' => $totalFp,

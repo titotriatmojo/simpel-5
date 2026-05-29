@@ -28,45 +28,34 @@ class AuthenticatedSessionController extends Controller
 
         $user = null;
 
-  
+        // 1. Cek jika login pake Email
         if (filter_var($request->login, FILTER_VALIDATE_EMAIL)) {
             $user = User::where('email', $request->login)->first();
         } 
         
-        
+        // 2. Cek jika login pake NIM/NISN Siswa
         if (!$user) {
             $siswa = Siswa::where('nim', $request->login)->first();
             if ($siswa) $user = $siswa->user;
         }
 
+        // 3. Cek jika login pake NIP Guru
         if (!$user) {
             $guru = Guru::where('nip', $request->login)->first();
             if ($guru) $user = $guru->user;
         }
 
+        // 4. Cek Password
         if (!$user || !Hash::check($request->password, $user->password)) {
             return back()->withInput()->withErrors([
                 'login' => 'Kredensial tidak cocok dengan data kami.',
             ]);
         }
 
-        $this->ensureProfileExists($user);
-
         Auth::login($user);
         $request->session()->regenerate();
 
         return redirect('/redirect');
-    }
-
-
-    private function ensureProfileExists($user)
-    {
-        if ($user->role === 'guru' && !$user->guru_profile) {
-            $user->guru_profile()->create(['nama' => $user->name, 'nip' => '-']);
-        }
-        if ($user->role === 'siswa' && !$user->siswa_profile) {
-            $user->siswa_profile()->create(['nama' => $user->name, 'nisn' => '-']);
-        }
     }
 
     public function destroy(Request $request): RedirectResponse
