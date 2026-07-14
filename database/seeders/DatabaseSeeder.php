@@ -31,7 +31,7 @@ class DatabaseSeeder extends Seeder
         Guru::create([
             'user_id'       => $userGuru->id,
             'nama'          => $userGuru->name,
-            'nip'           => '19800101',
+            'nip'           => '198202042010012028',
             'program_studi' => 'Desain Komunikasi Visual',
         ]);
 
@@ -46,7 +46,7 @@ class DatabaseSeeder extends Seeder
         Siswa::create([
             'user_id'       => $userSiswa->id,
             'nama'          => $userSiswa->name,
-            'nim'           => '20240001',
+            'nim'           => '20240533',
             'program_studi' => 'Desain Komunikasi Visual',
             'kelas'         => '11 DKV 1',
             'semester'      => '3',

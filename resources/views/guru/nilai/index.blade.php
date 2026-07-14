@@ -140,7 +140,7 @@
                     </svg>
                 </div>
                 <h3 class="text-xl font-bold text-slate-800 dark:text-white">Data Siswa Kosong</h3>
-                <p class="text-slate-500 dark:text-slate-400 mt-2">Belum ada siswa yang terdaftar di bawah bimbingan Anda atau status pendaftaran mereka belum disetujui.</p>
+                <p class="text-slate-500 dark:text-slate-400 mt-2">Belum ada siswa Anda yang terdaftar atau status pendaftaran mereka belum disetujui.</p>
             </div>
         </div>
         @endforelse
