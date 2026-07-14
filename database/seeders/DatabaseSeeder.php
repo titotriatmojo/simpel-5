@@ -31,7 +31,7 @@ class DatabaseSeeder extends Seeder
         Guru::create([
             'user_id'       => $userGuru->id,
             'nama'          => $userGuru->name,
-            'nip'           => '198202042010012028',
+            'nip'           => '19800101',
             'program_studi' => 'Desain Komunikasi Visual',
         ]);
 
