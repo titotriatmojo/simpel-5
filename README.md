@@ -53,11 +53,19 @@ Untuk semua roles:
 
 ## 🧩 Teknologi
 
-- Laravel 11
-- Laravel Breeze (auth)
-- Tailwind CSS
-- Vite
-- MySQL
+* **Laravel Framework:** `11.45.0`
+* **PHP:** `8.2.12`
+* **Database:** MySQL
+* **Laravel Breeze (Auth):** Terpasang (*scaffolding* berbasis Tailwind CSS & Alpine.js)
+* **Spatie Laravel-Permission:** `6.25.0`
+* **Vite:** `6.0.11` (`laravel-vite-plugin: ^1.2.0`)
+* **Tailwind CSS:** `3.1.0` (`@tailwindcss/forms: ^0.5.2`)
+* **Bootstrap:** `5.3.6` (`@popperjs/core: ^2.11.8`, `sass: ^1.89.0`)
+* **Alpine.js:** `3.4.2`
+* **Axios:** `1.7.4`
+* **Autoprefixer:** `10.4.2`
+* **PostCSS:** `8.4.31`
+* **Concurrently:** `9.0.1`
 
 ## Tampilan User Interface
 
