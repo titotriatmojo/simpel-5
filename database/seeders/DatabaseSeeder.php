@@ -23,7 +23,7 @@ class DatabaseSeeder extends Seeder
         // 2. BUAT 1 GURU
         $userGuru = User::create([
             'name' => 'Eman Suherman',
-            'email' => 'eman.suherman@gmail.com',
+            'email' => 'eman@gmail.com',
             'password' => Hash::make('password'),
             'role' => 'guru',
         ]);
@@ -31,7 +31,7 @@ class DatabaseSeeder extends Seeder
         Guru::create([
             'user_id'       => $userGuru->id,
             'nama'          => $userGuru->name,
-            'nip'           => '19800101',
+            'nip'           => '198109052025211040',
             'program_studi' => 'Desain Komunikasi Visual',
         ]);
 
