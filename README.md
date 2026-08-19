@@ -3,9 +3,25 @@
 **SIMPEL-5** adalah aplikasi web berbasis Laravel untuk mempermudah pengelolaan proses **Praktik Kerja Lapangan (PKL)** di lingkungan **SMKN 5 Kabupaten Tangerang**. Sistem ini menyediakan fitur lengkap mulai dari pendaftaran PKL, pengajuan tempat PKL, manajemen dan monitoring siswa beserta instansi, upload laporan, penilaian akhir oleh guru pembimbing, hingga prediksi kesiapan kerja siswa.
 
 Catatan:
-
 - Untuk seeder admin, guru, siswa, password default nya adalah "password"
 - Untuk import data guru dan siswa password default nya adalah NISN/NIP sesuai data pada file import
+- Untuk menjalankan project 
+
+## 🚀 Cara Menjalankan Proyek
+
+### 1. Jalankan Laragon
+1. Buka aplikasi **Laragon**.
+2. Klik tombol **Start All** untuk mengaktifkan service **Apache/Nginx** dan **MySQL**.
+
+---
+
+### 2. Jalankan Aplikasi (Pilih Salah Satu Cara)
+
+#### Opsi A: Cara Cepat (Rekomendasi - Laravel 11)
+Cukup jalankan satu perintah di bawah ini untuk mengaktifkan *Server*, *Vite (Frontend)*, dan *Queue Worker* sekaligus secara paralel dalam satu terminal:
+
+```bash
+composer dev
 
 > Dibuat sebagai proyek untuk skripsi.
 
